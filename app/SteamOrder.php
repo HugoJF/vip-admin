@@ -22,7 +22,7 @@ class SteamOrder extends Model
 
         $offer = DaemonController::getTradeOffer($id);
 
-        if ($offer !== false && !property_exists($offer, 'state')) {
+        if ($offer === false || !property_exists($offer, 'state')) {
             return false;
         }
         $this->attributes['tradeoffer_state'] = $offer->state;
