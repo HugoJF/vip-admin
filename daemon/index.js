@@ -1,6 +1,5 @@
 var request       = require('request');
 var fs          = require('fs');
-var colors        = require('colors');
 var express       = require('express');
 var util            = require('util');
 var app         = express();
