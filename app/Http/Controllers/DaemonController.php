@@ -50,7 +50,7 @@ class DaemonController extends Controller
         if ($user->tradeid != null) {
             return DaemonController::getInventory($user->tradeid);
         } else {
-            return null;
+            return DaemonController::getInventory($user->steamid);
         }
     }
 
