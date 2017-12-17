@@ -14,12 +14,14 @@ class SteamOrderController extends Controller
 {
     public function inventoryView()
     {
-        $inventory = Curl::to(env('DAEMON_ADDRESS') . '/inventory?steamid' . Auth::user()->tradeid)->asJson()->get();
+        $link = env('DAEMON_ADDRESS') . '/inventory?steamid=' . Auth::user()->tradeid;
+
+        $inventory = Curl::to($link)->asJson()->get();
 
         $names = [];
 
         if($inventory == null) {
-
+            dd($link);
         }
         foreach ($inventory as $item) {
             $names[] = $item->market_name;
