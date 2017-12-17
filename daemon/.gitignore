@@ -1,0 +1,5 @@
+.idea/
+logs/
+node_modules/
+.env
+polldata.json
