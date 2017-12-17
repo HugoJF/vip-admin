@@ -43,7 +43,7 @@ class SteamOrderController extends Controller
 
     public function createSteamOffer(Request $request)
     {
-        $inventory = Curl::to(env('DAEMON_ADDRESS') . '/inventory_raw_teaguenho')->asJson()->get();
+        $link = env('DAEMON_ADDRESS') . '/inventory?steamid=' . Auth::user()->tradeid;
 
         $items = $request->get('items');
         $items_fix = [];
