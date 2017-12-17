@@ -23,10 +23,6 @@ Route::get('dashboard', function() {
 
 Route::get('debug-form', 'SteamOrderController@debugForm');
 
-Route::get('settings', function() {
-   return 'Settings';
-})->middleware('auth')->name('settings');
-
 Route::get('/inventory', 'SteamOrderController@inventoryView')->middleware('auth')->name('inventory');
 
 Route::get('/create-steam-offer', 'SteamOrderController@createSteamOffer')->middleware('auth');
@@ -36,5 +32,5 @@ Route::get('/send-trade-offer/{public_id}', 'SteamOrderController@sendTradeOffer
 
 Route::get('refresh-opskins-cache', 'OPSkinsController@refreshOPSkinsCache');
 
-Route::get('settings', 'UserController@settings')->name('settings');
-Route::post('settings', 'UserController@settingsUpdate')->name('settings.update');
+Route::get('settings', 'UserController@settings')->middleware('auth')->name('settings');
+Route::post('settings', 'UserController@settingsUpdate')->middleware('auth')->name('settings.update');
