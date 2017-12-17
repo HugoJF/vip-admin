@@ -33,11 +33,6 @@ var manager = new TradeOfferManager({
 });
 var community = new SteamCommunity();
 
-var logOnOptions = {
-    accountName: process.env.ACCOUNT_NAME,
-    password: process.env.ACCOUNT_PASS
-};
-
 if (fs.existsSync('polldata.json')) {
     manager.pollData = JSON.parse(fs.readFileSync('polldata.json'));
 }
@@ -69,13 +64,11 @@ manager.on('pollData', function(pollData) {
     fs.writeFile('polldata.json', JSON.stringify(pollData), function() {});
 });
 
-client.logOn(logOnOptions);
-console.log('Trying to log in to Steam');
 
 /*********************
  *    STATIC CODE    *
  *********************/
-/*
+
 var log_file = fs.createWriteStream(LOGS_PATH, {flags : 'w'});
 var log_stdout = process.stdout;
 
@@ -93,11 +86,26 @@ console.log = function(d) { //
 process.on('uncaughtException', function(err) {
   console.error((err && err.stack) ? err.stack : err);
 });
-*/
+
 
 /***************
  *    PAGES    *
  ***************/
+
+app.get('/login', (req, res) => {
+    var code = req.query.code;
+    
+    var logOnOptions = {
+        accountName: process.env.ACCOUNT_NAME,
+        password: process.env.ACCOUNT_PASS,
+        twoFactorCode: code
+    };
+
+    client.logOn(logOnOptions);
+    console.log('Trying to log in to Steam');
+
+    res.send('Trying to login');
+});
 
 app.get('/inventory', (req, res) => {
     manager.getUserInventoryContents(new SteamID(req.query.steamid), 730, 2, true, function(err, inventory) {
