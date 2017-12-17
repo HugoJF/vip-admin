@@ -168,6 +168,7 @@ app.get('/sendTradeOffer', (req, res) => {
             res.send(status);
         } else {
             console.log('Error sending Trade Offer');
+            console.log(err);
             res.send(err);
         }
     });
