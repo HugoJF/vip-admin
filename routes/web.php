@@ -22,6 +22,8 @@ Route::get('dashboard', function() {
 })->name('dashboard');
 
 Route::get('debug-form', 'SteamOrderController@debugForm');
+Route::get('orders', 'OrdersController@view')->middleware('auth')->name('orders');
+
 
 Route::get('online', function () {
     if(\App\Http\Controllers\DaemonController::isOnline()) {

@@ -64,6 +64,9 @@
             <ul class="nav nav-sidebar">
                 <li {{ Route::is('inventory') ? 'class=active' : ''}}><a href="{{ route('inventory') }}">Inventory</a></li>
             </ul>
+            <ul class="nav nav-sidebar">
+                <li {{ Route::is('orders') ? 'class=active' : ''}}><a href="{{ route('orders') }}">Orders</a></li>
+            </ul>
         </div>
 
         @yield('content');
