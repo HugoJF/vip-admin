@@ -86,7 +86,7 @@ class SteamOrderController extends Controller
 
     public function viewSteamOffer($public_id)
     {
-        $inventory = Curl::to(env('DAEMON_ADDRESS') . '/inventory_raw_teaguenho')->asJson()->get();
+        $inventory = DaemonController::getInventory(Auth::user()->tradeid);
 
         $order = Order::where([
             'public_id' => $public_id,
