@@ -25,7 +25,7 @@ Route::get('debug-form', 'SteamOrderController@debugForm');
 
 Route::get('settings', function() {
    return 'Settings';
-})->name('settings');
+})->middleware('auth')->name('settings');
 
 Route::get('/inventory', 'SteamOrderController@inventoryView')->middleware('auth')->name('inventory');
 
