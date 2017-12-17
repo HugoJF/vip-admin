@@ -14,7 +14,7 @@ class SteamOrderController extends Controller
 {
     public function inventoryView()
     {
-        $link = env('DAEMON_ADDRESS') . '/inventory?steamid=' . Auth::user()->tradeid;
+        $inventory = DaemonController::getInventory(Auth::user()->tradeid);
 
         $inventory = Curl::to($link)->asJson()->get();
 
@@ -43,7 +43,7 @@ class SteamOrderController extends Controller
 
     public function createSteamOffer(Request $request)
     {
-        $link = env('DAEMON_ADDRESS') . '/inventory?steamid=' . Auth::user()->tradeid;
+        $inventory = DaemonController::getInventory(Auth::user()->tradeid);
 
         $items = $request->get('items');
         $items_fix = [];
