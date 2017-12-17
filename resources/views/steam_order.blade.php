@@ -11,6 +11,17 @@
 
         <p> Public ID: {{ $public_id }}</p>
 
-        <a href="{{ route('send-trade-offer', $public_id) }}">Send Trade Link</a>
+        @if($steamOrder->tradeoffer_id)
+            <p>Trade Offer #{{ $steamOrder->tradeoffer_id }}</p>
+            <p>Current state: {{ $steamOrder->stateText() }}</p>
+            @if($steamOrder->active())
+                <a href="https://steamcommunity.com/tradeoffer/{{ $steamOrder->tradeoffer_id }}">OPEN TRADE OFFER</a>
+            @endif
+        @endif
+
+        @if($steamOrder->notSent())
+            <a href="{{ route('send-trade-offer', $public_id) }}">Send Trade Link</a>
+        @endif
+
     </div>
 @endsection

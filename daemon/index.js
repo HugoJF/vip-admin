@@ -24,6 +24,8 @@ const STDERR_PATH = __dirname + '/logs/errout' + Date.now() + '.log';
  *    VARIABLES    *
  *******************/
 
+var logged = false;
+
 var client = new SteamUser();
 var manager = new TradeOfferManager({
   'steam': client,
@@ -54,6 +56,7 @@ client.on('webSession', function(sessionID, cookies) {
         }
 
         console.log("Got API key: " + manager.apiKey);
+        logged = true;
     });
    
     // Do something with these cookies if you wish
@@ -115,8 +118,22 @@ app.get('/inventory', (req, res) => {
 
 app.get('/status', (req, res) => {
     res.send(JSON.stringify({
-        online: true
+        online: true,
+        logged: logged
     }));
+});
+
+app.get('/getTradeOffer', (req, res) => {
+  var offer = manager.getOffer(req.query.offerid, (err, offer) => {
+      if(err) {
+        console.log('error getting trade offer');
+        console.log(err);
+        res.send('false');
+      } else {
+        console.log('sucess getting offer: ' + req.query.offerid);
+        res.send(offer);
+      }
+  });
 });
 
 app.get('/sendTradeOffer', (req, res) => {
@@ -165,7 +182,8 @@ app.get('/sendTradeOffer', (req, res) => {
     offer.send(function (err, status) {
         if(!err) {
             console.log('Sent Trade Offer!');
-            res.send(status);
+            console.log(offer);
+            res.send(offer);
         } else {
             console.log('Error sending Trade Offer');
             console.log(err);

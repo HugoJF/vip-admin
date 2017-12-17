@@ -9,6 +9,33 @@ use App\OPSkinsCache;
 
 class DaemonController extends Controller
 {
+    public static function status()
+    {
+        $result = Curl::to(env('DAEMON_ADDRESS') . '/status')->asJson()->get();
+
+        return $result;
+    }
+
+    public static function isOnline()
+    {
+        $status = DaemonController::status();
+        if ($status && property_exists($status, 'online')) {
+            return DaemonController::status()->online === true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function isLoggedIn()
+    {
+        $status = DaemonController::status();
+        if ($status && property_exists($status, 'logged')) {
+            return DaemonController::status()->logged === true;
+        } else {
+            return false;
+        }
+    }
+
     public static function getInventory($steamid)
     {
         $inventory = Curl::to(env('DAEMON_ADDRESS') . '/inventory?steamid=' . $steamid)->asJson()->get();
@@ -27,7 +54,7 @@ class DaemonController extends Controller
         }
     }
 
-    public static function sendTradeoffer($tradelink, $encoded_items)
+    public static function sendTradeOffer($tradelink, $encoded_items)
     {
         $data = [
             'tradelink' => urlencode($tradelink),
@@ -38,11 +65,16 @@ class DaemonController extends Controller
 
         $link = env('DAEMON_ADDRESS') . '/sendTradeOffer?data=' . $encoded_data;
 
-
         $result = Curl::to($link)->asJson()->get();
 
         return $result;
+    }
 
+    public static function getTradeOffer($tradeofferid)
+    {
+        $result = Curl::to(env('DAEMON_ADDRESS') . '/getTradeOffer?offerid=' . $tradeofferid)->asJson()->get();
+
+        return $result;
     }
 
     public static function checkDaemon()
@@ -56,7 +88,7 @@ class DaemonController extends Controller
 
     public static function calculateTotalPrice($item_list, $inventory = null)
     {
-        if($inventory === null) {
+        if ($inventory === null) {
             $inventory = DaemonController::getInventoryFromAuthedUser();
         }
         $totalPrice = 0;
@@ -81,7 +113,7 @@ class DaemonController extends Controller
 
     public static function getItemsFromAssetId($item_list, $inventory = null)
     {
-        if($inventory === null) {
+        if ($inventory === null) {
             $inventory = DaemonController::getInventoryFromAuthedUser();
         }
         $full_item_list = [];

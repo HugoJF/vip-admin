@@ -62,7 +62,6 @@ class SteamOrderController extends Controller
 
         // Fill Steam Order information
         $steamOrder->encoded_items = json_encode($items_fix);
-        $steamOrder->tradeoffer_status = 'UNSENT';
 
         // Fill base order information
         $order->public_id = $rand = substr(md5(microtime()), rand(0, 26), 10);;
@@ -105,8 +104,11 @@ class SteamOrderController extends Controller
         // Computes the amount of days the order will result
         $days = DaemonController::calculateOfferDuration($totalPrice);
 
+        $steamOrder->refresh();
+
         // Return Steam Order view
         return view('steam_order', [
+            'steamOrder' => $steamOrder,
             'public_id' => $order->public_id,
             'duration' => $days,
             'totalValue' => $totalPrice,
@@ -126,10 +128,15 @@ class SteamOrderController extends Controller
         $steamOrder = $order->orderable()->get()->first();
 
         // Call SendTradeOffer
-        $result = DaemonController::sendTradeoffer(Auth::user()->tradelink, $steamOrder->encoded_items);
+        $result = DaemonController::sendTradeOffer(Auth::user()->tradelink, $steamOrder->encoded_items);
 
-        // Spits result
-        return $result;
+        // Persist trade offer information to order
+        $steamOrder->tradeoffer_id = $result->id;
+        $steamOrder->tradeoffer_state = $result->state;
+        $steamOrder->save();
+
+        // Redirect to view
+        return redirect()->route('view-steam-offer', $public_id);
     }
 
     public function debugForm(Request $request)

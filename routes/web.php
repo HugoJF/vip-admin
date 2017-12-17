@@ -23,12 +23,31 @@ Route::get('dashboard', function() {
 
 Route::get('debug-form', 'SteamOrderController@debugForm');
 
-Route::get('/inventory', 'SteamOrderController@inventoryView')->middleware('auth')->name('inventory');
+Route::get('online', function () {
+    if(\App\Http\Controllers\DaemonController::isOnline()) {
+        return 'Online and running...';
+    } else {
+        return 'Daemon is offline or non-responsive.';
+    }
+});
 
-Route::get('/create-steam-offer', 'SteamOrderController@createSteamOffer')->middleware('auth');
-Route::get('/view-steam-offer/{public_id}', 'SteamOrderController@viewSteamOffer')->middleware('auth')->name('view-steam-offer');
+Route::get('logged', function () {
+    if(\App\Http\Controllers\DaemonController::isLoggedIn()) {
+        return 'Logged on Steam Servers';
+    } else {
+        return 'Waiting for authentication code...';
+    }
+});
 
-Route::get('/send-trade-offer/{public_id}', 'SteamOrderController@sendTradeOffer')->middleware('auth')->name('send-trade-offer');
+
+
+
+Route::get('inventory', 'SteamOrderController@inventoryView')->middleware(['auth', 'daemon'])->name('inventory');
+
+Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->middleware(['auth', 'daemon']);
+Route::get('view-steam-offer/{public_id}', 'SteamOrderController@viewSteamOffer')->middleware(['auth', 'daemon'])->name('view-steam-offer');
+
+Route::get('send-trade-offer/{public_id}', 'SteamOrderController@sendTradeOffer')->middleware(['auth', 'daemon'])->name('send-trade-offer');
 
 Route::get('refresh-opskins-cache', 'OPSkinsController@refreshOPSkinsCache');
 
