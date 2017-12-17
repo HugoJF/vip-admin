@@ -14,27 +14,25 @@ class SteamOrderController extends Controller
 {
     public function inventoryView()
     {
-        $inventory = DaemonController::getInventory(Auth::user()->tradeid);
+        // Gets client raw inventory information
+        $inventory = DaemonController::getInventoryFromAuthedUser();
 
-        $inventory = Curl::to($link)->asJson()->get();
-
-        $names = [];
-
-        if($inventory == null) {
-            dd($link);
-        }
+        // Retrieves just the names from the inventory
+        $inventoryNames = [];
         foreach ($inventory as $item) {
-            $names[] = $item->market_name;
+            $inventoryNames[] = $item->market_name;
         }
 
-        $prices = OPSkinsCache::whereIn('name', $names)->get()->toArray();
+        // Query our OPSkins cache based on inventory items
+        $inventoryPrices = OPSkinsCache::whereIn('name', $inventoryNames)->get()->toArray();
 
+        // Transform que result into an associative array to make access easier in views
         $associativePrices = [];
-
-        foreach ($prices as $price) {
+        foreach ($inventoryPrices as $price) {
             $associativePrices[$price['name']] = $price['price'];
         }
 
+        // Return inventory view
         return view('inventory', [
             'inventory' => $inventory,
             'prices' => $associativePrices
@@ -43,78 +41,71 @@ class SteamOrderController extends Controller
 
     public function createSteamOffer(Request $request)
     {
-        $inventory = DaemonController::getInventory(Auth::user()->tradeid);
+        // Gets client raw inventory information
+        $inventory = DaemonController::getInventoryFromAuthedUser();
 
+        // Gets the items selected to create Steam Offer
         $items = $request->get('items');
-        $items_fix = [];
 
+        // Decode the information in each value of array
+        $items_fix = [];
         foreach ($items as $item) {
             $items_fix[] = json_decode($item);
         }
 
-        $totalPrice = 0;
+        // Computes the value of the selected items
+        $totalPrice = DaemonController::calculateTotalPrice($items_fix, $inventory);
 
-        foreach ($items_fix as $item) {
-            foreach ($inventory as $inv) {
-                if ($inv->assetid == $item->assetid) {
-                    $cache = OPSkinsCache::where('name', $inv->market_name)->get()->first();
-
-                    $totalPrice += $cache->price;
-                }
-            }
-        }
-
+        // Prepare orders
         $steamOrder = SteamOrder::make();
+        $order = Order::make();
 
+        // Fill Steam Order information
         $steamOrder->encoded_items = json_encode($items_fix);
         $steamOrder->tradeoffer_status = 'UNSENT';
 
-
-        $order = Order::make();
-
-        $order->public_id = $rand = substr(md5(microtime()),rand(0,26),10);;
+        // Fill base order information
+        $order->public_id = $rand = substr(md5(microtime()), rand(0, 26), 10);;
         $order->status = 'VALID';
         $order->user()->associate(Auth::user());
 
+        // Persist to database
         $steamOrder->save();
         $order->save();
 
+        // Associate each order to another
         $steamOrder->baseOrder()->save($order);
 
+        // Redirect to view Steam Offer
         return redirect()->route('view-steam-offer', $order->public_id);
     }
 
     public function viewSteamOffer($public_id)
     {
-        $inventory = DaemonController::getInventory(Auth::user()->tradeid);
+        // Gets the client raw inventory information
+        $inventory = DaemonController::getInventoryFromAuthedUser();
 
+        // Retrieves the persisted order
         $order = Order::where([
             'public_id' => $public_id,
             'user_id' => Auth::id()
         ])->get()->first();
 
+        // Retrieves the associated Steam Order
         $steamOrder = $order->orderable()->first();
 
+        // Decodes the list of items for Steam Order
         $items_fix = json_decode($steamOrder->encoded_items);
 
-        $totalPrice = 0;
+        // Calculates total price of order and fills list of items in order
+        $totalPrice = DaemonController::calculateTotalPrice($items_fix, $inventory);
+        $item_list = DaemonController::getItemsFromAssetId($items_fix, $inventory);
 
-        $item_list = [];
 
-        foreach ($items_fix as $item) {
-            foreach ($inventory as $inv) {
-                if ($inv->assetid == $item->assetid) {
-                    $cache = OPSkinsCache::where('name', $inv->market_name)->get()->first();
+        // Computes the amount of days the order will result
+        $days = DaemonController::calculateOfferDuration($totalPrice);
 
-                    $totalPrice += $cache->price;
-
-                    $item_list[] = $inv;
-                }
-            }
-        }
-
-        $days = floor($totalPrice / 4.5);
-
+        // Return Steam Order view
         return view('steam_order', [
             'public_id' => $order->public_id,
             'duration' => $days,
@@ -125,21 +116,19 @@ class SteamOrderController extends Controller
 
     public function sendTradeOffer($public_id)
     {
+        // Get what order are we trying to send the offer
         $order = Order::where([
             'public_id' => $public_id,
 
         ])->get()->first();
 
+        // Retrieve what Steam Order is related to that order
         $steamOrder = $order->orderable()->get()->first();
 
-        // $sendTradeOfferLink = env('DAEMON_ADDRESS') . '/sendTradeOffer?tradelink=' . Auth::user()->tradelink . '&items=' . $steamOrder->encoded_items;
-
-
-
-        //dd($sendTradeOfferLink);
-
+        // Call SendTradeOffer
         $result = DaemonController::sendTradeoffer(Auth::user()->tradelink, $steamOrder->encoded_items);
 
+        // Spits result
         return $result;
     }
 
