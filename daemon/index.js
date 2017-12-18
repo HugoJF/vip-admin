@@ -71,7 +71,7 @@ manager.on('pollData', function(pollData) {
 /*********************
  *    STATIC CODE    *
  *********************/
-
+/*
  var log_file = fs.createWriteStream(LOGS_PATH, {flags : 'w'});
  var log_stdout = process.stdout;
 
@@ -89,7 +89,7 @@ manager.on('pollData', function(pollData) {
  process.on('uncaughtException', function(err) {
  console.error((err && err.stack) ? err.stack : err);
  });
- 
+ */
 /*******************
  *    FUNCTIONS    *
  *******************/
