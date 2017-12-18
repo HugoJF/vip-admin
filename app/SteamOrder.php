@@ -25,6 +25,7 @@ class SteamOrder extends Model
         if ($offer === false || !property_exists($offer, 'state')) {
             return false;
         }
+
         $this->attributes['tradeoffer_state'] = $offer->state;
 
         $this->save();

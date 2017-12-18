@@ -18,6 +18,11 @@ class Order extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function confirmation()
+    {
+        return $this->hasOne('App\Confirmation');
+    }
+
     public function isSteamOffer()
     {
         return $this->attributes['orderable_type'] == 'App\SteamOrder';

@@ -18,8 +18,9 @@ class CreateOrdersTable extends Migration
 
             $table->string('public_id');
 
+            $table->boolean('locked')->default(false);
+
             $table->integer('duration')->nullable();
-            $table->string('status');
 
             $table->integer('orderable_id')->nullable();
             $table->string('orderable_type')->nullable();

@@ -43,7 +43,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ route('dashboard') }}">CS:GO Admin Panel Alpha</a>
+            <a class="navbar-brand" href="{{ route('home') }}">CS:GO Admin Panel Alpha</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">

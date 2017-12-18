@@ -236,4 +236,6 @@ return [
 
     ],
 
+    'public_id_size' => 10
+
 ];
