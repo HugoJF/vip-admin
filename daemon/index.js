@@ -138,6 +138,13 @@ app.get('/status', (req, res) => {
     }));
 });
 
+app.get('/steam2', (req, res) => {
+    var steamid = req.query.steamid;
+    var steamObject = new SteamID(steamid);
+
+    res.send(steamObject.getSteam2RenderedID());
+});
+
 app.get('/getTradeOffer', (req, res) => {
     var offerid = req.query.offerid;
 

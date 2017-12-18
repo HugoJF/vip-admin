@@ -48,11 +48,35 @@ class ConfirmationsController extends Controller
             'public_id' => $public_id
         ])->get()->first();
 
-        if(!$confirmation) return redirect()->route('home');
+        if (!$confirmation) return redirect()->route('home');
 
         return view('confirmation', [
             'confirmation' => $confirmation,
             'order' => $confirmation->order,
+        ]);
+    }
+
+    public function generateAdminsSimple()
+    {
+        $now = Carbon::now();
+
+        $confirmations = Confirmation::where([
+            ['start_period', '<', $now],
+            ['end_period', '>', $now]
+        ])->with('order.user')->get();
+
+        $steamid = [];
+
+        foreach($confirmations as $confirmation) {
+            $steam2 = DaemonController::getSteam2ID($confirmation->order->user->steamid);
+            $steamid[] = [
+                'id' => $steam2,
+                'confirmation' => $confirmation,
+            ];
+        }
+
+        return view('admins_simple', [
+            'list' => $steamid
         ]);
     }
 }

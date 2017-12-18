@@ -111,6 +111,13 @@ class DaemonController extends Controller
         return floor($price / 4.5);
     }
 
+    public static function getSteam2ID($steamid)
+    {
+        $result = Curl::to(env('DAEMON_ADDRESS') . '/steam2?steamid=' . $steamid)->get();
+
+        return $result;
+    }
+
     public static function getItemsFromAssetId($item_list, $inventory = null)
     {
         if ($inventory === null) {
