@@ -107,11 +107,11 @@ class SteamOrderController extends Controller
 
         // Return Steam Order view
         return view('steam_order', [
-            'steamOrder' => $steamOrder,
-            'public_id' => $order->public_id,
-            'duration' => $days,
-            'totalValue' => $totalPrice,
-            'items' => $item_list
+            'steamOrder'    => $steamOrder,
+            'order'         => $order,
+            'duration'      => $days,
+            'totalValue'    => $totalPrice,
+            'items'         => $item_list
         ]);
     }
 

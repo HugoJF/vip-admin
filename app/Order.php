@@ -8,6 +8,7 @@ class Order extends Model
 {
     protected $table = 'orders';
 
+
     public function orderable()
     {
         return $this->morphTo();

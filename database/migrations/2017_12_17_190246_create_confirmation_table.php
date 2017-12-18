@@ -16,6 +16,8 @@ class CreateConfirmationTable extends Migration
         Schema::create('confirmations', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->string('public_id');
+
             $table->date('start_period');
             $table->date('end_period');
 

@@ -42,8 +42,8 @@ Route::get('logged', function () {
 });
 
 
-
-
+Route::get('create-confirmation/{public_id}', 'ConfirmationsController@createConfirmation')->middleware(['auth', 'daemon'])->name('create-confirmation');
+Route::get('view-confirmation/{public_id}', 'ConfirmationsController@viewConfirmation')->middleware(['auth'])->name('view-confirmation');
 Route::get('inventory', 'SteamOrderController@inventoryView')->middleware(['auth', 'daemon'])->name('inventory');
 
 Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->middleware(['auth', 'daemon']);

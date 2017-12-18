@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Confirmation;
+use App\Order;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+
+class ConfirmationsController extends Controller
+{
+    public function createConfirmation($public_id)
+    {
+        $order = Order::where([
+            'public_id' => $public_id,
+            'user_id' => Auth::id()
+        ])->get()->first();
+
+        if (!$order) return redirect()->route('home');
+
+        //check if confirmation exists first
+        // check if order is locked
+        // check if steam order is accepted
+
+        $confirmation = Confirmation::make();
+
+        $confirmation->public_id = $rand = substr(md5(microtime()), rand(0, 26), config('app.public_id_size'));;
+        $confirmation->order()->associate($order);
+        $confirmation->start_period = Carbon::now();
+        $confirmation->end_period = Carbon::now()->addDays($order->duration);
+
+        $confirmed = $confirmation->save();
+
+        if ($confirmed) {
+            $order->confirmed = true;
+            $order->save();
+
+            return redirect()->route('view-confirmation', $confirmation->public_id);
+        } else {
+            return redirect()->route('view-steam-offer', $public_id);
+        }
+    }
+
+    public function viewConfirmation($public_id)
+    {
+        $confirmation = Confirmation::with('order')->where([
+            'public_id' => $public_id
+        ])->get()->first();
+
+        if(!$confirmation) return redirect()->route('home');
+
+        return view('confirmation', [
+            'confirmation' => $confirmation,
+            'order' => $confirmation->order,
+        ]);
+    }
+}

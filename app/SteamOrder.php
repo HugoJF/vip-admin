@@ -56,8 +56,11 @@ class SteamOrder extends Model
     public function stateText()
     {
         $state = $this->attributes['tradeoffer_state'];
+        $confirmed = $this->baseOrder->confirmed;
 
-        if ($state) {
+        if ($confirmed) {
+            return 'Confirmed';
+        } else if ($state) {
             switch ($state) {
                 case 1:
                     return 'Invalid';
