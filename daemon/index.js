@@ -16,9 +16,10 @@ require('dotenv').config();
  *******************/
 
 const HTTP_PORT = 8888;
-const LOGS_PATH = __dirname + '/logs/logs' + Date.now() + '.log';
-const STDOUT_PATH = __dirname + '/logs/stdout' + Date.now() + '.log';
-const STDERR_PATH = __dirname + '/logs/errout' + Date.now() + '.log';
+const DATE_NOW = Date.now();
+const LOGS_PATH = __dirname + '/logs/logs' + DATE_NOW + '.log';
+const STDOUT_PATH = __dirname + '/logs/stdout' + DATE_NOW + '.log';
+const STDERR_PATH = __dirname + '/logs/errout' + DATE_NOW + '.log';
 
 /*******************
  *    VARIABLES    *
@@ -70,7 +71,7 @@ manager.on('pollData', function(pollData) {
 /*********************
  *    STATIC CODE    *
  *********************/
-/*
+
  var log_file = fs.createWriteStream(LOGS_PATH, {flags : 'w'});
  var log_stdout = process.stdout;
 
@@ -88,7 +89,7 @@ manager.on('pollData', function(pollData) {
  process.on('uncaughtException', function(err) {
  console.error((err && err.stack) ? err.stack : err);
  });
- */
+ 
 /*******************
  *    FUNCTIONS    *
  *******************/
