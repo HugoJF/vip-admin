@@ -18,8 +18,8 @@ class CreateConfirmationTable extends Migration
 
             $table->string('public_id');
 
-            $table->date('start_period');
-            $table->date('end_period');
+            $table->dateTime('start_period');
+            $table->dateTime('end_period');
 
             $table->integer('order_id')->unsigned();
             $table->foreign('order_id')->references('id')->on('orders');
