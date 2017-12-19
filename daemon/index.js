@@ -5,7 +5,7 @@ var util = require('util');
 var app = express();
 var rcon      = require('rcon');
 var bodyParser     =        require("body-parser");
-require('dotenv').config();
+require('dotenv').config({path: __dirname + '/.env'});
 
 var SteamUser = require('steam-user');
 var TradeOfferManager = require('steam-tradeoffer-manager');
