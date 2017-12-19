@@ -43,7 +43,7 @@
 //
 ////////////////////////////////
 
-"STEAM_1:1:107619130"		"99:z" // Teaguenho			| Forevis
+// "STEAM_1:1:107619130"		"99:z" // Teaguenho			| Forevis
 "STEAM_1:1:36509127"		"99:z" // Eu				| Forevis
 
 "STEAM_1:1:64297652"		"50:a" // Vitorlk74			| Sub
