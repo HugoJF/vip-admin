@@ -45,6 +45,8 @@ process.on('uncaughtException', function(err) {
 });
  
 
+console.log(process);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
