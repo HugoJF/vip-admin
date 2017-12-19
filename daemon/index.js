@@ -48,8 +48,6 @@ process.on('uncaughtException', function(err) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-console.log(process.env);
-
 /*******************
  *    VARIABLES    *
  *******************/
