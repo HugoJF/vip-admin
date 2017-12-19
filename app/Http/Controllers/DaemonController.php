@@ -26,6 +26,13 @@ class DaemonController extends Controller
         }
     }
 
+    public static function consoleLog($message)
+    {
+        $result = Curl::to(env('DAEMON_ADDRESS') . '/consoleLog?message=' . $message)->get();
+
+        return $result;
+    }
+
     public static function isLoggedIn()
     {
         $status = DaemonController::status();
@@ -34,6 +41,11 @@ class DaemonController extends Controller
         } else {
             return false;
         }
+    }
+
+    public static function updateSourceMod()
+    {
+        $result = Curl::to(env('DAEMON_ADDRESS') . '/csgoServerUpdate')->get();
     }
 
     public static function getInventory($steamid)

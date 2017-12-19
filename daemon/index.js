@@ -104,7 +104,7 @@ function getFullURL(req) {
 }
 
 function createConnection(ip, port, rcon_password) {
-    var connection = new Rcon(ip, port, rcon_password);
+    var connection = new rcon(ip, port, rcon_password);
 
 
     (function (ip, port, rcon_password){
@@ -118,10 +118,12 @@ function createConnection(ip, port, rcon_password) {
             console.log("RCON socket closed!");
 
         }).on('error', function(err) {
-            console.log("ERROR: " + err);
+            console.log("ERROR: " + err + 'IP: ' + process.env.RCON_IP + ', PORT=' + process.env.RCON_PORT + ', PASS=' + process.env.RCON_PASSWORD);
             console.log('Trying to reopen RCON connection to server');
 
-            connection.connect();
+            setTimeout(() => {
+                connection.connect()
+            }, 500);
         });
     })(ip, port, rcon_password);
 
@@ -167,36 +169,49 @@ app.get('/inventory', (req, res) => {
     });
 });
 
-app.get('csgoServerUpdate', (req, res) => {
+app.get('/consoleLog', (req, res) => {
+    console.log(req.query.message);
+    res.send('Logged');
+});
+
+app.get('/csgoServerUpdate', (req, res) => {
     setTimeout(() => {
         rconConnection.send('say Server update 10 seconds');
-    }, 1);
+    }, 1000);
     setTimeout(() => {
         rconConnection.send('say Server update 5 seconds');
-    }, 6);
+    }, 6000);
     setTimeout(() => {
         rconConnection.send('say Server update 3 seconds');
-    }, 8);
+    }, 8000);
     setTimeout(() => {
         rconConnection.send('say Server update 2 seconds');
-    }, 9);
+    }, 9000);
     setTimeout(() => {
         rconConnection.send('say Server update 1 seconds');
-    }, 10);
+    }, 10000);
     setTimeout(() => {
+        console.log('Sending reload Admins');
         rconConnection.send('sm_reloadadmins');
-    }, 11);
+    }, 11000);
     setTimeout(() => {
-        rconConnection.send('sm plugins reload 09');
-    }, 12);
+        console.log('Sending reload TogsClanTags')
+        rconConnection.send('sm plugins reload togsclantags');
+    }, 12000);
     setTimeout(() => {
-        rconConnection.send('sm plugins reload 15');
-    }, 13);
+        console.log('Sending reload CCC');
+        rconConnection.send('sm_reloadccc');
+    }, 13000);
     setTimeout(() => {
         rconConnection.send('say Server update ended.');
-    }, 14);
+    }, 14000);
 
     res.send('Server update queued');
+});
+
+app.get('/rcon', (req, res) => {
+    rconConnection.send('say sup');
+    res.send('supped');
 });
 
 app.get('/status', (req, res) => {

@@ -33,6 +33,10 @@ Route::get('online', function () {
     }
 });
 
+Route::get('event', function () {
+    event(new \App\Events\ConfirmationGenerated(\App\Confirmation::first()));
+});
+
 Route::get('logged', function () {
     if(\App\Http\Controllers\DaemonController::isLoggedIn()) {
         return 'Logged on Steam Servers';
