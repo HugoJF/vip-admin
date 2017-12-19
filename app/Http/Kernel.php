@@ -60,7 +60,8 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'daemon.online' => \App\Http\Middleware\CheckDaemonLogged::class,
-        'daemon.logged' => \App\Http\Middleware\CheckDaemonOnline::class,
+        'daemon.online' => \App\Http\Middleware\CheckDaemonOnline::class,
+        'daemon.logged' => \App\Http\Middleware\CheckDaemonLogged::class,
+        'tradelink' => \App\Http\Middleware\CheckTradeLinkIsSet::class,
     ];
 }

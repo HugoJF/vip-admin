@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\DaemonController;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
-class CheckDaemonLogged
+class CheckTradeLinkIsSet
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,10 @@ class CheckDaemonLogged
      */
     public function handle($request, Closure $next)
     {
-        if(DaemonController::isLoggedIn() !== true) {
-            flash()->error('Our daemon server is not logged to Steam servers.');
-            return redirect('/');
+        $user = Auth::user();
+        if(!$user->tradelink || $user->tradelink == '') {
+            flash()->error('You must give us your trade link to continue!');
+            return redirect('/settings');
         }
 
         return $next($request);

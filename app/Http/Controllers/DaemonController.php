@@ -9,6 +9,20 @@ use App\OPSkinsCache;
 
 class DaemonController extends Controller
 {
+    public function loginPost(Request $request)
+    {
+        $code = $request->input('code');
+
+        $result = Curl::to(env('DAEMON_ADDRESS') . '/login?code=' . $code)->get();
+
+        return redirect()->route('home');
+    }
+
+    public function login()
+    {
+        return view('daemon_login');
+    }
+
     public static function status()
     {
         $result = Curl::to(env('DAEMON_ADDRESS') . '/status')->asJson()->get();
@@ -69,15 +83,19 @@ class DaemonController extends Controller
     public static function sendTradeOffer($tradelink, $encoded_items)
     {
         $data = [
-            'tradelink' => urlencode($tradelink),
+            'tradelink' => $tradelink,
             'encoded_items' => $encoded_items
         ];
 
         $encoded_data = json_encode($data);
 
-        $link = env('DAEMON_ADDRESS') . '/sendTradeOffer?data=' . $encoded_data;
+        // $link = env('DAEMON_ADDRESS') . '/sendTradeOffer?data=' . $encoded_data;
+        $link = env('DAEMON_ADDRESS') . '/sendTradeOffer';
 
-        $result = Curl::to($link)->asJson()->get();
+        // $result = Curl::to($link)->asJson()->get();
+        $result = Curl::to($link)->withData([
+            'items' => $encoded_data,
+        ])->asJson()->post();
 
         return $result;
     }
@@ -130,7 +148,7 @@ class DaemonController extends Controller
         return $result;
     }
 
-    public static function getItemsFromAssetId($item_list, $inventory = null)
+    public static function fillItemArray($item_list, $inventory = null)
     {
         if ($inventory === null) {
             $inventory = DaemonController::getInventoryFromAuthedUser();

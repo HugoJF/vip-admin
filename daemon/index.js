@@ -4,6 +4,7 @@ var express = require('express');
 var util = require('util');
 var app = express();
 var rcon      = require('rcon');
+var bodyParser     =        require("body-parser");
 
 var SteamUser = require('steam-user');
 var TradeOfferManager = require('steam-tradeoffer-manager');
@@ -11,6 +12,8 @@ var SteamCommunity = require('steamcommunity');
 var SteamID = SteamCommunity.SteamID;
 
 require('dotenv').config();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /*******************
  *    CONSTANTS    *
@@ -242,14 +245,15 @@ app.get('/getTradeOffer', (req, res) => {
     });
 });
 
-app.get('/sendTradeOffer', (req, res) => {
+app.post('/sendTradeOffer', (req, res) => {
 
-    var encoded_data = req.query.data;
+    // var encoded_data = req.query.data;
+    var encoded_data = req.body.items;
 
     var data = JSON.parse(encoded_data);
 
     var itemsParsed = JSON.parse(data.encoded_items);
-    var offer = manager.createOffer(decodeURI(decodeURI(data.tradelink)));
+    var offer = manager.createOffer(data.tradelink);
 
     for (var i = 0; i < itemsParsed.length; i++) {
         var addedItem = offer.addTheirItem({

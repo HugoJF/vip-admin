@@ -14,6 +14,8 @@ class OPSkinsController extends Controller
 
         $res = "";
 
+        dd($inventory->response);
+
         foreach($inventory->response as $key=>$value) {
             $name = $key;
             $meanSum = 0;

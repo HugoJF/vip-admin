@@ -18,7 +18,9 @@ class ConfirmationsController extends Controller
             'user_id' => Auth::id()
         ])->get()->first();
 
-        if (!$order) return redirect()->route('home');
+        if (!$order) {
+            return redirect()->route('home');
+        }
 
         //check if confirmation exists first
         // check if order is locked

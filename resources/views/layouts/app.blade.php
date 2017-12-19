@@ -67,10 +67,17 @@
             <ul class="nav nav-sidebar">
                 <li {{ Route::is('orders') ? 'class=active' : ''}}><a href="{{ route('orders') }}">Orders</a></li>
             </ul>
+            @if(\App\Http\Controllers\DaemonController::isOnline() && !\App\Http\Controllers\DaemonController::isLoggedIn())
+                <ul class="nav nav-sidebar">
+                    <li {{ Route::is('daemon-login') ? 'class=active' : ''}}><a href="{{ route('daemon-login') }}">Daemon Login</a></li>
+                </ul>
+            @endif
         </div>
 
-        @yield('content');
-
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            @include('flash::message')
+            @yield('content')
+        </div>
     </div>
 </div>
 

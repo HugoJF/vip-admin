@@ -17,6 +17,7 @@ class CheckDaemonOnline
     public function handle($request, Closure $next)
     {
         if(DaemonController::isOnline() !== true) {
+            flash()->error('Our daemon server is offline, Steam servers are unreachable!');
             return redirect('/');
         }
 

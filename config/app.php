@@ -180,6 +180,8 @@ return [
         Ixudra\Curl\CurlServiceProvider::class,
         Invisnik\LaravelSteamAuth\SteamServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
     ],
 
@@ -233,9 +235,15 @@ return [
         'Curl' => Ixudra\Curl\Facades\Curl::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
 
     ],
 
-    'public_id_size' => 25
+    'public_id_size' => 25,
+
+    // Make sure it has a value
+    'max_order_price' => 5200022,
+    'max_order_duration' => 60,
+    'max_order_date' => '30/12/2017'
 
 ];
