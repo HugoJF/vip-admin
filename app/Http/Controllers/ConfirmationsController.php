@@ -38,7 +38,7 @@ class ConfirmationsController extends Controller
             $order->save();
 
 
-            event(new ConfirmationGenerated($confirmation);
+            event(new ConfirmationGenerated($confirmation));
 
             return redirect()->route('view-confirmation', $confirmation->public_id);
         } else {
