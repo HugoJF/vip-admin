@@ -11,6 +11,16 @@ var TradeOfferManager = require('steam-tradeoffer-manager');
 var SteamCommunity = require('steamcommunity');
 var SteamID = SteamCommunity.SteamID;
 
+/*******************
+ *    CONSTANTS    *
+ *******************/
+
+const HTTP_PORT = 8888;
+const DATE_NOW = Date.now();
+const LOGS_PATH = __dirname + '/logs/logs' + DATE_NOW + '.log';
+const STDOUT_PATH = __dirname + '/logs/stdout' + DATE_NOW + '.log';
+const STDERR_PATH = __dirname + '/logs/errout' + DATE_NOW + '.log';
+
 /*********************
  *    STATIC CODE    *
  *********************/
@@ -39,16 +49,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 console.log(process.env);
-
-/*******************
- *    CONSTANTS    *
- *******************/
-
-const HTTP_PORT = 8888;
-const DATE_NOW = Date.now();
-const LOGS_PATH = __dirname + '/logs/logs' + DATE_NOW + '.log';
-const STDOUT_PATH = __dirname + '/logs/stdout' + DATE_NOW + '.log';
-const STDERR_PATH = __dirname + '/logs/errout' + DATE_NOW + '.log';
 
 /*******************
  *    VARIABLES    *
