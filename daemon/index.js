@@ -50,6 +50,7 @@ app.use(bodyParser.json());
 
 console.log(process.env);
 console.log('dotnev path: ' + __dirname + '/');
+console.log(fs.readFileSync(__dirname + '/.env'));
 
 /*******************
  *    VARIABLES    *
