@@ -41,6 +41,10 @@ Route::get('logged', function () {
     }
 });
 
+Route::get('ftp', function () {
+
+    Storage::put('avatars.ini', 'sdsdsdsdsds');
+});
 
 Route::get('create-confirmation/{public_id}', 'ConfirmationsController@createConfirmation')->middleware(['auth', 'daemon'])->name('create-confirmation');
 Route::get('view-confirmation/{public_id}', 'ConfirmationsController@viewConfirmation')->middleware(['auth'])->name('view-confirmation');

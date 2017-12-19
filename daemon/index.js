@@ -3,6 +3,7 @@ var fs = require('fs');
 var express = require('express');
 var util = require('util');
 var app = express();
+var rcon      = require('rcon');
 
 var SteamUser = require('steam-user');
 var TradeOfferManager = require('steam-tradeoffer-manager');
@@ -27,13 +28,15 @@ const STDERR_PATH = __dirname + '/logs/errout' + DATE_NOW + '.log';
 
 var logged = false;
 
+var rconConnection;
+
 var client = new SteamUser();
+var community = new SteamCommunity();
 var manager = new TradeOfferManager({
     'steam': client,
     'domain': 'localhost',
     'language': 'en'
 });
-var community = new SteamCommunity();
 
 if (fs.existsSync('polldata.json')) {
     manager.pollData = JSON.parse(fs.readFileSync('polldata.json'));
@@ -72,23 +75,23 @@ manager.on('pollData', function(pollData) {
  *    STATIC CODE    *
  *********************/
 /*
- var log_file = fs.createWriteStream(LOGS_PATH, {flags : 'w'});
- var log_stdout = process.stdout;
+var log_file = fs.createWriteStream(LOGS_PATH, {flags : 'w'});
+var log_stdout = process.stdout;
 
- var out_file = fs.createWriteStream(STDOUT_PATH);
- var err_file = fs.createWriteStream(STDERR_PATH);
+var out_file = fs.createWriteStream(STDOUT_PATH);
+var err_file = fs.createWriteStream(STDERR_PATH);
 
- process.stdout.write = out_file.write.bind(out_file);
- process.stderr.write = err_file.write.bind(err_file);
+process.stdout.write = out_file.write.bind(out_file);
+process.stderr.write = err_file.write.bind(err_file);
 
- console.log = function(d) { //
- log_file.write(util.format(d) + '\n');
- log_stdout.write(util.format(d) + '\n');
- };
+console.log = function(d) { //
+    log_file.write(util.format(d) + '\n');
+    log_stdout.write(util.format(d) + '\n');
+};
 
- process.on('uncaughtException', function(err) {
- console.error((err && err.stack) ? err.stack : err);
- });
+process.on('uncaughtException', function(err) {
+    console.error((err && err.stack) ? err.stack : err);
+});
  */
 /*******************
  *    FUNCTIONS    *
@@ -99,6 +102,38 @@ function getFullURL(req) {
 
     return fullUrl;
 }
+
+function createConnection(ip, port, rcon_password) {
+    var connection = new Rcon(ip, port, rcon_password);
+
+
+    (function (ip, port, rcon_password){
+        connection.on('auth', function() {
+            console.log("Authed on server RCON!");
+
+        }).on('response', function(str) {
+            console.log(str);
+
+        }).on('end', function(err) {
+            console.log("Socket " + id + " closed!");
+
+        }).on('error', function(err) {
+            console.log("ERROR: " + err);
+            console.log('Trying to reopen connection to server ' + id);
+
+            connection.connect();
+        });
+    })(ip, port, rcon_password);
+
+    return connection;
+}
+
+function openConnections() {
+    connection = createConnection(servers[index].ip, servers[index].port, servers[index].rcon_password);
+    connection.connect();
+}
+
+connections[i].send('stats');
 
 /***************
  *    PAGES    *
