@@ -11,9 +11,34 @@ var TradeOfferManager = require('steam-tradeoffer-manager');
 var SteamCommunity = require('steamcommunity');
 var SteamID = SteamCommunity.SteamID;
 
+/*********************
+ *    STATIC CODE    *
+ *********************/
+
+var log_file = fs.createWriteStream(LOGS_PATH, {flags : 'w'});
+var log_stdout = process.stdout;
+
+var out_file = fs.createWriteStream(STDOUT_PATH);
+var err_file = fs.createWriteStream(STDERR_PATH);
+
+process.stdout.write = out_file.write.bind(out_file);
+process.stderr.write = err_file.write.bind(err_file);
+
+console.log = function(d) { //
+    log_file.write(util.format(d) + '\n');
+    log_stdout.write(util.format(d) + '\n');
+};
+
+process.on('uncaughtException', function(err) {
+    console.error((err && err.stack) ? err.stack : err);
+});
+ 
+
 require('dotenv').config({path: __dirname + '/'});
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+console.log(process.env);
 
 /*******************
  *    CONSTANTS    *
@@ -74,28 +99,6 @@ manager.on('pollData', function(pollData) {
 });
 
 
-/*********************
- *    STATIC CODE    *
- *********************/
-
-var log_file = fs.createWriteStream(LOGS_PATH, {flags : 'w'});
-var log_stdout = process.stdout;
-
-var out_file = fs.createWriteStream(STDOUT_PATH);
-var err_file = fs.createWriteStream(STDERR_PATH);
-
-process.stdout.write = out_file.write.bind(out_file);
-process.stderr.write = err_file.write.bind(err_file);
-
-console.log = function(d) { //
-    log_file.write(util.format(d) + '\n');
-    log_stdout.write(util.format(d) + '\n');
-};
-
-process.on('uncaughtException', function(err) {
-    console.error((err && err.stack) ? err.stack : err);
-});
- 
 /*******************
  *    FUNCTIONS    *
  *******************/
