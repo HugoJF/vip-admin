@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Confirmation;
+use App\Events\ConfirmationGenerated;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -35,6 +36,9 @@ class ConfirmationsController extends Controller
         if ($confirmed) {
             $order->confirmed = true;
             $order->save();
+
+
+            event(new ConfirmationGenerated($confirmation);
 
             return redirect()->route('view-confirmation', $confirmation->public_id);
         } else {
