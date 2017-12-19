@@ -64,8 +64,8 @@ var manager = new TradeOfferManager({
     'language': 'en'
 });
 
-if (fs.existsSync('polldata.json')) {
-    manager.pollData = JSON.parse(fs.readFileSync('polldata.json'));
+if (fs.existsSync(__dirname + '/polldata.json')) {
+    manager.pollData = JSON.parse(fs.readFileSync(__dirname + '/polldata.json'));
 }
 
 client.on('loggedOn', function(det) {
