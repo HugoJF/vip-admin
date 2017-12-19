@@ -44,13 +44,11 @@ process.on('uncaughtException', function(err) {
 });
  
 
-require('dotenv').config({path: '/home/runcloud/webapps/vip-admin/daemon'});
+require('dotenv').config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 console.log(process.env);
-console.log('dotnev path: ' + __dirname + '/');
-console.log(fs.readFileSync(__dirname + '/.env'));
 
 /*******************
  *    VARIABLES    *
