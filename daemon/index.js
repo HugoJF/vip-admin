@@ -109,17 +109,17 @@ function createConnection(ip, port, rcon_password) {
 
     (function (ip, port, rcon_password){
         connection.on('auth', function() {
-            console.log("Authed on server RCON!");
+            console.log("RCON connected!");
 
         }).on('response', function(str) {
-            console.log(str);
+            console.log('Receiving response from RCON');
 
         }).on('end', function(err) {
-            console.log("Socket " + id + " closed!");
+            console.log("RCON socket closed!");
 
         }).on('error', function(err) {
             console.log("ERROR: " + err);
-            console.log('Trying to reopen connection to server ' + id);
+            console.log('Trying to reopen RCON connection to server');
 
             connection.connect();
         });
@@ -129,11 +129,12 @@ function createConnection(ip, port, rcon_password) {
 }
 
 function openConnections() {
-    connection = createConnection(servers[index].ip, servers[index].port, servers[index].rcon_password);
-    connection.connect();
+    console.log('Opening RCON connections')
+    rconConnection = createConnection(process.env.RCON_IP, process.env.RCON_PORT, process.env.RCON_PASSWORD);
+    rconConnection.connect();
 }
 
-connections[i].send('stats');
+openConnections();
 
 /***************
  *    PAGES    *
@@ -164,6 +165,38 @@ app.get('/inventory', (req, res) => {
             res.send(inventory);
         }
     });
+});
+
+app.get('csgoServerUpdate', (req, res) => {
+    setTimeout(() => {
+        rconConnection.send('say Server update 10 seconds');
+    }, 1);
+    setTimeout(() => {
+        rconConnection.send('say Server update 5 seconds');
+    }, 6);
+    setTimeout(() => {
+        rconConnection.send('say Server update 3 seconds');
+    }, 8);
+    setTimeout(() => {
+        rconConnection.send('say Server update 2 seconds');
+    }, 9);
+    setTimeout(() => {
+        rconConnection.send('say Server update 1 seconds');
+    }, 10);
+    setTimeout(() => {
+        rconConnection.send('sm_reloadadmins');
+    }, 11);
+    setTimeout(() => {
+        rconConnection.send('sm plugins reload 09');
+    }, 12);
+    setTimeout(() => {
+        rconConnection.send('sm plugins reload 15');
+    }, 13);
+    setTimeout(() => {
+        rconConnection.send('say Server update ended.');
+    }, 14);
+
+    res.send('Server update queued');
 });
 
 app.get('/status', (req, res) => {
