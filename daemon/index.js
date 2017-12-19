@@ -1,16 +1,19 @@
-var request = require('request');
-var fs = require('fs');
-var express = require('express');
-var util = require('util');
-var app = express();
-var rcon      = require('rcon');
-var bodyParser     =        require("body-parser");
-require('dotenv').config({path: __dirname + '/.env'});
+var request     = require('request');
+var fs          = require('fs');
+var express     = require('express');
+var util        = require('util');
+var app         = express();
+var rcon        = require('rcon');
+var bodyParser  = require("body-parser");
+var dotenv      = require('dotenv').config({path: __dirname + '/.env'});
 
-var SteamUser = require('steam-user');
-var TradeOfferManager = require('steam-tradeoffer-manager');
-var SteamCommunity = require('steamcommunity');
-var SteamID = SteamCommunity.SteamID;
+var SteamUser           = require('steam-user');
+var TradeOfferManager   = require('steam-tradeoffer-manager');
+var SteamCommunity      = require('steamcommunity');
+var SteamID             = SteamCommunity.SteamID;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /*******************
  *    CONSTANTS    *
@@ -23,7 +26,7 @@ const STDOUT_PATH = __dirname + '/logs/stdout' + DATE_NOW + '.log';
 const STDERR_PATH = __dirname + '/logs/errout' + DATE_NOW + '.log';
 
 /*********************
- *    STATIC CODE    *
+ *    WEB LOGGING    *
  *********************/
 
 var log_file = fs.createWriteStream(LOGS_PATH, {flags : 'w'});
@@ -43,12 +46,6 @@ console.log = function(d) { //
 process.on('uncaughtException', function(err) {
     console.error((err && err.stack) ? err.stack : err);
 });
- 
-
-console.log(process);
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 /*******************
  *    VARIABLES    *
@@ -90,8 +87,6 @@ client.on('webSession', function(sessionID, cookies) {
         console.log("Got API key: " + manager.apiKey);
         logged = true;
     });
-
-    // Do something with these cookies if you wish
 });
 
 manager.on('pollData', function(pollData) {
@@ -141,6 +136,10 @@ function openConnections() {
     rconConnection = createConnection(process.env.RCON_IP, process.env.RCON_PORT, process.env.RCON_PASSWORD);
     rconConnection.connect();
 }
+
+/*********************
+ *    STATIC CODE    *
+ *********************/
 
 openConnections();
 
