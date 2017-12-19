@@ -11,7 +11,7 @@ var TradeOfferManager = require('steam-tradeoffer-manager');
 var SteamCommunity = require('steamcommunity');
 var SteamID = SteamCommunity.SteamID;
 
-require('dotenv').config();
+require('dotenv').config({path: __dirname + '/'});
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
