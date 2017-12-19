@@ -5,6 +5,7 @@ var util = require('util');
 var app = express();
 var rcon      = require('rcon');
 var bodyParser     =        require("body-parser");
+require('dotenv').config();
 
 var SteamUser = require('steam-user');
 var TradeOfferManager = require('steam-tradeoffer-manager');
@@ -44,7 +45,6 @@ process.on('uncaughtException', function(err) {
 });
  
 
-require('dotenv').config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
