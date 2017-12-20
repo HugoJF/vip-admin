@@ -123,6 +123,8 @@ class DaemonController extends Controller
         foreach ($item_list as $item) {
             $cache = OPSkinsCache::where('name', $item->market_name)->get()->first();
 
+            if(!$cache) continue;
+
             $totalPrice += $cache->price;
         }
 

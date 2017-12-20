@@ -70,6 +70,7 @@
 
 // VIPS MERCADO PAGO
 "STEAM_0:0:234743042"		"50:a" // Infel1z			| Glock-18 | Water Elemental (Field-Tested)
+"STEAM_0:0:66095696"		"50:a" // Analise de Variancia | Chroma Case 3 Key
 
 // VIP ADMIN GENERATED
 @foreach($list as $item)
