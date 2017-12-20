@@ -58,7 +58,7 @@ class SteamOrderController extends Controller
         $full_item_list = DaemonController::fillItemArray($items_fix, $inventory);
 
         // Computes the value of the selected items
-        $totalPrice = DaemonController::calculateTotalPrice($items_fix, $inventory);
+        $totalPrice = DaemonController::calculateTotalPrice($items_fix);
 
         // Check if order is above maximum price
         if ($totalPrice > config('app.max_order_price', 5000)) {
@@ -128,7 +128,7 @@ class SteamOrderController extends Controller
         $full_item_list = json_decode($steamOrder->encoded_items);
 
         // Calculates total price of order and fills list of items in order
-        $totalPrice = DaemonController::calculateTotalPrice($full_item_list, $inventory);
+        $totalPrice = DaemonController::calculateTotalPrice($full_item_list);
 
         // Computes the amount of days the order will result
         $days = DaemonController::calculateOfferDuration($totalPrice);

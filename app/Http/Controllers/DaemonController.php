@@ -116,21 +116,14 @@ class DaemonController extends Controller
         return $status['online'];
     }
 
-    public static function calculateTotalPrice($item_list, $inventory = null)
+    public static function calculateTotalPrice($item_list)
     {
-        if ($inventory === null) {
-            $inventory = DaemonController::getInventoryFromAuthedUser();
-        }
         $totalPrice = 0;
 
         foreach ($item_list as $item) {
-            foreach ($inventory as $inv) {
-                if ($inv->assetid == $item->assetid) {
-                    $cache = OPSkinsCache::where('name', $inv->market_name)->get()->first();
+            $cache = OPSkinsCache::where('name', $item->market_name)->get()->first();
 
-                    $totalPrice += $cache->price;
-                }
-            }
+            $totalPrice += $cache->price;
         }
 
         return $totalPrice;
