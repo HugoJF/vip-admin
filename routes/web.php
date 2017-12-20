@@ -15,56 +15,41 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware('auth')->name('home');
 
+
 Route::get('login', 'AuthController@login')->name('login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
+
 Route::get('dashboard', function() {
-   return 'Dashboard';
+    return redirect()->route('home');
 })->name('dashboard');
 
-Route::get('debug-form', 'SteamOrderController@debugForm');
+
+Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->middleware(['auth', 'daemon']);
+
+// this should be debug only
+Route::get('admins_simple', 'ConfirmationsController@generateAdminsSimple')->middleware(['daemon'])->name('admins-simple');
+
+// Should be removed, its now a command
+Route::get('refresh-opskins-cache', 'OPSkinsController@refreshOPSkinsCache');
+
+// Should be updated to a nicer version
 Route::get('orders', 'OrdersController@view')->middleware('auth')->name('orders');
 
-
-Route::get('online', function () {
-    if(\App\Http\Controllers\DaemonController::isOnline()) {
-        return 'Online and running...';
-    } else {
-        return 'Daemon is offline or non-responsive.';
-    }
-});
-
-Route::get('event', function () {
-    event(new \App\Events\ConfirmationGenerated(\App\Confirmation::first()));
-});
-
-Route::get('logged', function () {
-    if(\App\Http\Controllers\DaemonController::isLoggedIn()) {
-        return 'Logged on Steam Servers';
-    } else {
-        return 'Waiting for authentication code...';
-    }
-});
-
-Route::get('ftp', function () {
-
-    Storage::put('avatars.ini', 'sdsdsdsdsds');
-});
 
 Route::get('daemon-login', 'DaemonController@login')->middleware('daemon.online')->name('daemon-login');
 Route::post('daemon-login', 'DaemonController@loginPost')->middleware('daemon.online')->name('daemon-login-post');
 
+
 Route::get('create-confirmation/{public_id}', 'ConfirmationsController@createConfirmation')->middleware(['auth', 'daemon'])->name('create-confirmation');
-Route::get('view-confirmation/{public_id}', 'ConfirmationsController@viewConfirmation')->middleware(['auth'])->name('view-confirmation');
-Route::get('admins_simple', 'ConfirmationsController@generateAdminsSimple')->middleware(['daemon'])->name('admins-simple');
+
+
+Route::get('view-steam-offer/{public_id}', 'SteamOrderController@viewSteamOffer')->middleware(['auth', 'daemon'])->name('view-steam-offer');
+Route::get('send-trade-offer/{public_id}', 'SteamOrderController@sendTradeOffer')->middleware(['auth', 'daemon'])->name('send-trade-offer');
+
 
 Route::get('inventory', 'SteamOrderController@inventoryView')->middleware(['auth','tradelink', 'daemon'])->name('inventory');
 
-Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->middleware(['auth', 'daemon']);
-Route::get('view-steam-offer/{public_id}', 'SteamOrderController@viewSteamOffer')->middleware(['auth', 'daemon'])->name('view-steam-offer');
-
-Route::get('send-trade-offer/{public_id}', 'SteamOrderController@sendTradeOffer')->middleware(['auth', 'daemon'])->name('send-trade-offer');
-
-Route::get('refresh-opskins-cache', 'OPSkinsController@refreshOPSkinsCache');
 
 Route::get('settings', 'UserController@settings')->middleware('auth')->name('settings');
 Route::post('settings', 'UserController@settingsUpdate')->middleware('auth')->name('settings.update');

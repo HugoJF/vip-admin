@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\RefreshOPSkinsCache::class,
         Commands\RefreshActiveSteamOrders::class,
+        Commands\FakeAcceptSteamOrders::class,
     ];
 
     /**

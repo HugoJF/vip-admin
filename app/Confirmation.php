@@ -13,8 +13,8 @@ class Confirmation extends Model
         'updated_at'
     ];
 
-    public function order()
+    public function baseOrder()
     {
-        return $this->belongsTo('App\Order');
+        return $this->belongsTo('App\Order', 'order_id');
     }
 }

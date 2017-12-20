@@ -39,12 +39,12 @@ class UpdateServerAdminList
         $confirmations = Confirmation::where([
             ['start_period', '<', $now],
             ['end_period', '>', $now]
-        ])->with('order.user')->get();
+        ])->with('baseOrder.user')->get();
 
         $steamid = [];
 
         foreach ($confirmations as $confirmation) {
-            $steam2 = DaemonController::getSteam2ID($confirmation->order->user->steamid);
+            $steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
             $steamid[] = [
                 'id' => $steam2,
                 'confirmation' => $confirmation,
@@ -55,8 +55,11 @@ class UpdateServerAdminList
             'list' => $steamid
         ]);
 
-        Storage::put('admins_simple.ini', $view);
+        // Storage::put('admins_simple.ini', $view);
 
-        DaemonController::updateSourceMod();
+        // DaemonController::updateSourceMod();
+
+        $confirmationGenerated->confirmation->baseOrder->server_uploaded = true;
+        $confirmationGenerated->confirmation->baseOrder->save();
     }
 }

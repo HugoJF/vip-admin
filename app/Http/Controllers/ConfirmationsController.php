@@ -29,28 +29,24 @@ class ConfirmationsController extends Controller
         $confirmation = Confirmation::make();
 
         $confirmation->public_id = $rand = substr(md5(microtime()), rand(0, 26), config('app.public_id_size'));;
-        $confirmation->order()->associate($order);
+        $confirmation->baseOrder()->associate($order);
         $confirmation->start_period = Carbon::now();
         $confirmation->end_period = Carbon::now()->addDays($order->duration);
 
         $confirmed = $confirmation->save();
 
         if ($confirmed) {
-            $order->confirmed = true;
-            $order->save();
-
-
             event(new ConfirmationGenerated($confirmation));
-
-            return redirect()->route('view-confirmation', $confirmation->public_id);
         } else {
-            return redirect()->route('view-steam-offer', $public_id);
+            flash()->error('Error saving confirmation to database!');
         }
+
+        return redirect()->route('view-steam-offer', $public_id);
     }
 
     public function viewConfirmation($public_id)
     {
-        $confirmation = Confirmation::with('order')->where([
+        $confirmation = Confirmation::with('baseOrder')->where([
             'public_id' => $public_id
         ])->get()->first();
 
@@ -58,7 +54,7 @@ class ConfirmationsController extends Controller
 
         return view('confirmation', [
             'confirmation' => $confirmation,
-            'order' => $confirmation->order,
+            'order' => $confirmation->baseOrder,
         ]);
     }
 

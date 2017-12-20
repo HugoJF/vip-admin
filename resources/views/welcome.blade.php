@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1> YO {{ Auth::user()->username }}</h1>
+    <div class="jumbotron">
+        <h1> Welcome, {{ Auth::user()->name ? Auth::user()->name : Auth::user()->username }}</h1>
+    </div>
 @endsection

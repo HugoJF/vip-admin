@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +11,7 @@
 
     <title>VIP-Admin</title>
 
+
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
@@ -21,8 +21,11 @@
     <!-- Custom styles for this template -->
     <link href="/css/dashboard.css" rel="stylesheet">
 
+    @yield('head')
+
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+    <script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="/js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -43,10 +46,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ route('home') }}">CS:GO Admin Panel Alpha</a>
+            <a class="navbar-brand" href="{{ route('home') }}">VIP Admin Dashboard</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                @if(\App\Http\Controllers\DaemonController::isOnline())
+                    <li><a><span class="label label-success">Daemon is online</span></a></li>
+                @else
+                    <li><a><span class="label label-danger">Daemon is offline</span></a></li>
+                @endif
+                @if(\App\Http\Controllers\DaemonController::isLoggedIn())
+                        <li><a><span class="label label-success">Daemon is connected to Steam</span></a></li>
+                @else
+                        <li><a><span class="label label-danger">Daemon is disconnected from Steam servers</span></a></li>
+                @endif
                 <li><a href="{{ route('settings') }}">Settings</a></li>
                 <li><a href="{{ route('logout') }}">Logout</a></li>
             </ul>
@@ -65,7 +78,9 @@
                 <li {{ Route::is('inventory') ? 'class=active' : ''}}><a href="{{ route('inventory') }}">Inventory</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li {{ Route::is('orders') ? 'class=active' : ''}}><a href="{{ route('orders') }}">Orders</a></li>
+                <li {{ Route::is('orders') ? 'class=active' : ''}}><a href="{{ route('orders') }}">Orders
+                        <span class="badge">{{ Auth::user()->orders()->count() }}</span></a>
+                </li>
             </ul>
             @if(\App\Http\Controllers\DaemonController::isOnline() && !\App\Http\Controllers\DaemonController::isLoggedIn())
                 <ul class="nav nav-sidebar">

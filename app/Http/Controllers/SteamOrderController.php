@@ -58,7 +58,7 @@ class SteamOrderController extends Controller
         $full_item_list = DaemonController::fillItemArray($items_fix, $inventory);
 
         // Computes the value of the selected items
-        $totalPrice = DaemonController::calculateTotalPrice($items_fix);
+        $totalPrice = DaemonController::calculateTotalPrice($full_item_list);
 
         // Check if order is above maximum price
         if ($totalPrice > config('app.max_order_price', 5000)) {
@@ -159,10 +159,12 @@ class SteamOrderController extends Controller
             return redirect()->route('view-steam-offer', $public_id);
         }
 
-        // Call SendTradeOffer
-        $result = DaemonController::sendTradeOffer(Auth::user()->tradelink, $steamOrder->encoded_items);
+        $message = 'Order #' . $order->public_id;
 
-        if(!property_exists($result, 'id') || !property_exists($result, 'state')) {
+        // Call SendTradeOffer
+        $result = DaemonController::sendTradeOffer(Auth::user()->tradelink, $message, $steamOrder->encoded_items);
+
+        if($result == null || !property_exists($result, 'id') || !property_exists($result, 'state')) {
             flash()->error('Error trying to send a Steam Trade Offer.');
             return redirect()->route('view-steam-offer', $public_id);
         }
@@ -170,6 +172,7 @@ class SteamOrderController extends Controller
         // Persist trade offer information to order
         $steamOrder->tradeoffer_id = $result->id;
         $steamOrder->tradeoffer_state = $result->state;
+        $steamOrder->tradeoffer_sent = Carbon::now();
         $steamOrder->save();
 
         // Redirect to view

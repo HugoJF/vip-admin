@@ -247,6 +247,26 @@ app.get('/getTradeOffer', (req, res) => {
     });
 });
 
+app.get('/cancelTradeOffer', (req, res) => {
+    var id = req.query.tradeid;
+
+    manager.getOffer(id, (err, offer) => {
+        if(!err) {
+            offer.cancel((err) => {
+                if(!err) {
+                    res.send('true');
+                } else {
+                    console.error(err);
+                    res.send('false');
+                }
+            })
+        } else {
+            console.error(err);
+            res.send('false');
+        }
+    });
+});
+
 app.post('/sendTradeOffer', (req, res) => {
 
     // var encoded_data = req.query.data;
@@ -256,6 +276,8 @@ app.post('/sendTradeOffer', (req, res) => {
 
     var itemsParsed = JSON.parse(data.encoded_items);
     var offer = manager.createOffer(data.tradelink);
+
+    offer.setMessage(data.message);
 
     for (var i = 0; i < itemsParsed.length; i++) {
         var addedItem = offer.addTheirItem({

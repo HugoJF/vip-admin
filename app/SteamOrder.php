@@ -53,10 +53,41 @@ class SteamOrder extends Model
         return $this->attributes['tradeoffer_id'] == null;
     }
 
+    public function currentStep()
+    {
+        $step = 1;
+
+        if ($this->tradeoffer_id) {
+            $step++;
+        } else {
+            return $step;
+        }
+
+        if ($this->tradeoffer_state == 3) {
+            $step++;
+        } else {
+            return $step;
+        }
+
+        if ($this->baseOrder && $this->baseOrder->confirmation()->first()) {
+            $step++;
+        } else {
+            return $step;
+        }
+
+        if ($this->baseOrder->server_uploaded) {
+            $step++;
+        } else {
+            return $step;
+        }
+
+        return $step;
+    }
+
     public function stateText()
     {
         $state = $this->attributes['tradeoffer_state'];
-        $confirmed = $this->baseOrder->confirmed;
+        $confirmed = $this->baseOrder->confirmation != null;
 
         if ($confirmed) {
             return 'Confirmed';

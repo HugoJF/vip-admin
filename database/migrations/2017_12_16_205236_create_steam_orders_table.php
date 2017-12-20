@@ -18,6 +18,8 @@ class CreateSteamOrdersTable extends Migration
 
             $table->text('encoded_items');
 
+            $table->dateTime('tradeoffer_sent')->nullable();
+
             $table->bigInteger('tradeoffer_id')->unsigned()->nullable();
             $table->integer('tradeoffer_state')->unsigned()->nullable();
 

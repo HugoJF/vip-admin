@@ -80,11 +80,19 @@ class DaemonController extends Controller
         }
     }
 
-    public static function sendTradeOffer($tradelink, $encoded_items)
+    public static function cancelTradeOffer($tradeid)
+    {
+        $result = Curl::to(env('DAEMON_ADDRESS') . '/cancelTradeOffer?tradeid=' . $tradeid)->asJson()->get();
+
+        return $result;
+    }
+
+    public static function sendTradeOffer($tradelink, $message, $encoded_items)
     {
         $data = [
             'tradelink' => $tradelink,
-            'encoded_items' => $encoded_items
+            'encoded_items' => $encoded_items,
+            'message' => $message,
         ];
 
         $encoded_data = json_encode($data);
@@ -123,7 +131,7 @@ class DaemonController extends Controller
         foreach ($item_list as $item) {
             $cache = OPSkinsCache::where('name', $item->market_name)->get()->first();
 
-            if(!$cache) continue;
+            if (!$cache) continue;
 
             $totalPrice += $cache->price;
         }

@@ -18,8 +18,7 @@ class CreateOrdersTable extends Migration
 
             $table->string('public_id');
 
-            $table->boolean('locked')->default(false);
-            $table->boolean('confirmed')->default(false);
+            $table->boolean('server_uploaded')->default(false);
 
             $table->integer('duration')->nullable();
 
