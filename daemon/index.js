@@ -269,7 +269,6 @@ app.post('/sendTradeOffer', (req, res) => {
             console.log('Added item sucessfully [' + (i + 1) + '/' + itemsParsed.length + ']: ' + itemsParsed[i].assetid);
         } else {
             console.log('Failed to add item: ' + itemsParsed[i].assetid);
-            res.send('Error adding item');
             return;
         }
     }
@@ -282,6 +281,7 @@ app.post('/sendTradeOffer', (req, res) => {
             res.send(offer);
         } else {
             console.log('Error sending Trade Offer');
+            console.error(err);
             res.send(err);
         }
     });
