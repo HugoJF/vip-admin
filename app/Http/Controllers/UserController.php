@@ -24,4 +24,9 @@ class UserController extends Controller
 
         return redirect()->route('settings');
     }
+
+    public function home() 
+    {
+        return view('home');
+    }
 }
