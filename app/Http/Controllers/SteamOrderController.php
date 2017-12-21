@@ -178,16 +178,4 @@ class SteamOrderController extends Controller
         // Redirect to view
         return redirect()->route('view-steam-offer', $public_id);
     }
-
-    public function debugForm(Request $request)
-    {
-        $items = $request->get('items');
-        $items_fix = [];
-
-        foreach ($items as $item) {
-            $items_fix[] = json_decode($item);
-        }
-
-        dd($items_fix);
-    }
 }
