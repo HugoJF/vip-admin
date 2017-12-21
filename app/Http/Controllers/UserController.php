@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -25,7 +25,7 @@ class UserController extends Controller
         return redirect()->route('settings');
     }
 
-    public function home() 
+    public function home()
     {
         return view('home');
     }

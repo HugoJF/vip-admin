@@ -8,7 +8,6 @@ class Order extends Model
 {
     protected $table = 'orders';
 
-
     public function orderable()
     {
         return $this->morphTo();
@@ -28,5 +27,4 @@ class Order extends Model
     {
         return $this->orderable_type == 'App\SteamOrder';
     }
-
 }
