@@ -10,7 +10,7 @@ class UserController extends Controller
     public function settings()
     {
         return view('user_settings', [
-            'user' => Auth::user()
+            'user' => Auth::user(),
         ]);
     }
 
@@ -22,6 +22,6 @@ class UserController extends Controller
 
         $user->save();
 
-        return $this->settings();
+        return redirect()->route('settings');
     }
 }
