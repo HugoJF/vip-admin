@@ -30,16 +30,13 @@ class UpdateServerAdminList
      * @param  ConfirmationGenerated $confirmationGenerated
      * @return void
      */
-    public function handle(ConfirmationGenerated $confirmationGenerated)
+    public function handle()
     {
         DaemonController::consoleLog('Generating_new_admins_simple');
 
         $now = Carbon::now();
 
-        $confirmations = Confirmation::where([
-            ['start_period', '<', $now],
-            ['end_period', '>', $now]
-        ])->with('baseOrder.user')->get();
+        $confirmations = Confirmation::valid()->with('baseOrder.user')->get();
 
         $steamid = [];
 
@@ -49,6 +46,8 @@ class UpdateServerAdminList
                 'id' => $steam2,
                 'confirmation' => $confirmation,
             ];
+            $confirmation->baseOrder->server_uploaded = true;
+            $confirmation->baseOrder->save();
         }
 
         $view = View::make('admins_simple_ini', [
@@ -59,7 +58,5 @@ class UpdateServerAdminList
 
         // DaemonController::updateSourceMod();
 
-        $confirmationGenerated->confirmation->baseOrder->server_uploaded = true;
-        $confirmationGenerated->confirmation->baseOrder->save();
     }
 }

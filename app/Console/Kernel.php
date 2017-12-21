@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\RefreshOPSkinsCache::class,
         Commands\RefreshActiveSteamOrders::class,
         Commands\FakeAcceptSteamOrders::class,
+        Commands\CheckConfirmations::class,
     ];
 
     /**

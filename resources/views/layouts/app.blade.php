@@ -72,7 +72,7 @@
 
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li {{ Route::is('dashboard') ? 'class=active' : ''}}><a href="{{ route('dashboard') }}">Dashboard <span class="sr-only">(current)</span></a></li>
+                <li {{ Route::is('home') ? 'class=active' : ''}}><a href="{{ route('home') }}">Dashboard <span class="sr-only">(current)</span></a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li {{ Route::is('inventory') ? 'class=active' : ''}}><a href="{{ route('inventory') }}">Inventory</a></li>

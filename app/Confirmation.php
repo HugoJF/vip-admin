@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Confirmation extends Model
 {
@@ -17,4 +18,21 @@ class Confirmation extends Model
     {
         return $this->belongsTo('App\Order', 'order_id');
     }
+
+    public function scopeValid($query)
+    {
+        $now = Carbon::now();
+
+        return $query->where([
+            ['start_period', '<', $now],
+            ['end_period', '>', $now]
+        ]);
+    }
+
+    public function isValid() {
+        $now = Carbon::now();
+
+        return $this->start_period < $now && $this->end_period > $now;
+    }
+
 }

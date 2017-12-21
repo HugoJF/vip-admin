@@ -9,6 +9,8 @@ class SteamOrder extends Model
 {
     protected $table = 'steam-orders';
 
+    protected $dates = ['tradeoffer_sent'];
+
     protected $fillable = ['tradeoffer_id', 'tradeoffer_state'];
 
     public function baseOrder()
@@ -31,6 +33,13 @@ class SteamOrder extends Model
         $this->save();
 
         return $offer;
+    }
+
+    public function cancel()
+    {
+        DaemonController::cancelTradeOffer($this->tradeoffer_id);
+        $this->refresh();
+        $this->save();
     }
 
     public function accepted()

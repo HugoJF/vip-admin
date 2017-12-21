@@ -18,7 +18,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\ConfirmationGenerated' => [
             'App\Listeners\UpdateServerAdminList',
-        ]
+        ],
+        'App\Events\ConfirmationExpired' => [
+            'App\Listeners\UpdateServerAdminList',
+        ],
     ];
 
     /**

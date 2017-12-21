@@ -45,7 +45,12 @@ class RefreshActiveSteamOrders extends Command
 
         foreach ($activeSteamOffer as $item) {
             $item->refresh();
-            $this->info('Refreshing order #' . $item->baseOrder->public_id . ' with new state: [' . $item->tradeoffer_state . '] ' . $item->stateText());
+            $this->info('Refreshing order #' . $item->baseOrder->public_id . ' with new state: [' . $item->tradeoffer_state . '] ' . $item->stateText() . ' {' . $item->tradeoffer_sent->diffInMinutes() . '}');
+
+            if($item->tradeoffer_sent->diffInMinutes() > config('app.expiration_time_min')) {
+                $item->cancel();
+                $this->warn('Cancelling order #' . $item->baseOrder->public_id  . ' as it expired!');
+            }
         }
     }
 }
