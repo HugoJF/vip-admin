@@ -62,23 +62,6 @@ class ConfirmationsController extends Controller
         return redirect()->route('view-steam-order', $public_id);
     }
 
-    public function viewConfirmation($public_id)
-    {
-        $confirmation = Confirmation::with('baseOrder')->where([
-            'public_id' => $public_id
-        ])->get()->first();
-
-        if (!$confirmation) {
-            flash()->error('Could not find confirmation with ID #' . $public_id);
-            return redirect()->route('home');
-        }
-
-        return view('confirmation', [
-            'confirmation' => $confirmation,
-            'order' => $confirmation->baseOrder,
-        ]);
-    }
-
     public function generateAdminsSimple()
     {
         $now = Carbon::now();

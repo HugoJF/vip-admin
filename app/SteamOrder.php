@@ -12,7 +12,7 @@ class SteamOrder extends Model
     protected $dates = ['tradeoffer_sent'];
 
     protected $fillable = ['tradeoffer_id', 'tradeoffer_state'];
-
+    
     public function baseOrder()
     {
         return $this->morphOne('App\Order', 'orderable');
@@ -60,7 +60,7 @@ class SteamOrder extends Model
     public function notSent()
     {
         return $this->tradeoffer_id == null;
-    }
+    }''
 
     public function currentStep()
     {
