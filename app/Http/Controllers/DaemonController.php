@@ -9,11 +9,31 @@ use App\OPSkinsCache;
 
 class DaemonController extends Controller
 {
+    public function curl($path, $data = null, $asJson = false, $post = false) {
+        $result = Curl::to(env('DAEMON_ADDRESS') . '/' . $path);
+
+        if ($data) {
+            $result = $result->withData($data);
+        }
+
+        if ($asJson) {
+            $result = $result->asJson();
+        }
+
+        if ($post) {
+            return $result->post();
+        } else {
+            return $result->get();
+        }
+    }
+
     public function loginPost(Request $request)
     {
         $code = $request->input('code');
 
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/login?code=' . $code)->get();
+        curl('login', [
+            'code' => $code,
+        ]);
 
         return redirect()->route('home');
     }
@@ -25,7 +45,7 @@ class DaemonController extends Controller
 
     public static function status()
     {
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/status')->asJson()->get();
+        $result = curl('status', null, true);
 
         return $result;
     }
@@ -33,8 +53,9 @@ class DaemonController extends Controller
     public static function isOnline()
     {
         $status = DaemonController::status();
+
         if ($status && property_exists($status, 'online')) {
-            return DaemonController::status()->online === true;
+            return $status->online === true;
         } else {
             return false;
         }
@@ -42,7 +63,9 @@ class DaemonController extends Controller
 
     public static function consoleLog($message)
     {
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/consoleLog?message=' . $message)->get();
+        $result = curl('consoleLog', [
+            'message' => $message,
+        ]);
 
         return $result;
     }
@@ -50,8 +73,9 @@ class DaemonController extends Controller
     public static function isLoggedIn()
     {
         $status = DaemonController::status();
+
         if ($status && property_exists($status, 'logged')) {
-            return DaemonController::status()->logged === true;
+            return $status->logged === true;
         } else {
             return false;
         }
@@ -59,12 +83,17 @@ class DaemonController extends Controller
 
     public static function updateSourceMod()
     {
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/csgoServerUpdate')->get();
+        $result = curl('csgoServerUpdate');
+
+        return $result;
     }
 
     public static function getInventory($steamid)
     {
-        $inventory = Curl::to(env('DAEMON_ADDRESS') . '/inventory?steamid=' . $steamid)->asJson()->get();
+
+        $inventory = curl('inventory', [
+            'steamid' => $steamid,
+        ], true);
 
         return $inventory;
     }
@@ -73,7 +102,7 @@ class DaemonController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->tradeid != null) {
+        if ($user->tradeid) {
             return DaemonController::getInventory($user->tradeid);
         } else {
             return DaemonController::getInventory($user->steamid);
@@ -82,7 +111,9 @@ class DaemonController extends Controller
 
     public static function cancelTradeOffer($tradeid)
     {
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/cancelTradeOffer?tradeid=' . $tradeid)->asJson()->get();
+        $result = curl('cancelTradeOffer', [
+            'tradeid' => $tradeid,
+        ], true);
 
         return $result;
     }
@@ -95,31 +126,25 @@ class DaemonController extends Controller
             'message' => $message,
         ];
 
-        $encoded_data = json_encode($data);
-
-        // $link = env('DAEMON_ADDRESS') . '/sendTradeOffer?data=' . $encoded_data;
-        $link = env('DAEMON_ADDRESS') . '/sendTradeOffer';
-
-        // $result = Curl::to($link)->asJson()->get();
-        $result = Curl::to($link)->withData([
-            'items' => $encoded_data,
-        ])->asJson()->post();
+        $result = curl('sendTradeOffer', [
+            'items' => json_encode($data),
+        ], true, true);
 
         return $result;
     }
 
     public static function getTradeOffer($tradeofferid)
     {
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/getTradeOffer?offerid=' . $tradeofferid)->asJson()->get();
+        $result = curl('getTradeOffer', [
+            'offerid' => $tradeofferid,
+        ], true);
 
         return $result;
     }
 
     public static function checkDaemon()
     {
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/status');
-
-        $status = json_decode($result);
+        $status = curl('status', null, true);
 
         return $status['online'];
     }
@@ -146,7 +171,9 @@ class DaemonController extends Controller
 
     public static function getSteam2ID($steamid)
     {
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/steam2?steamid=' . $steamid)->get();
+        $result = curl('steam2', [
+            'steamid' => $steamid,
+        ])
 
         return $result;
     }
@@ -156,6 +183,7 @@ class DaemonController extends Controller
         if ($inventory === null) {
             $inventory = DaemonController::getInventoryFromAuthedUser();
         }
+
         $full_item_list = [];
 
         foreach ($item_list as $item) {
