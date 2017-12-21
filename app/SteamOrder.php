@@ -44,12 +44,12 @@ class SteamOrder extends Model
 
     public function accepted()
     {
-        return $this->attributes['tradeoffer_state'] === 3;
+        return $this->tradeoffer_state === 3;
     }
 
     public function active()
     {
-        return $this->attributes['tradeoffer_state'] === 2;
+        return $this->tradeoffer_state === 2;
     }
 
     public function disabled()
@@ -59,7 +59,7 @@ class SteamOrder extends Model
 
     public function notSent()
     {
-        return $this->attributes['tradeoffer_id'] == null;
+        return $this->tradeoffer_id == null;
     }
 
     public function currentStep()

@@ -26,7 +26,7 @@ class Order extends Model
 
     public function isSteamOffer()
     {
-        return $this->attributes['orderable_type'] == 'App\SteamOrder';
+        return $this->orderable_type == 'App\SteamOrder';
     }
 
 }
