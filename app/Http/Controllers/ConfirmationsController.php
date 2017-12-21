@@ -64,15 +64,16 @@ class ConfirmationsController extends Controller
 
     public function generateAdminsSimple()
     {
+        // Caches Carbon::now();
         $now = Carbon::now();
 
-        $confirmations = Confirmation::where([
-            ['start_period', '<', $now],
-            ['end_period', '>', $now]
-        ])->with('order.user')->get();
+        // Get valid confirmations
+        $confirmations = Confirmation::valid()->with('order.user')->get();
 
+        // Array of SteamID2 to Confirmation
         $steamid = [];
 
+        // Parses each valid confirmation and adds to array
         foreach($confirmations as $confirmation) {
             $steam2 = DaemonController::getSteam2ID($confirmation->order->user->steamid);
             $steamid[] = [
@@ -81,6 +82,7 @@ class ConfirmationsController extends Controller
             ];
         }
 
+        // Render admin_simple.ini
         return view('admins_simple', [
             'list' => $steamid
         ]);
