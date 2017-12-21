@@ -1,4 +1,6 @@
+@if($html)
 <pre>
+@endif
 //
 // READ THIS CAREFULLY! SEE BOTTOM FOR EXAMPLES
 //
@@ -78,4 +80,6 @@
 "{{ $item['id'] }}"		"50:a" // #{{ $item['confirmation']->public_id }}
 @endforeach
 
+@if($html)
 </pre>
+@endif

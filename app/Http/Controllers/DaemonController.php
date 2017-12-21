@@ -9,7 +9,7 @@ use App\OPSkinsCache;
 
 class DaemonController extends Controller
 {
-    public function curl($path, $data = null, $asJson = false, $post = false) {
+    public static function curl($path, $data = null, $asJson = false, $post = false) {
         $result = Curl::to(env('DAEMON_ADDRESS') . '/' . $path);
 
         if ($data) {
@@ -31,7 +31,7 @@ class DaemonController extends Controller
     {
         $code = $request->input('code');
 
-        curl('login', [
+        static::curl('login', [
             'code' => $code,
         ]);
 
@@ -45,7 +45,7 @@ class DaemonController extends Controller
 
     public static function status()
     {
-        $result = curl('status', null, true);
+        $result = static::curl('status', null, true);
 
         return $result;
     }
@@ -63,7 +63,7 @@ class DaemonController extends Controller
 
     public static function consoleLog($message)
     {
-        $result = curl('consoleLog', [
+        $result = static::curl('consoleLog', [
             'message' => $message,
         ]);
 
@@ -83,7 +83,7 @@ class DaemonController extends Controller
 
     public static function updateSourceMod()
     {
-        $result = curl('csgoServerUpdate');
+        $result = static::curl('csgoServerUpdate');
 
         return $result;
     }
@@ -91,7 +91,7 @@ class DaemonController extends Controller
     public static function getInventory($steamid)
     {
 
-        $inventory = curl('inventory', [
+        $inventory = static::curl('inventory', [
             'steamid' => $steamid,
         ], true);
 
@@ -111,7 +111,7 @@ class DaemonController extends Controller
 
     public static function cancelTradeOffer($tradeid)
     {
-        $result = curl('cancelTradeOffer', [
+        $result = static::curl('cancelTradeOffer', [
             'tradeid' => $tradeid,
         ], true);
 
@@ -135,7 +135,7 @@ class DaemonController extends Controller
 
     public static function getTradeOffer($tradeofferid)
     {
-        $result = curl('getTradeOffer', [
+        $result = static::curl('getTradeOffer', [
             'offerid' => $tradeofferid,
         ], true);
 
@@ -144,7 +144,7 @@ class DaemonController extends Controller
 
     public static function checkDaemon()
     {
-        $status = curl('status', null, true);
+        $status = static::curl('status', null, true);
 
         return $status['online'];
     }
@@ -171,9 +171,9 @@ class DaemonController extends Controller
 
     public static function getSteam2ID($steamid)
     {
-        $result = curl('steam2', [
+        $result = static::curl('steam2', [
             'steamid' => $steamid,
-        ])
+        ]);
 
         return $result;
     }

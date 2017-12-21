@@ -51,12 +51,14 @@ class UpdateServerAdminList
         }
 
         $view = View::make('admins_simple_ini', [
-            'list' => $steamid
+            'list' => $steamid,
+            'html' => false,
         ]);
+        if (env('UPDATE_SERVER') == 'true') {
+            Storage::put('admins_simple.ini', $view);
 
-        // Storage::put('admins_simple.ini', $view);
-
-        // DaemonController::updateSourceMod();
+            DaemonController::updateSourceMod();
+        }
 
     }
 }

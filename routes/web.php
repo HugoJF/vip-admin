@@ -27,7 +27,7 @@ Route::post('daemon-login', 'DaemonController@loginPost')->middleware('daemon.on
 
 Route::get('view-steam-order/{public_id}', 'SteamOrderController@viewSteamOrder')->middleware(['auth', 'daemon'])->name('view-steam-order');
 Route::get('send-trade-order/{public_id}', 'SteamOrderController@sendTradeOrder')->middleware(['auth', 'daemon'])->name('send-trade-order');
-Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->middleware(['auth', 'daemon']);
+Route::get('create-steam-off    er', 'SteamOrderController@createSteamOffer')->middleware(['auth', 'daemon']);
 Route::get('inventory', 'SteamOrderController@inventoryView')->middleware(['auth','tradelink', 'daemon'])->name('inventory');
 
 

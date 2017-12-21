@@ -84,7 +84,8 @@ class ConfirmationsController extends Controller
 
         // Render admin_simple.ini
         return view('admins_simple', [
-            'list' => $steamid
+            'list' => $steamid,
+            'html' => true,
         ]);
     }
 }

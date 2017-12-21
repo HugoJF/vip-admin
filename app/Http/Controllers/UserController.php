@@ -20,13 +20,19 @@ class UserController extends Controller
 
         $user->fill($request->all());
 
-        $user->save();
+        $saved = $user->save();
+
+        if($saved) {
+            flash()->success('Updated settings successfully.');
+        } else {
+            flash()->error('Error updating settings!');
+        }
 
         return redirect()->route('settings');
     }
 
     public function home() 
     {
-        return view('home');
+        return view('welcome');
     }
 }
