@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\OPSkinsCache;
 use App\Order;
 use App\SteamOrder;
-use Illuminate\Http\Request;
-use Ixudra\Curl\Facades\Curl;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\DaemonController;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SteamOrderController extends Controller
 {
@@ -36,7 +34,7 @@ class SteamOrderController extends Controller
         // Return inventory view
         return view('inventory', [
             'inventory' => $inventory,
-            'prices' => $associativePrices
+            'prices'    => $associativePrices,
         ]);
     }
 
@@ -63,6 +61,7 @@ class SteamOrderController extends Controller
         // Check if order is above maximum price
         if ($totalPrice > config('app.max_order_price', 5000)) {
             flash()->error('Your order is above the maximum allowed price!');
+
             return redirect()->route('inventory');
         }
 
@@ -78,12 +77,14 @@ class SteamOrderController extends Controller
         // Check if order has enough value to be above 1 unit of item
         if ($duration == 0) {
             flash('Current order is below the minimum allowed.');
+
             return redirect()->route('inventory');
         }
 
         // Check if order is above maximum duration
         if ($duration > config('app.max_order_duration', 120) || $duration > $maxDateMaxDuration) {
             flash()->error('Your order is above the maximum allowed duration!');
+
             return redirect()->route('inventory');
         }
 
@@ -95,7 +96,7 @@ class SteamOrderController extends Controller
         $steamOrder->encoded_items = json_encode($full_item_list);
 
         // Fill base order information
-        $order->public_id = $rand = substr(md5(microtime()), 0, config('app.public_id_size'));;
+        $order->public_id = $rand = substr(md5(microtime()), 0, config('app.public_id_size'));
         $order->duration = $duration;
         $order->user()->associate(Auth::user());
 
@@ -118,7 +119,7 @@ class SteamOrderController extends Controller
         // Retrieves the persisted order
         $order = Order::where([
             'public_id' => $public_id,
-            'user_id' => Auth::id()
+            'user_id'   => Auth::id(),
         ])->get()->first();
 
         // Retrieves the associated Steam Order
@@ -136,10 +137,10 @@ class SteamOrderController extends Controller
         // Return Steam Order view
         return view('steam_order', [
             'steamOrder' => $steamOrder,
-            'order' => $order,
-            'duration' => $days,
+            'order'      => $order,
+            'duration'   => $days,
             'totalValue' => $totalPrice,
-            'items' => $full_item_list
+            'items'      => $full_item_list,
         ]);
     }
 
@@ -154,18 +155,20 @@ class SteamOrderController extends Controller
         // Retrieve what Steam Order is related to that order
         $steamOrder = $order->orderable()->get()->first();
 
-        if($steamOrder->tradeoffer_id != null || $steamOrder->tradeoffer_state != null) {
+        if ($steamOrder->tradeoffer_id != null || $steamOrder->tradeoffer_state != null) {
             flash()->warning('There is already a trade offer live for this order!');
+
             return redirect()->route('view-steam-offer', $public_id);
         }
 
-        $message = 'Order #' . $order->public_id;
+        $message = 'Order #'.$order->public_id;
 
         // Call SendTradeOffer
         $result = DaemonController::sendTradeOffer(Auth::user()->tradelink, $message, $steamOrder->encoded_items);
 
-        if($result == null || !property_exists($result, 'id') || !property_exists($result, 'state')) {
+        if ($result == null || !property_exists($result, 'id') || !property_exists($result, 'state')) {
             flash()->error('Error trying to send a Steam Trade Offer.');
+
             return redirect()->route('view-steam-offer', $public_id);
         }
 
