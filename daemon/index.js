@@ -51,8 +51,6 @@ process.on('uncaughtException', function(err) {
  *    VARIABLES    *
  *******************/
 
-var logged = false;
-
 var rconConnection;
 
 var client = new SteamUser();
@@ -68,12 +66,16 @@ if (fs.existsSync(__dirname + '/polldata.json')) {
 }
 
 client.on('loggedOn', function(det) {
-    console.log("Working");
+    console.log("Logged on");
 });
 
 client.on('error', function(err) {
-    console.log(err);
-})
+    console.error(err);
+});
+
+client.on('disconnected', function (eresult, msg) {
+    console.log('Disconnect from Steam: ' + msg + ' -- EResult[' + eresult + ']');
+});
 
 client.on('webSession', function(sessionID, cookies) {
     console.log("Got web session");
@@ -85,7 +87,6 @@ client.on('webSession', function(sessionID, cookies) {
         }
 
         console.log("Got API key: " + manager.apiKey);
-        logged = true;
     });
 });
 
@@ -222,7 +223,7 @@ app.get('/rcon', (req, res) => {
 app.get('/status', (req, res) => {
     res.send(JSON.stringify({
         online: true,
-        logged: logged
+        logged: manager.steamID != null
     }));
 });
 

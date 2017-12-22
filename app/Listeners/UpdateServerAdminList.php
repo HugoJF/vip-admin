@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Confirmation;
-use App\Events\ConfirmationGenerated;
 use App\Events\Event;
 use App\Http\Controllers\DaemonController;
 use Carbon\Carbon;
@@ -25,15 +24,11 @@ class UpdateServerAdminList
     /**
      * Handle the event.
      *
-     * @param ConfirmationGenerated $confirmationGenerated
-     *
      * @return void
      */
     public function handle()
     {
         DaemonController::consoleLog('Generating_new_admins_simple');
-
-        $now = Carbon::now();
 
         $confirmations = Confirmation::valid()->with('baseOrder.user')->get();
 
@@ -49,7 +44,7 @@ class UpdateServerAdminList
             $confirmation->baseOrder->save();
         }
 
-        $view = View::make('admins_simple_ini', [
+        $view = View::make('admins_simple', [
             'list' => $steamid,
             'html' => false,
         ]);

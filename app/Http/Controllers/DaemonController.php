@@ -9,6 +9,22 @@ use Ixudra\Curl\Facades\Curl;
 
 class DaemonController extends Controller
 {
+    public function loginPost(Request $request)
+    {
+        $code = $request->input('code');
+
+        static::curl('login', [
+            'code' => $code,
+        ]);
+
+        return redirect()->route('home');
+    }
+
+    public function login()
+    {
+        return view('daemon_login');
+    }
+
     public static function curl($path, $data = null, $asJson = false, $post = false)
     {
         $result = Curl::to(env('DAEMON_ADDRESS').'/'.$path);
@@ -26,22 +42,6 @@ class DaemonController extends Controller
         } else {
             return $result->get();
         }
-    }
-
-    public function loginPost(Request $request)
-    {
-        $code = $request->input('code');
-
-        static::curl('login', [
-            'code' => $code,
-        ]);
-
-        return redirect()->route('home');
-    }
-
-    public function login()
-    {
-        return view('daemon_login');
     }
 
     public static function status()

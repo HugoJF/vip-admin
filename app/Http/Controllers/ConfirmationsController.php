@@ -37,7 +37,7 @@ class ConfirmationsController extends Controller
 
         // Check if steam order is accepted
         $steamOrder = $order->orderable()->first();
-        if ($steamOrder->accepted()) {
+        if (!$steamOrder || !$steamOrder->accepted()) {
             flash()->error('You must accept the trade offer before creating a confirmation!');
 
             return redirect()->route('home');
