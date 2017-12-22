@@ -19,7 +19,7 @@ class SteamOrderController extends Controller
 		// Retrieves just the names from the inventory
 		$inventoryNames = [];
 		foreach ($inventory as $item) {
-			if (!$item || property_exists($item, 'market_name'))
+			if (!$item || !property_exists($item, 'market_name'))
 				continue;
 			$inventoryNames[] = $item->market_name;
 		}

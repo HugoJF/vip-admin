@@ -50,6 +50,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                @yield('navbar')
                 @if(\App\Http\Controllers\DaemonController::isOnline())
                     <li><a><span class="label label-success">Daemon is online</span></a></li>
                 @else
@@ -93,6 +94,7 @@
             @include('flash::message')
             @yield('content')
         </div>
+        </footer>
     </div>
 </div>
 
@@ -106,5 +108,6 @@
 <script src="/js/vendor/holder.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="/js/ie10-viewport-bug-workaround.js"></script>
+@yield('script')
 </body>
 </html>

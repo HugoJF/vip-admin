@@ -131,14 +131,16 @@ $control = 1;
             @foreach($inventory as $key=>$item)
                 @if(array_key_exists($item->market_name, $prices))
                     @php
+                    $price = round(($prices[$item->market_name] / 100), 3);
                     $value = json_encode([
-                    'assetid' => $item->assetid,
-                    'appid' => $item->appid,
-                    'contextid' => $item->contextid,
-                    'amount' => 1
+                        'assetid' => $item->assetid,
+                        'appid' => $item->appid,
+                        'contextid' => $item->contextid,
+                        'amount' => 1,
+                        'price' => $price,
                     ])
                     @endphp
-                    <div class="col-sm-6 col-md-3">
+                    <div class="col-sm-6 col-md-2">
                         <div class="thumbnail">
                             <img width="200px" src="http://steamcommunity-a.akamaihd.net/economy/image/{{ $item->icon_url }}" alt="...">
 
@@ -146,8 +148,7 @@ $control = 1;
 
                                 <h4>{{ $item->market_name }}</h4>
 
-                                <h3><strong>${{ round(($prices[$item->market_name] / 100), 3) }}</strong></h3>
-
+                                <h3><strong>${{ $price }}</strong></h3>
                                 <div class="funkyradio">
                                     <div class="funkyradio-success">
                                         <input type="checkbox" name="items[]" value="{{ $value }}" id="checkbox-{{ $control }}"/>
@@ -157,7 +158,7 @@ $control = 1;
                             </div>
                         </div>
                     </div>
-                    @if(($control) % 4 == 0)
+                    @if(($control) % 6 == 0)
                         <div class="clearfix visible-lg-block visible-md-block"></div>
                     @endif
                     @if(($control++) % 2 == 0)
@@ -168,4 +169,42 @@ $control = 1;
         </div>
         <button id="submit-items" type="submit" class="btn btn-success btn-lg btn-block">Submit items to trade</button>
     </form>
+@endsection
+
+@section('navbar')
+    <li>
+        <p style="padding: 0px 15px;" class="navbar-btn">
+            <a href="#submit-items" class="btn btn-success">Finish selection!</a>
+        </p>
+    </li>
+    <li><a id="totalPrice"><span class="label label-primary"><u>Total Price: $ 0</u></span></a></li>
+    <li><a id="totalDays"><span class="label label-primary"><u>Total days: 0 days</u></span></a></li>
+@endsection
+
+@section('script')
+    <script>
+
+        function updateNumbers()
+        {
+                var price = 0;
+
+                $('.funkyradio > .funkyradio-success > input:checked').each(function (id, elem) {
+                    price += JSON.parse(elem.value).price;
+                });
+
+                var days = Math.round(price / 0.045 );
+                price = Math.round(price * 100) / 100;
+
+                $('#totalPrice > span > u').text('Total Price: $ ' + price)
+                $('#totalDays > span > u').text('Total Days: ' + days + ' days');
+        }
+
+        $(function() {
+            $(".funkyradio > .funkyradio-success > input").change(function() {
+                updateNumbers();
+            });
+
+            updateNumbers();
+        });
+    </script>
 @endsection

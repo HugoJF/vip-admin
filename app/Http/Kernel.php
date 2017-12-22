@@ -63,5 +63,6 @@ class Kernel extends HttpKernel
         'daemon.online' => \App\Http\Middleware\CheckDaemonOnline::class,
         'daemon.logged' => \App\Http\Middleware\CheckDaemonLogged::class,
         'tradelink'     => \App\Http\Middleware\CheckTradeLinkIsSet::class,
+        'accepted'      => \App\Http\Middleware\AcceptedTerms::class,
     ];
 }

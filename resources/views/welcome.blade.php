@@ -5,7 +5,7 @@
         <h1> Welcome, {{ Auth::user()->name ? Auth::user()->name : Auth::user()->username }}</h1>
         <h3></h3>
 
-        <div class="entry-content">
+        @if(Auth::user()->accepted != true)
             <p>Essa plataforma administra todas as compras de slot VIP do meu servidor de Counter-Strike: Global Offensive no IP: <strong>177.54.147.159:27047</strong></p>
 
             <p><strong>Atualmente apenas compras com itens da Steam são automaticamente processados</strong>, pagamentos via MercadoPago ainda serão feitos manualmente <a href="http://steamcommunity.com/id/de_nerd">comigo via Steam.</a></p>
@@ -27,5 +27,6 @@
             </ul>
             <br>
             <a href="{{ route('accept') }}" class="btn btn-lg btn-primary btn-block">Estou ciente de todas as observações feitas acima</a>
+        @endif
     </div>
 @endsection
