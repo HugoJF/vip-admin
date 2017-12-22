@@ -22,7 +22,7 @@ class UserController extends Controller
 
         $saved = $user->save();
 
-        if($saved) {
+        if ($saved) {
             flash()->success('Updated settings successfully.');
         } else {
             flash()->error('Error updating settings!');

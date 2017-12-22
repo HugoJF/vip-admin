@@ -42,7 +42,7 @@ class UpdateServerAdminList
         foreach ($confirmations as $confirmation) {
             $steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
             $steamid[] = [
-                'id' => $steam2,
+                'id'           => $steam2,
                 'confirmation' => $confirmation,
             ];
             $confirmation->baseOrder->server_uploaded = true;
@@ -59,6 +59,5 @@ class UpdateServerAdminList
 
             DaemonController::updateSourceMod();
         }
-
     }
 }

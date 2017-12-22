@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Ixudra\Curl\Facades\Curl;
-use Illuminate\Support\Facades\Auth;
 use App\OPSkinsCache;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Ixudra\Curl\Facades\Curl;
 
 class DaemonController extends Controller
 {
-    public static function curl($path, $data = null, $asJson = false, $post = false) {
-        $result = Curl::to(env('DAEMON_ADDRESS') . '/' . $path);
+    public static function curl($path, $data = null, $asJson = false, $post = false)
+    {
+        $result = Curl::to(env('DAEMON_ADDRESS').'/'.$path);
 
         if ($data) {
             $result = $result->withData($data);
@@ -52,7 +53,7 @@ class DaemonController extends Controller
 
     public static function isOnline()
     {
-        $status = DaemonController::status();
+        $status = self::status();
 
         if ($status && property_exists($status, 'online')) {
             return $status->online === true;
@@ -72,7 +73,7 @@ class DaemonController extends Controller
 
     public static function isLoggedIn()
     {
-        $status = DaemonController::status();
+        $status = self::status();
 
         if ($status && property_exists($status, 'logged')) {
             return $status->logged === true;
@@ -90,7 +91,6 @@ class DaemonController extends Controller
 
     public static function getInventory($steamid)
     {
-
         $inventory = static::curl('inventory', [
             'steamid' => $steamid,
         ], true);
@@ -103,9 +103,9 @@ class DaemonController extends Controller
         $user = Auth::user();
 
         if ($user->tradeid) {
-            return DaemonController::getInventory($user->tradeid);
+            return self::getInventory($user->tradeid);
         } else {
-            return DaemonController::getInventory($user->steamid);
+            return self::getInventory($user->steamid);
         }
     }
 
@@ -121,9 +121,9 @@ class DaemonController extends Controller
     public static function sendTradeOffer($tradelink, $message, $encoded_items)
     {
         $data = [
-            'tradelink' => $tradelink,
+            'tradelink'     => $tradelink,
             'encoded_items' => $encoded_items,
-            'message' => $message,
+            'message'       => $message,
         ];
 
         $result = curl('sendTradeOffer', [
@@ -156,7 +156,9 @@ class DaemonController extends Controller
         foreach ($item_list as $item) {
             $cache = OPSkinsCache::where('name', $item->market_name)->get()->first();
 
-            if (!$cache) continue;
+            if (!$cache) {
+                continue;
+            }
 
             $totalPrice += $cache->price;
         }
@@ -181,7 +183,7 @@ class DaemonController extends Controller
     public static function fillItemArray($item_list, $inventory = null)
     {
         if ($inventory === null) {
-            $inventory = DaemonController::getInventoryFromAuthedUser();
+            $inventory = self::getInventoryFromAuthedUser();
         }
 
         $full_item_list = [];
