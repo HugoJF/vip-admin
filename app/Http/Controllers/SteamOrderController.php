@@ -121,7 +121,7 @@ class SteamOrderController extends Controller
         }
     }
 
-    public function viewSteamOffer($public_id)
+    public function viewSteamOrder($public_id)
     {
         // Gets the client raw inventory information
         $inventory = DaemonController::getInventoryFromAuthedUser();
