@@ -52,6 +52,7 @@ process.on('uncaughtException', function(err) {
  *******************/
 
 var rconConnection;
+var logged = false;
 
 var client = new SteamUser();
 var community = new SteamCommunity();
@@ -75,6 +76,7 @@ client.on('error', function(err) {
 
 client.on('disconnected', function (eresult, msg) {
     console.log('Disconnect from Steam: ' + msg + ' -- EResult[' + eresult + ']');
+    logged = false;
 });
 
 client.on('webSession', function(sessionID, cookies) {
@@ -86,6 +88,7 @@ client.on('webSession', function(sessionID, cookies) {
             return;
         }
 
+        logged = true;
         console.log("Got API key: " + manager.apiKey);
     });
 });
@@ -223,7 +226,7 @@ app.get('/rcon', (req, res) => {
 app.get('/status', (req, res) => {
     res.send(JSON.stringify({
         online: true,
-        logged: manager.steamID != null
+        logged: logged
     }));
 });
 
