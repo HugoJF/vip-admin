@@ -28,5 +28,6 @@ Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->middl
 Route::get('inventory', 'SteamOrderController@inventoryView')->middleware(['auth', 'tradelink', 'daemon'])->name('inventory');
 
 Route::get('/', 'UserController@home')->middleware('auth')->name('home');
+Route::get('accept', 'UserController@accept')->middleware('auth')->name('accept');
 Route::get('settings', 'UserController@settings')->middleware('auth')->name('settings');
 Route::post('settings', 'UserController@settingsUpdate')->middleware('auth')->name('settings.update');
