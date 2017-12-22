@@ -22,7 +22,7 @@ Route::get('daemon-login', 'DaemonController@login')->middleware('daemon.online'
 Route::post('daemon-login', 'DaemonController@loginPost')->middleware('daemon.online')->name('daemon-login-post');
 
 Route::get('view-steam-order/{public_id}', 'SteamOrderController@viewSteamOrder')->middleware(['auth', 'daemon', 'accepted'])->name('view-steam-order');
-Route::get('send-trade-order/{public_id}', 'SteamOrderController@sendTradeOrder')->middleware(['auth', 'daemon', 'accepted'])->name('send-trade-offer');
+Route::get('send-trade-order/{public_id}', 'SteamOrderController@sendTradeOffer')->middleware(['auth', 'daemon', 'accepted'])->name('send-trade-offer');
 
 Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->middleware(['auth', 'daemon', 'accepted']);
 Route::get('inventory', 'SteamOrderController@inventoryView')->middleware(['auth', 'tradelink', 'daemon', 'accepted'])->name('inventory');
