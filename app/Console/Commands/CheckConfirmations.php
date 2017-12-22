@@ -46,14 +46,14 @@ class CheckConfirmations extends Command
 
         $expiredConfirmations = [];
 
-        foreach($orders as $order) {
-            if(!$order->confirmation->isValid()) {
-                $this->info('Adding ' . $order->confirmation->public_id . ' to the expired confirmation list.');
+        foreach ($orders as $order) {
+            if (!$order->confirmation->isValid()) {
+                $this->info('Adding '.$order->confirmation->public_id.' to the expired confirmation list.');
                 $expiredConfirmations[] = $order->confirmation;
             }
         }
 
-        if(count($expiredConfirmations) != 0) {
+        if (count($expiredConfirmations) != 0) {
             $this->info('Triggering event that confirmations expired');
             event(new ConfirmationExpired($expiredConfirmations));
             foreach ($expiredConfirmations as $expiredConfirmation) {
@@ -61,8 +61,7 @@ class CheckConfirmations extends Command
                 $expiredConfirmation->baseOrder->save();
             }
         } else {
-            $this->info('0 confirmations expired [' . count($orders) . ' checked]');
+            $this->info('0 confirmations expired ['.count($orders).' checked]');
         }
-
     }
 }

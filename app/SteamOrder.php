@@ -100,7 +100,7 @@ class SteamOrder extends Model
 
         if ($confirmed) {
             return 'Confirmed';
-        } else if ($state) {
+        } elseif ($state) {
             switch ($state) {
                 case 1:
                     return 'Invalid';

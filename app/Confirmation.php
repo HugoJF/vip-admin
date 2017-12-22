@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class Confirmation extends Model
 {
@@ -11,7 +11,7 @@ class Confirmation extends Model
         'start_period',
         'end_period',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function baseOrder()
@@ -25,14 +25,14 @@ class Confirmation extends Model
 
         return $query->where([
             ['start_period', '<', $now],
-            ['end_period', '>', $now]
+            ['end_period', '>', $now],
         ]);
     }
 
-    public function isValid() {
+    public function isValid()
+    {
         $now = Carbon::now();
 
         return $this->start_period < $now && $this->end_period > $now;
     }
-
 }
