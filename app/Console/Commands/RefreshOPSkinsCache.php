@@ -77,20 +77,27 @@ class RefreshOPSkinsCache extends Command
                 }
 
                 $sumCount++;
-                $meanSum += intval($v->mean);
+                $meanSum += $v->normalized_mean;
+                if($name == 'R8 Revolver | Bone Mask (Minimal Wear)') {
+                    $this->info(json_encode($v));
+                }
             }
 
             if ($sumCount >= 7) {
+                if($name == 'R8 Revolver | Bone Mask (Minimal Wear)') {
+                    $this->error('R8 Revolver | Bone Mask (Minimal Wear) = ' . $meanSum . ' / ' . $sumCount . ' = ' . ($meanSum/$sumCount));
+                }
+
                 OPSkinsCache::create([
                     'name'  => $name,
                     'price' => $meanSum / $sumCount,
                 ]);
                 if ($this->option('detailed')) {
-                    $this->info($name.' added to database');
+                    $this->info($name.' added to database = ' . $meanSum . ' / ' . $sumCount . ' = ' . ($meanSum/$sumCount));
                 }
             } else {
                 if ($this->option('detailed')) {
-                    $this->warn($name.' returned 0 counts');
+                    $this->warn($name.' returned < 7 counts');
                 }
             }
         }
