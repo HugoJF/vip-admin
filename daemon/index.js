@@ -327,6 +327,7 @@ app.post('/sendTradeOffer', (req, res) => {
             console.log('Sent Trade Offer!');
             res.send(offer);
         } else {
+            console.error(err);
             res.send(errorResponse(err));
         }
     });

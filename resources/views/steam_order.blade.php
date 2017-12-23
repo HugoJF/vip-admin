@@ -181,7 +181,7 @@
             </tr>
             <tr>
                 <td>Current state</td>
-                <td><span class="label label-success">{{ $steamOrder->stateText() }}</span></td>
+                <td><span class="label label-{{ $steamOrder->stateClass() }}">{{ $steamOrder->stateText() }}</span></td>
             </tr>
             <tr>
                 <td>Last update</td>
