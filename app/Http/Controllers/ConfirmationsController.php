@@ -45,7 +45,7 @@ class ConfirmationsController extends Controller
 
         $latestConfirmation = Confirmation::valid()->orderBy('end_period', 'desc')->first();
 
-        if($latestConfirmation) {
+        if ($latestConfirmation) {
             $basePeriod = $latestConfirmation->end_period;
         } else {
             $basePeriod = Carbon::now();
