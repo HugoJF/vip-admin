@@ -24,8 +24,8 @@ class Confirmation extends Model
         $now = Carbon::now();
 
         return $query->where([
-            ['start_period', '<', $now],
-            ['end_period', '>', $now],
+            ['start_period', '<=', $now],
+            ['end_period', '>=', $now],
         ]);
     }
 
@@ -33,6 +33,6 @@ class Confirmation extends Model
     {
         $now = Carbon::now();
 
-        return $this->start_period < $now && $this->end_period > $now;
+        return $this->start_period <= $now && $this->end_period >= $now;
     }
 }

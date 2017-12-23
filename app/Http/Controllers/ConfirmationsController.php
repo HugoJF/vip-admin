@@ -70,14 +70,14 @@ class ConfirmationsController extends Controller
         $now = Carbon::now();
 
         // Get valid confirmations
-        $confirmations = Confirmation::valid()->with('order.user')->get();
+        $confirmations = Confirmation::valid()->with('baseOrder.user')->get();
 
         // Array of SteamID2 to Confirmation
         $steamid = [];
 
         // Parses each valid confirmation and adds to array
         foreach ($confirmations as $confirmation) {
-            $steam2 = DaemonController::getSteam2ID($confirmation->order->user->steamid);
+            $steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
             $steamid[] = [
                 'id'           => $steam2,
                 'confirmation' => $confirmation,

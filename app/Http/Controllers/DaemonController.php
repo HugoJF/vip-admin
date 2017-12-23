@@ -126,7 +126,7 @@ class DaemonController extends Controller
             'message'       => $message,
         ];
 
-        $result = curl('sendTradeOffer', [
+        $result = static::curl('sendTradeOffer', [
             'items' => json_encode($data),
         ], true, true);
 
