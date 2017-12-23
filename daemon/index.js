@@ -84,7 +84,7 @@ client.on('error', function(err) {
 
     console.error('console.error(err.strError): ');
     console.error(err.strError);
-    
+
     console.error('############################# ENDED LOGGGING ERROR NOW #############################');
 });
 
@@ -321,7 +321,21 @@ app.post('/sendTradeOffer', (req, res) => {
             res.send(offer);
         } else {
             console.log('Error sending Trade Offer');
+            console.error('############################# STARTED LOGGGING ERROR NOW123 #############################');
+
+            console.error('console.error(err): ');
             console.error(err);
+            
+            console.error('console.error(err.cause): ');
+            console.error(err.cause);
+            
+            console.error('console.error(err.eresult): ');
+            console.error(err.eresult);
+
+            console.error('console.error(err.strError): ');
+            console.error(err.strError);
+            
+            console.error('############################# ENDED LOGGGING ERROR NOW123 #############################');
             res.send(err);
         }
     });
