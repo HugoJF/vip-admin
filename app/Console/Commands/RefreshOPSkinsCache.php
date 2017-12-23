@@ -86,7 +86,7 @@ class RefreshOPSkinsCache extends Command
                     'price' => $meanSum / $sumCount,
                 ]);
                 if ($this->option('detailed')) {
-                    $this->info($name.' added to database = ' . $meanSum . ' / ' . $sumCount . ' = ' . ($meanSum/$sumCount));
+                    $this->info($name.' added to database = '.$meanSum.' / '.$sumCount.' = '.($meanSum / $sumCount));
                 }
             } else {
                 if ($this->option('detailed')) {
