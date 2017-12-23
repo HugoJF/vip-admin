@@ -71,7 +71,21 @@ client.on('loggedOn', function(det) {
 });
 
 client.on('error', function(err) {
+    console.error('############################# STARTED LOGGGING ERROR NOW #############################');
+    
+    console.error('console.error(err): ');
     console.error(err);
+    
+    console.error('console.error(err.cause): ');
+    console.error(err.cause);
+    
+    console.error('console.error(err.eresult): ');
+    console.error(err.eresult);
+
+    console.error('console.error(err.strError): ');
+    console.error(err.strError);
+    
+    console.error('############################# ENDED LOGGGING ERROR NOW #############################');
 });
 
 client.on('disconnected', function (eresult, msg) {
