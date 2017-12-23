@@ -155,6 +155,24 @@ function openConnections() {
     rconConnection.connect();
 }
 
+function errorResponse(err) {
+    var message;
+
+    if(err.cause) {
+        message = err.cause
+    } else if(err.message) {
+        message = err.message;
+    } else {
+        message ='No error message.';
+    }
+
+    return JSON.stringify({
+        error: true,
+        message: message
+    });
+
+}
+
 /*********************
  *    STATIC CODE    *
  *********************/
@@ -184,7 +202,7 @@ app.get('/inventory', (req, res) => {
     manager.getUserInventoryContents(new SteamID(steamid), 730, 2, true, function(err, inventory) {
         if (err) {
             console.log('Error getting inventory from SteamID: ' + steamid);
-            res.send(err);
+            res.send(errorResponse(err));
         } else {
             console.log('Sucessfully returned inventory from SteamID: ' + steamid);
             res.send(inventory);
@@ -198,12 +216,6 @@ app.get('/consoleLog', (req, res) => {
 });
 
 app.get('/csgoServerUpdate', (req, res) => {
-    setTimeout(() => {
-        rconConnection.send('say Server update 10 seconds');
-    }, 1000);
-    setTimeout(() => {
-        rconConnection.send('say Server update 5 seconds');
-    }, 6000);
     setTimeout(() => {
         rconConnection.send('say Server update 3 seconds');
     }, 8000);
@@ -232,11 +244,6 @@ app.get('/csgoServerUpdate', (req, res) => {
     res.send('Server update queued');
 });
 
-app.get('/rcon', (req, res) => {
-    rconConnection.send('say sup');
-    res.send('supped');
-});
-
 app.get('/status', (req, res) => {
     res.send(JSON.stringify({
         online: true,
@@ -257,7 +264,7 @@ app.get('/getTradeOffer', (req, res) => {
     manager.getOffer(offerid, (err, offer) => {
         if (err) {
             console.log('Error getting offer #' + offerid);
-            res.send(err);
+            res.send(errorResponse(err));
         } else {
             console.log('Sucessfully returned offer #' + offerid);
             res.send(offer);
@@ -275,12 +282,12 @@ app.get('/cancelTradeOffer', (req, res) => {
                     res.send('true');
                 } else {
                     console.error(err);
-                    res.send('false');
+                    res.send(errorResponse(err));
                 }
             })
         } else {
             console.error(err);
-            res.send('false');
+            res.send(errorResponse(err));
         }
     });
 });
@@ -320,23 +327,7 @@ app.post('/sendTradeOffer', (req, res) => {
             console.log('Sent Trade Offer!');
             res.send(offer);
         } else {
-            console.log('Error sending Trade Offer');
-            console.error('############################# STARTED LOGGGING ERROR NOW123 #############################');
-
-            console.error('console.error(err): ');
-            console.error(err);
-            
-            console.error('console.error(err.cause): ');
-            console.error(err.cause);
-            
-            console.error('console.error(err.eresult): ');
-            console.error(err.eresult);
-
-            console.error('console.error(err.strError): ');
-            console.error(err.strError);
-            
-            console.error('############################# ENDED LOGGGING ERROR NOW123 #############################');
-            res.send(err);
+            res.send(errorResponse(err));
         }
     });
 });
