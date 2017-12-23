@@ -43,13 +43,21 @@ class ConfirmationsController extends Controller
             return redirect()->route('home');
         }
 
+        $latestConfirmation = Confirmation::valid()->orderBy('end_period', 'desc')->first();
+
+        if($latestConfirmation) {
+            $basePeriod = $latestConfirmation->end_period;
+        } else {
+            $basePeriod = Carbon::now();
+        }
+
         // Start creating Confirmation entry
         $confirmation = Confirmation::make();
 
         $confirmation->public_id = substr(md5(microtime()), rand(0, 26), config('app.public_id_size'));
         $confirmation->baseOrder()->associate($order);
-        $confirmation->start_period = Carbon::now();
-        $confirmation->end_period = Carbon::now()->addDays($order->duration);
+        $confirmation->start_period = $basePeriod;
+        $confirmation->end_period = $basePeriod->addDays($order->duration);
 
         $confirmed = $confirmation->save();
 

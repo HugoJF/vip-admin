@@ -80,7 +80,7 @@ class RefreshOPSkinsCache extends Command
                 $meanSum += intval($v->mean);
             }
 
-            if ($sumCount != 0) {
+            if ($sumCount >= 7) {
                 OPSkinsCache::create([
                     'name'  => $name,
                     'price' => $meanSum / $sumCount,
