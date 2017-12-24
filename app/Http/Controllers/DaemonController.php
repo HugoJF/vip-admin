@@ -241,7 +241,7 @@ class DaemonController extends Controller
 
     public static function calculateOfferDuration($price)
     {
-        return floor($price / 4.5);
+        return floor($price / config('cost_per_day'));
     }
 
     public static function getSteam2ID($steamid)

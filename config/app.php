@@ -251,4 +251,6 @@ return [
 
     'expiration_time_min' => 1,
 
+    'cost_per_day' => 0.025,
+
 ];
