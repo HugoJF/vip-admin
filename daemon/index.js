@@ -163,7 +163,7 @@ function errorResponse(err) {
     } else if(err.message) {
         message = err.message;
     } else {
-        message ='No error message.';
+        message = 'No error message.';
     }
 
     return JSON.stringify({
@@ -171,6 +171,18 @@ function errorResponse(err) {
         message: message
     });
 
+}
+
+function response(res, message) {
+    return JSON.stringify({
+        error: false,
+        message: message,
+        response: res
+    });
+}
+
+function log(message) {
+    console.log(message);
 }
 
 /*********************
@@ -184,6 +196,7 @@ openConnections();
  ***************/
 
 app.get('/login', (req, res) => {
+    log('/login routed');
     var code = req.query.code;
 
     client.logOn({
@@ -192,30 +205,32 @@ app.get('/login', (req, res) => {
         twoFactorCode: code
     });
 
-    console.log('Trying to log in to Steam with two factor code');
-    res.send('Trying to login...');
+    log('Trying to log in to Steam with two factor code');
+    res.send(response('Trying to login...'));
+});
+
+app.get('/consoleLog', (req, res) => {
+    log('/consoleLog routed');
+    log(req.query.message);
+    res.send(response('Logged'));
 });
 
 app.get('/inventory', (req, res) => {
+    log('/inventory routed');
     var steamid = req.query.steamid;
-
     manager.getUserInventoryContents(new SteamID(steamid), 730, 2, true, function(err, inventory) {
         if (err) {
             console.log('Error getting inventory from SteamID: ' + steamid);
             res.send(errorResponse(err));
         } else {
             console.log('Sucessfully returned inventory from SteamID: ' + steamid);
-            res.send(inventory);
+            res.send(response(inventory));
         }
     });
 });
 
-app.get('/consoleLog', (req, res) => {
-    console.log(req.query.message);
-    res.send('Logged');
-});
-
 app.get('/csgoServerUpdate', (req, res) => {
+    log('/csgoServerUpdate routed');
     setTimeout(() => {
         rconConnection.send('say Server update 3 seconds');
     }, 8000);
@@ -241,24 +256,26 @@ app.get('/csgoServerUpdate', (req, res) => {
         rconConnection.send('say Server update ended.');
     }, 14000);
 
-    res.send('Server update queued');
+    res.send(response('Server update queued'));
 });
 
 app.get('/status', (req, res) => {
-    res.send(JSON.stringify({
+    res.send(response({
         online: true,
         logged: logged
     }));
 });
 
 app.get('/steam2', (req, res) => {
+    log('/steam2 routed');
     var steamid = req.query.steamid;
     var steamObject = new SteamID(steamid);
 
-    res.send(steamObject.getSteam2RenderedID());
+    res.send(response(steamObject.getSteam2RenderedID()));
 });
 
 app.get('/getTradeOffer', (req, res) => {
+    log('/getTradeOffer routed');
     var offerid = req.query.offerid;
 
     manager.getOffer(offerid, (err, offer) => {
@@ -267,19 +284,20 @@ app.get('/getTradeOffer', (req, res) => {
             res.send(errorResponse(err));
         } else {
             console.log('Sucessfully returned offer #' + offerid);
-            res.send(offer);
+            res.send(response(offer));
         }
     });
 });
 
 app.get('/cancelTradeOffer', (req, res) => {
+    log('/cancelTradeOffer routed');
     var id = req.query.tradeid;
 
     manager.getOffer(id, (err, offer) => {
         if(!err) {
             offer.cancel((err) => {
                 if(!err) {
-                    res.send('true');
+                    res.send(response('Trade offer canceled!'));
                 } else {
                     console.error(err);
                     res.send(errorResponse(err));
@@ -293,6 +311,7 @@ app.get('/cancelTradeOffer', (req, res) => {
 });
 
 app.post('/sendTradeOffer', (req, res) => {
+    log('/sendTradeOffer routed');
 
     // var encoded_data = req.query.data;
     var encoded_data = req.body.items;
@@ -316,7 +335,7 @@ app.post('/sendTradeOffer', (req, res) => {
             console.log('Added item sucessfully [' + (i + 1) + '/' + itemsParsed.length + ']: ' + itemsParsed[i].assetid);
         } else {
             console.log('Failed to add item: ' + itemsParsed[i].assetid);
-            return;
+            res.send(errorResponse(new Error('Failed to add item to trade offer.')));
         }
     }
 
@@ -325,7 +344,7 @@ app.post('/sendTradeOffer', (req, res) => {
     offer.send(function(err, status) {
         if (!err) {
             console.log('Sent Trade Offer!');
-            res.send(offer);
+            res.send(response(offer));
         } else {
             console.error(err);
             res.send(errorResponse(err));
@@ -334,19 +353,33 @@ app.post('/sendTradeOffer', (req, res) => {
 });
 
 app.get('/logs', (req, res) => {
+    log('/logs routed');
     res.type('text');
-    res.send(fs.readFileSync(LOGS_PATH));
+    res.send(response(fs.readFileSync(LOGS_PATH, {encoding: 'utf8'})));
 });
 
 app.get('/stdout', (req, res) => {
+    log('/stdout routed');
     res.type('text');
-    res.send(fs.readFileSync(STDOUT_PATH));
+    res.send(response(fs.readFileSync(STDOUT_PATH, {encoding: 'utf8'})));
 });
 
 app.get('/stderr', (req, res) => {
+    log('/stderr routed');
     res.type('text');
-    res.send(fs.readFileSync(STDERR_PATH));
+    res.send(response(fs.readFileSync(STDERR_PATH, {encoding: 'utf8'})));
 });
+
+app.get('/kill', (req, res) => {
+    log('/kill routed');
+    res.type('text');
+    process.exit(1); // Fatal error since we couldn't get our API key   
+    res.send('Killing this instance');
+});
+
+
+
+
 
 app.listen(HTTP_PORT, () => {
     console.log('Logging on ' + LOGS_PATH);

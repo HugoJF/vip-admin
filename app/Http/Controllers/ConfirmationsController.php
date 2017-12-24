@@ -86,6 +86,11 @@ class ConfirmationsController extends Controller
         // Parses each valid confirmation and adds to array
         foreach ($confirmations as $confirmation) {
             $steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
+
+            if($steam2 === false) {
+                return redirect()->route('home');
+            }
+
             $steamid[] = [
                 'id'           => $steam2,
                 'confirmation' => $confirmation,

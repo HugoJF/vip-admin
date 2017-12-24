@@ -20,6 +20,10 @@ Route::get('orders', 'OrdersController@view')->middleware('auth', 'accepted')->n
 
 Route::get('daemon-login', 'DaemonController@login')->middleware('daemon.online')->name('daemon-login');
 Route::post('daemon-login', 'DaemonController@loginPost')->middleware('daemon.online')->name('daemon-login-post');
+Route::get('logs', 'DaemonController@logs')->middleware('daemon.online')->name('daemon-logs');
+Route::get('stdout', 'DaemonController@stdout')->middleware('daemon.online')->name('daemon-stdout');
+Route::get('stderr', 'DaemonController@stderr')->middleware('daemon.online')->name('daemon-stderr');
+Route::get('kill', 'DaemonController@kill')->middleware('daemon.online')->name('daemon-kill');
 
 Route::get('view-steam-order/{public_id}', 'SteamOrderController@viewSteamOrder')->middleware(['auth', 'daemon', 'accepted'])->name('view-steam-order');
 Route::get('send-trade-order/{public_id}', 'SteamOrderController@sendTradeOffer')->middleware(['auth', 'daemon', 'accepted'])->name('send-trade-offer');

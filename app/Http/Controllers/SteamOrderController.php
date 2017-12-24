@@ -11,224 +11,244 @@ use Illuminate\Support\Facades\Auth;
 
 class SteamOrderController extends Controller
 {
-    public function inventoryView()
-    {
-        // Gets client raw inventory information
-        $inventory = DaemonController::getInventoryFromAuthedUser();
+	public function inventoryView()
+	{
+		// Gets client raw inventory information
+		$inventory = DaemonController::getInventoryFromAuthedUser();
 
-        // Retrieves just the names from the inventory
-        $inventoryNames = [];
-        foreach ($inventory as $item) {
-            if (!$item || !property_exists($item, 'market_name')) {
-                continue;
-            }
-            $inventoryNames[] = $item->market_name;
-        }
+		// Check if response was successful
+		if ($inventory === false)
+			return redirect()->route('home');
 
-        // Query our OPSkins cache based on inventory items
-        $inventoryPrices = OPSkinsCache::whereIn('name', $inventoryNames)->get()->toArray();
+		// Retrieves just the names from the inventory
+		$inventoryNames = [];
+		foreach ($inventory as $item) {
+			if (!$item || !property_exists($item, 'market_name')) {
+				continue;
+			}
+			$inventoryNames[] = $item->market_name;
+		}
 
-        // Transform que result into an associative array to make access easier in views
-        $associativePrices = [];
-        foreach ($inventoryPrices as $price) {
-            $associativePrices[$price['name']] = $price['price'];
-        }
+		// Query our OPSkins cache based on inventory items
+		$inventoryPrices = OPSkinsCache::whereIn('name', $inventoryNames)->get()->toArray();
 
-        // Return inventory view
-        return view('inventory', [
-            'inventory' => $inventory,
-            'prices'    => $associativePrices,
-        ]);
-    }
+		// Transform que result into an associative array to make access easier in views
+		$associativePrices = [];
+		foreach ($inventoryPrices as $price) {
+			$associativePrices[ $price['name'] ] = $price['price'];
+		}
 
-    public function createSteamOffer(Request $request)
-    {
-        // Gets client raw inventory information
-        $inventory = DaemonController::getInventoryFromAuthedUser();
+		// Return inventory view
+		return view('inventory', [
+			'inventory' => $inventory,
+			'prices'    => $associativePrices,
+		]);
+	}
 
-        // Gets the items selected to create Steam Offer
-        $items = $request->get('items');
+	public function createSteamOffer(Request $request)
+	{
+		// Gets client raw inventory information
+		$inventory = DaemonController::getInventoryFromAuthedUser();
 
-        // Decode the information in each value of array
-        $items_decoded = [];
-        foreach ($items as $item) {
-            $items_decoded[] = json_decode($item);
-        }
+		// Check if response was successful
+		if ($inventory === false)
+			return redirect()->route('home');
 
-        // Fills the rest of the information Steam API gives us
-        $full_item_list = DaemonController::fillItemArray($items_decoded, $inventory);
+		// Gets the items selected to create Steam Offer
+		$items = $request->get('items');
 
-        // Computes the value of the selected items
-        $totalPrice = DaemonController::calculateTotalPrice($full_item_list);
+		// Decode the information in each value of array
+		$items_decoded = [];
+		foreach ($items as $item) {
+			$items_decoded[] = json_decode($item);
+		}
 
-        // Check if order is above maximum price
-        if ($totalPrice > config('app.max_order_price', 5000)) {
-            flash()->error('Your order is above the maximum allowed price!');
+		// Fills the rest of the information Steam API gives us
+		$full_item_list = DaemonController::fillItemArray($items_decoded, $inventory);
 
-            return redirect()->route('inventory');
-        }
+		// Check if response was successful
+		if ($full_item_list === false)
+			return redirect()->route('home');
 
-        // Pre-calculate the duration before anything
-        $duration = DaemonController::calculateOfferDuration($totalPrice);
+		// Computes the value of the selected items
+		$totalPrice = DaemonController::calculateTotalPrice($full_item_list);
 
-        // Get maximum date from configuration
-        $now = Carbon::now();
-        $maxDate = Carbon::createFromFormat('d/m/Y', config('app.max_order_date', '21/02/2018'));
-        $maxDateMaxDuration = $maxDate->diffInDays($now);
+		// Check if order is above maximum price
+		if ($totalPrice > config('app.max_order_price', 5000)) {
+			flash()->error('Your order is above the maximum allowed price!');
 
-        // Check if order has enough value to be above 1 unit of item
-        if ($duration == 0) {
-            flash('Current order is below the minimum allowed.');
+			return redirect()->route('inventory');
+		}
 
-            return redirect()->route('inventory');
-        }
+		// Pre-calculate the duration before anything
+		$duration = DaemonController::calculateOfferDuration($totalPrice);
 
-        // Check if order is above maximum duration
-        if ($duration > config('app.max_order_duration', 120) || $duration > $maxDateMaxDuration) {
-            flash()->error('Your order is above the maximum allowed duration!');
+		// Get maximum date from configuration
+		$now = Carbon::now();
+		$maxDate = Carbon::createFromFormat('d/m/Y', config('app.max_order_date', '21/02/2018'));
+		$maxDateMaxDuration = $maxDate->diffInDays($now);
 
-            return redirect()->route('inventory');
-        }
+		// Check if order has enough value to be above 1 unit of item
+		if ($duration == 0) {
+			flash('Current order is below the minimum allowed.');
 
-        // Prepare orders
-        $steamOrder = SteamOrder::make();
-        $order = Order::make();
+			return redirect()->route('inventory');
+		}
 
-        // Fill Steam Order information
-        $steamOrder->encoded_items = json_encode($full_item_list);
+		// Check if order is above maximum duration
+		if ($duration > config('app.max_order_duration', 120) || $duration > $maxDateMaxDuration) {
+			flash()->error('Your order is above the maximum allowed duration!');
 
-        // Fill base order information
-        $order->public_id = $rand = substr(md5(microtime()), 0, config('app.public_id_size'));
-        $order->duration = $duration;
-        $order->user()->associate(Auth::user());
+			return redirect()->route('inventory');
+		}
 
-        // Persist to database
-        $steamOrderSaved = $steamOrder->save();
-        $orderSaved = $order->save();
+		// Prepare orders
+		$steamOrder = SteamOrder::make();
+		$order = Order::make();
 
-        // Associate each order to another
-        $steamOrder->baseOrder()->save($order);
+		// Fill Steam Order information
+		$steamOrder->encoded_items = json_encode($full_item_list);
 
-        // Redirect to view Steam Offer if successful
-        if ($steamOrderSaved && $orderSaved) {
-            flash()->success('Order created successfully!');
+		// Fill base order information
+		$order->public_id = $rand = substr(md5(microtime()), 0, config('app.public_id_size'));
+		$order->duration = $duration;
+		$order->user()->associate(Auth::user());
 
-            return redirect()->route('view-steam-order', $order->public_id);
-        } else {
-            flash()->error('Error saving orders to database!');
+		// Persist to database
+		$steamOrderSaved = $steamOrder->save();
+		$orderSaved = $order->save();
 
-            return redirect()->route('home');
-        }
-    }
+		// Associate each order to another
+		$steamOrder->baseOrder()->save($order);
 
-    public function viewSteamOrder($public_id)
-    {
-        // Gets the client raw inventory information
-        $inventory = DaemonController::getInventoryFromAuthedUser();
+		// Redirect to view Steam Offer if successful
+		if ($steamOrderSaved && $orderSaved) {
+			flash()->success('Order created successfully!');
 
-        // Retrieves the persisted order
-        $order = Order::where([
-            'public_id' => $public_id,
-            'user_id'   => Auth::id(),
-        ])->get()->first();
+			return redirect()->route('view-steam-order', $order->public_id);
+		} else {
+			flash()->error('Error saving orders to database!');
 
-        // Check if given order exists
-        if (!$order) {
-            flash()->error('Could not find order #'.$public_id);
+			return redirect()->route('home');
+		}
+	}
 
-            return redirect()->route('home');
-        }
+	public function viewSteamOrder($public_id)
+	{
+		// Gets the client raw inventory information
+		$inventory = DaemonController::getInventoryFromAuthedUser();
 
-        // Retrieves the associated Steam Order
-        $steamOrder = $order->orderable()->first();
+		// Check if response was successful
+		if ($inventory === false)
+			return redirect()->route('home');
 
-        // Checks if we found Steam order details
-        if (!$steamOrder) {
-            flash()->error('Could not find details of order #'.$public_id);
+		// Retrieves the persisted order
+		$order = Order::where([
+			'public_id' => $public_id,
+			'user_id'   => Auth::id(),
+		])->get()->first();
 
-            return redirect()->route('home');
-        }
+		// Check if given order exists
+		if (!$order) {
+			flash()->error('Could not find order #' . $public_id);
 
-        // Decodes the list of items for Steam Order
-        $full_item_list = json_decode($steamOrder->encoded_items);
+			return redirect()->route('home');
+		}
 
-        // Calculates total price of order and fills list of items in order
-        $totalPrice = DaemonController::calculateTotalPrice($full_item_list);
+		// Retrieves the associated Steam Order
+		$steamOrder = $order->orderable()->first();
 
-        // Computes the amount of days the order will result
-        $days = DaemonController::calculateOfferDuration($totalPrice);
+		// Checks if we found Steam order details
+		if (!$steamOrder) {
+			flash()->error('Could not find details of order #' . $public_id);
 
-        // Return Steam Order view
-        return view('steam_order', [
-            'steamOrder' => $steamOrder,
-            'order'      => $order,
-            'duration'   => $days,
-            'totalValue' => $totalPrice,
-            'items'      => $full_item_list,
-        ]);
-    }
+			return redirect()->route('home');
+		}
 
-    public function sendTradeOffer($public_id)
-    {
-        // Get what order are we trying to send the offer
-        $order = Order::where([
-            'public_id' => $public_id,
+		// Decodes the list of items for Steam Order
+		$full_item_list = json_decode($steamOrder->encoded_items);
 
-        ])->get()->first();
+		// Calculates total price of order and fills list of items in order
+		$totalPrice = DaemonController::calculateTotalPrice($full_item_list);
 
-        // Check if given order exists
-        if (!$order) {
-            flash()->error('Could not find order #'.$public_id);
+		// Computes the amount of days the order will result
+		$days = DaemonController::calculateOfferDuration($totalPrice);
 
-            return redirect()->route('home');
-        }
+		// Return Steam Order view
+		return view('steam_order', [
+			'steamOrder' => $steamOrder,
+			'order'      => $order,
+			'duration'   => $days,
+			'totalValue' => $totalPrice,
+			'items'      => $full_item_list,
+		]);
+	}
 
-        // Retrieve what Steam Order is related to that order
-        $steamOrder = $order->orderable()->get()->first();
+	public function sendTradeOffer($public_id)
+	{
+		// Get what order are we trying to send the offer
+		$order = Order::where([
+			'public_id' => $public_id,
 
-        // Checks if we found Steam order details
-        if (!$steamOrder) {
-            flash()->error('Could not find details of order #'.$public_id);
+		])->get()->first();
 
-            return redirect()->route('home');
-        }
+		// Check if given order exists
+		if (!$order) {
+			flash()->error('Could not find order #' . $public_id);
 
-        // Check if the trade offer for this order was already sent
-        if ($steamOrder->tradeoffer_id || $steamOrder->tradeoffer_state) {
-            flash()->warning('There is already a trade offer live for this order!');
+			return redirect()->route('home');
+		}
 
-            return redirect()->route('view-steam-order', $public_id);
-        }
+		// Retrieve what Steam Order is related to that order
+		$steamOrder = $order->orderable()->get()->first();
 
-        // Build trade offer message
-        $message = 'Order #'.$order->public_id.' for '.$order->duration.' days.';
+		// Checks if we found Steam order details
+		if (!$steamOrder) {
+			flash()->error('Could not find details of order #' . $public_id);
 
-        // Call SendTradeOffer
-        $result = DaemonController::sendTradeOffer(Auth::user()->tradelink, $message, $steamOrder->encoded_items);
+			return redirect()->route('home');
+		}
 
-        // Multiple check to see if result is valid
-        if (!$result || !property_exists($result, 'id') || !property_exists($result, 'state')) {
-            flash()->error('Error trying to send a Steam Trade Offer.');
+		// Check if the trade offer for this order was already sent
+		if ($steamOrder->tradeoffer_id || $steamOrder->tradeoffer_state) {
+			flash()->warning('There is already a trade offer live for this order!');
 
-            return redirect()->route('view-steam-order', $public_id);
-        }
+			return redirect()->back();
+		}
 
-        // Persist trade offer information to order
-        $steamOrder->tradeoffer_id = $result->id;
-        $steamOrder->tradeoffer_state = $result->state;
-        $steamOrder->tradeoffer_sent = Carbon::now();
+		// Build trade offer message
+		$message = 'Order #' . $order->public_id . ' for ' . $order->duration . ' days.';
 
-        $steamOrderSaved = $steamOrder->save();
+		// Call SendTradeOffer
+		$result = DaemonController::sendTradeOffer(Auth::user()->tradelink, $message, $steamOrder->encoded_items);
 
-        // Redirect to view if successful
-        if ($steamOrderSaved) {
-            flash()->success('Trade offer sent!');
+		// Check if response was successful
+		if ($result === false)
+			return redirect()->back();
 
-            return redirect()->route('view-steam-order', $public_id);
-        } else {
-            flash()->error('Error saving order details to database!');
+		// Multiple check to see if result is valid
+		if (!$result || !property_exists($result, 'id') || !property_exists($result, 'state')) {
+			flash()->error('Error trying to send a Steam Trade Offer.');
 
-            return redirect()->route('home');
-        }
-    }
+			return redirect()->back();
+		}
+
+		// Persist trade offer information to order
+		$steamOrder->tradeoffer_id = $result->id;
+		$steamOrder->tradeoffer_state = $result->state;
+		$steamOrder->tradeoffer_sent = Carbon::now();
+
+		$steamOrderSaved = $steamOrder->save();
+
+		// Redirect to view if successful
+		if ($steamOrderSaved) {
+			flash()->success('Trade offer sent!');
+
+			return redirect()->route('view-steam-order', $public_id);
+		} else {
+			flash()->error('Error saving order details to database!');
+
+			return redirect()->route('home');
+		}
+	}
 }

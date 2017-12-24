@@ -24,11 +24,11 @@ class SteamOrder extends Model
 
 		$offer = DaemonController::getTradeOffer($id);
 
-		if ($offer === false || !property_exists($offer, 'state')) {
+		if($offer === false) {
 			return false;
 		}
 
-		$this->attributes['tradeoffer_state'] = $offer->state;
+		$this->tradeoffer_state = $offer->state;
 
 		$this->save();
 
@@ -172,8 +172,8 @@ class SteamOrder extends Model
 				case 10: // return 'CanceledBySecondFactor';
 				case 11: // return 'InEscrow';
 				default: // return 'Unknown';
-					return 'error';
-				break;
+					return 'danger';
+					break;
 			}
 		} else {
 			return 'info';

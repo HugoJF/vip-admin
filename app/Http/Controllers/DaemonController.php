@@ -5,197 +5,274 @@ namespace App\Http\Controllers;
 use App\OPSkinsCache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Ixudra\Curl\Facades\Curl;
 
 class DaemonController extends Controller
 {
-    public function loginPost(Request $request)
-    {
-        $code = $request->input('code');
+	public function loginPost(Request $request)
+	{
+		$code = $request->input('code');
 
-        static::curl('login', [
-            'code' => $code,
-        ]);
+		static::curl('login', [
+			'code' => $code,
+		]);
 
-        return redirect()->route('home');
-    }
+		return redirect()->route('home');
+	}
 
-    public function login()
-    {
-        return view('daemon_login');
-    }
+	public function login()
+	{
+		return view('daemon_login');
+	}
 
-    public static function curl($path, $data = null, $asJson = false, $post = false)
-    {
-        $result = Curl::to(env('DAEMON_ADDRESS').'/'.$path);
+	public function logs()
+	{
+		$logs = static::curl('logs');
 
-        if ($data) {
-            $result = $result->withData($data);
-        }
+		if ($logs === false) {
+			return redirect()->back();
+		} else {
+			return view('logs', [
+				'content' => $logs,
+			]);
+		}
+	}
 
-        if ($asJson) {
-            $result = $result->asJson();
-        }
+	public function stderr()
+	{
+		$logs = static::curl('stderr');
 
-        if ($post) {
-            return $result->post();
-        } else {
-            return $result->get();
-        }
-    }
+		if ($logs === false) {
+			return redirect()->back();
+		} else {
+			return view('logs', [
+				'content' => $logs,
+			]);
+		}
+	}
 
-    public static function status()
-    {
-        $result = static::curl('status', null, true);
+	public function stdout()
+	{
+		$logs = static::curl('stdout');
 
-        return $result;
-    }
+		if ($logs === false) {
+			return redirect()->back();
+		} else {
+			return view('logs', [
+				'content' => $logs,
+			]);
+		}
+	}
 
-    public static function isOnline()
-    {
-        $status = self::status();
+	public function kill()
+	{
+		$response = static::curl('kill');
 
-        if ($status && property_exists($status, 'online')) {
-            return $status->online === true;
-        } else {
-            return false;
-        }
-    }
+		if ($response === false) {
+			return redirect()->back();
+		} else {
+			return view('logs', [
+				'content' => $response,
+			]);
+		}
+	}
 
-    public static function consoleLog($message)
-    {
-        $result = static::curl('consoleLog', [
-            'message' => $message,
-        ]);
+	public static function curl($path, $data = null, $post = false)
+	{
+		$result = Curl::to(env('DAEMON_ADDRESS') . '/' . $path);
 
-        return $result;
-    }
+		if ($data) {
+			$result = $result->withData($data);
+		}
 
-    public static function isLoggedIn()
-    {
-        $status = self::status();
+		$result = $result->asJson();
 
-        if ($status && property_exists($status, 'logged')) {
-            return $status->logged === true;
-        } else {
-            return false;
-        }
-    }
+		$response = null;
 
-    public static function updateSourceMod()
-    {
-        $result = static::curl('csgoServerUpdate');
+		if ($post) {
+			$response = $result->post();
+		} else {
+			$response = $result->get();
+		}
 
-        return $result;
-    }
+		if (!isset($response->error) || !isset($response->response) || $response->error == true || !isset($response->response)) {
+			if (isset($response->message)) {
+				flash()->error('Could not contact Steam servers: ' . $response->message);
+			} else {
+				flash()->error('Could not contact Steam servers: Unknown error message');
+			}
 
-    public static function getInventory($steamid)
-    {
-        $inventory = static::curl('inventory', [
-            'steamid' => $steamid,
-        ], true);
+			return false;
+		}
 
-        return $inventory;
-    }
+		return $response->response;
+	}
 
-    public static function getInventoryFromAuthedUser()
-    {
-        $user = Auth::user();
+	public static function status()
+	{
+		$result = static::curl('status');
 
-        if ($user->tradeid) {
-            return self::getInventory($user->tradeid);
-        } else {
-            return self::getInventory($user->steamid);
-        }
-    }
+		return $result;
+	}
 
-    public static function cancelTradeOffer($tradeid)
-    {
-        $result = static::curl('cancelTradeOffer', [
-            'tradeid' => $tradeid,
-        ], true);
+	public static function isOnline()
+	{
+		$status = self::status();
 
-        return $result;
-    }
+		if (isset($status->online)) {
+			return $status->online === true;
+		} else {
+			return false;
+		}
+	}
 
-    public static function sendTradeOffer($tradelink, $message, $encoded_items)
-    {
-        $data = [
-            'tradelink'     => $tradelink,
-            'encoded_items' => $encoded_items,
-            'message'       => $message,
-        ];
+	public static function consoleLog($message)
+	{
+		$result = static::curl('consoleLog', [
+			'message' => $message,
+		]);
 
-        $result = static::curl('sendTradeOffer', [
-            'items' => json_encode($data),
-        ], true, true);
+		return $result;
+	}
 
-        return $result;
-    }
+	public static function isLoggedIn()
+	{
+		$status = self::status();
 
-    public static function getTradeOffer($tradeofferid)
-    {
-        $result = static::curl('getTradeOffer', [
-            'offerid' => $tradeofferid,
-        ], true);
+		if (isset($status->logged)) {
+			return $status->logged === true;
+		} else {
+			return false;
+		}
+	}
 
-        return $result;
-    }
+	public static function updateSourceMod()
+	{
+		$result = static::curl('csgoServerUpdate');
 
-    public static function checkDaemon()
-    {
-        $status = static::curl('status', null, true);
+		return $result;
+	}
 
-        return $status['online'];
-    }
+	public static function getInventory($steamid)
+	{
+		$inventory = static::curl('inventory', [
+			'steamid' => $steamid,
+		]);
 
-    public static function calculateTotalPrice($item_list)
-    {
-        $totalPrice = 0;
+		return $inventory;
+	}
 
-        foreach ($item_list as $item) {
-            $cache = OPSkinsCache::where('name', $item->market_name)->get()->first();
+	public static function getInventoryFromAuthedUser()
+	{
+		$user = Auth::user();
+		if ($user === false)
+			return false;
 
-            if (!$cache) {
-                continue;
-            }
 
-            $totalPrice += $cache->price;
-        }
+		if (isset($user->tradeid)) {
+			$inventory = self::getInventory($user->tradeid);
+		} else {
+			$inventory = self::getInventory($user->steamid);
+		}
 
-        return $totalPrice;
-    }
+		return $inventory;
+	}
 
-    public static function calculateOfferDuration($price)
-    {
-        return floor($price / 4.5);
-    }
+	public static function cancelTradeOffer($tradeid)
+	{
+		$result = static::curl('cancelTradeOffer', [
+			'tradeid' => $tradeid,
+		]);
 
-    public static function getSteam2ID($steamid)
-    {
-        $result = static::curl('steam2', [
-            'steamid' => $steamid,
-        ]);
+		return $result;
+	}
 
-        return $result;
-    }
+	public static function sendTradeOffer($tradelink, $message, $encoded_items)
+	{
+		$data = [
+			'tradelink'     => $tradelink,
+			'encoded_items' => $encoded_items,
+			'message'       => $message,
+		];
 
-    public static function fillItemArray($item_list, $inventory = null)
-    {
-        if ($inventory === null) {
-            $inventory = self::getInventoryFromAuthedUser();
-        }
+		$result = static::curl('sendTradeOffer', [
+			'items' => json_encode($data),
+		], true);
 
-        $full_item_list = [];
+		return $result;
+	}
 
-        foreach ($item_list as $item) {
-            foreach ($inventory as $inv) {
-                if ($inv->assetid == $item->assetid) {
-                    $full_item_list[] = $inv;
-                }
-            }
-        }
+	public static function getTradeOffer($tradeofferid)
+	{
+		$result = static::curl('getTradeOffer', [
+			'offerid' => $tradeofferid,
+		]);
 
-        return $full_item_list;
-    }
+		return $result;
+	}
+
+	public static function checkDaemon()
+	{
+		$status = static::curl('status');
+		if (isset($status['online'])) {
+			return $status['online'];
+		} else {
+			return false;
+		}
+	}
+
+	public static function calculateTotalPrice($item_list)
+	{
+		$totalPrice = 0;
+
+		foreach ($item_list as $item) {
+			$cache = OPSkinsCache::where('name', $item->market_name)->get()->first();
+
+			if (!$cache) {
+				continue;
+			}
+
+			$totalPrice += $cache->price;
+		}
+
+		return $totalPrice;
+	}
+
+	public static function calculateOfferDuration($price)
+	{
+		return floor($price / 4.5);
+	}
+
+	public static function getSteam2ID($steamid)
+	{
+		$result = static::curl('steam2', [
+			'steamid' => $steamid,
+		]);
+
+		return $result;
+	}
+
+	public static function fillItemArray($item_list, $inventory = null)
+	{
+		if ($inventory === null) {
+			$inventory = self::getInventoryFromAuthedUser();
+		}
+
+		if ($inventory === false) {
+			return false;
+		}
+
+		$full_item_list = [];
+
+		foreach ($item_list as $item) {
+			foreach ($inventory as $inv) {
+				if ($inv->assetid == $item->assetid) {
+					$full_item_list[] = $inv;
+				}
+			}
+		}
+
+		return $full_item_list;
+	}
 }

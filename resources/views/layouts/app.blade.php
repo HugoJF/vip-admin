@@ -88,6 +88,18 @@
                     <li {{ Route::is('daemon-login') ? 'class=active' : ''}}><a href="{{ route('daemon-login') }}">Daemon Login</a></li>
                 </ul>
             @endif
+            <ul class="nav nav-sidebar">
+                <li {{ Route::is('daemon-logs') ? 'class=active' : ''}}><a href="{{ route('daemon-logs') }}">Daemon Logs</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li {{ Route::is('daemon-stdout') ? 'class=active' : ''}}><a href="{{ route('daemon-stdout') }}">Daemon stdout</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li {{ Route::is('daemon-stderr') ? 'class=active' : ''}}><a href="{{ route('daemon-stderr') }}">Daemon stderr</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li {{ Route::is('daemon-kill') ? 'class=active' : ''}}><a href="{{ route('daemon-kill') }}">Daemon kill</a></li>
+            </ul>
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
