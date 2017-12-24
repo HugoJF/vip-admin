@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SteamOrder extends Model
 {
+
 	protected $table = 'steam-orders';
 
 	protected $dates = ['tradeoffer_sent'];
@@ -24,11 +25,11 @@ class SteamOrder extends Model
 
 		$offer = DaemonController::getTradeOffer($id);
 
-		if($offer === false) {
+		if ($offer === false || !property_exists($offer, 'state')) {
 			return false;
 		}
 
-		$this->tradeoffer_state = $offer->state;
+		$this->attributes['tradeoffer_state'] = $offer->state;
 
 		$this->save();
 
@@ -172,7 +173,7 @@ class SteamOrder extends Model
 				case 10: // return 'CanceledBySecondFactor';
 				case 11: // return 'InEscrow';
 				default: // return 'Unknown';
-					return 'danger';
+					return 'error';
 					break;
 			}
 		} else {
