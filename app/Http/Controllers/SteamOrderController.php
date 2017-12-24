@@ -255,7 +255,7 @@ class SteamOrderController extends Controller
 
         // Redirect to view if successful
         if ($steamOrderSaved) {
-            flash()->success('Trade offer sent!');
+            flash()->success('Trade offer sent! Please notice you have ' . config('app.expiration_time_min') . ' minutes to accept it before this order expires!');
 
             return redirect()->route('view-steam-order', $public_id);
         } else {
