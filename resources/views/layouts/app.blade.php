@@ -76,7 +76,7 @@
                 <li {{ Route::is('home') ? 'class=active' : ''}}><a href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li {{ Route::is('inventory') ? 'class=active' : ''}}><a href="{{ route('inventory') }}">Inventory</a></li>
+                <li {{ Route::is('inventory') ? 'class=active' : ''}}><a href="{{ route('inventory') }}">Buy VIP</a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li {{ Route::is('orders') ? 'class=active' : ''}}><a href="{{ route('orders') }}">Orders
