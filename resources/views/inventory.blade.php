@@ -192,8 +192,8 @@ $control = 1;
                     price += JSON.parse(elem.value).price;
                 });
 
-                var days = Math.round(price / {{ config('app.cost_per_day') }} * 100 );
-                price = Math.round(price * 100) / 100;
+                var days = Math.floor(price / {{ config('app.cost_per_day') }} * 100 );
+                price = Math.floor(price * 100) / 100;
 
                 $('#totalPrice > span > u').text('Total Price: $ ' + price)
                 $('#totalDays > span > u').text('Total Days: ' + days + ' days');
