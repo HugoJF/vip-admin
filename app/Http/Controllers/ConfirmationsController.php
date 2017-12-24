@@ -56,6 +56,7 @@ class ConfirmationsController extends Controller
 
         $confirmation->public_id = substr(md5(microtime()), 0, config('app.public_id_size'));
         $confirmation->baseOrder()->associate($order);
+        $confirmation->user()->associate(Auth::user());
         $confirmation->start_period = $basePeriod;
         $confirmation->end_period = $basePeriod->addDays($order->duration);
 
