@@ -10,13 +10,13 @@ class IsAdmin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-
         $allowedId = ['76561198026414330', '76561198175503989', '76561198033283983'];
 
         if (!in_array(Auth::user()->steamid, $allowedId)) {
@@ -24,6 +24,7 @@ class IsAdmin
 
             return redirect('/');
         }
+
         return $next($request);
     }
 }
