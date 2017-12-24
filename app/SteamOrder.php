@@ -172,7 +172,7 @@ class SteamOrder extends Model
                 case 10: // return 'CanceledBySecondFactor';
                 case 11: // return 'InEscrow';
                 default: // return 'Unknown';
-                    return 'error';
+                    return 'danger';
                     break;
             }
         } else {
