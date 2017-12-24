@@ -124,7 +124,7 @@ $control = 1;
 @endphp
 
 @section('content')
-    <h1>Select your items</h1>
+    <h1>Select your items you want to trade</h1>
 
     <form action="/create-steam-offer">
         <div class="row">

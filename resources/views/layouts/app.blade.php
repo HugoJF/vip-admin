@@ -99,9 +99,12 @@
                     <li {{ Route::is('daemon-stderr') ? 'class=active' : ''}}><a href="{{ route('daemon-stderr') }}">Daemon stderr</a></li>
                 </ul>
                 <ul class="nav nav-sidebar">
-                    <li {{ Route::is('daemon-kill') ? 'class=active' : ''}}><a href="{{ route('daemon-kill') }}">Daemon kill</a></li>
+                    <li {{ Route::is('daemon-kill') ? 'class=active' : ''}}><a href="{{ route('daemon-kill') }}">Daemon Kill</a></li>
                 </ul>
             @endif
+            <ul class="nav nav-sidebar">
+                <li><a href="http://steamcommunity.com/id/de_nerd" target="_blank">Ajuda</a></li>
+            </ul>
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

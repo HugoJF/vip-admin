@@ -18,15 +18,15 @@ class SteamOrderController extends Controller
 
 		// Check if response was successful
 		if ($inventory === false) {
+			// No need to set message, if its false, DaemonController already set a message
 			return redirect()->route('home');
 		}
 
 		// Retrieves just the names from the inventory
 		$inventoryNames = [];
 		foreach ($inventory as $item) {
-			if (!$item || !property_exists($item, 'market_name')) {
+			if (!isset($item->market_name))
 				continue;
-			}
 			$inventoryNames[] = $item->market_name;
 		}
 
