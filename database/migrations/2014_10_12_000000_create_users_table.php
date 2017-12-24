@@ -20,7 +20,6 @@ class CreateUsersTable extends Migration
             $table->string('avatar');
             $table->string('steamid');
             $table->boolean('accepted')->default(false);
-            $table->string('tradeid')->nullable();
             $table->string('tradelink')->nullable();
             $table->string('email')->unique()->nullable();
             $table->rememberToken();
