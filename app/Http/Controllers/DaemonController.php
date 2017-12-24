@@ -171,7 +171,7 @@ class DaemonController extends Controller
         }
 
         if (isset($user->tradelink)) {
-            $inventory = self::getInventory($user->tradeid());
+            $inventory = self::getInventory($user->tradeid;
         } else {
             $inventory = self::getInventory($user->steamid);
         }

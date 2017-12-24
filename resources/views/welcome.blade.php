@@ -3,7 +3,6 @@
 @section('content')
     <div class="jumbotron">
         <h1> Welcome, {{ Auth::user()->name ? Auth::user()->name : Auth::user()->username }}</h1>
-
         @if(Auth::user()->accepted != true)
             <p>Essa plataforma administra todas as compras de slot VIP do meu servidor de Counter-Strike: Global Offensive no IP: <strong>177.54.147.159:27047</strong></p>
 
