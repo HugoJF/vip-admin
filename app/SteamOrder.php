@@ -21,7 +21,7 @@ class SteamOrder extends Model
 
 	public function refresh()
 	{
-		$id = $this->tradeoffer_id;
+		$id = $this->attributes['tradeoffer_id'];
 
 		$offer = DaemonController::getTradeOffer($id);
 
@@ -31,7 +31,6 @@ class SteamOrder extends Model
 
 		$this->attributes['tradeoffer_state'] = $offer->state;
 
-		$this->touch();
 		$this->save();
 
 		return $offer;

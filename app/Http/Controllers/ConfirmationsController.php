@@ -87,7 +87,7 @@ class ConfirmationsController extends Controller
         foreach ($confirmations as $confirmation) {
             $steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
 
-            if($steam2 === false) {
+            if ($steam2 === false) {
                 return redirect()->route('home');
             }
 
