@@ -249,9 +249,9 @@ return [
 
     'expiration_time_min' => 1,
 
-    'cost_per_day' => 4,
+    'cost_per_day'   => 4,
     'sentry_enabled' => env('SENTRY_ENABLED'),
     'daemon_address' => env('DAEMON_ADDRESS'),
-    'update_server' => env('UPDATE_SERVER'),
+    'update_server'  => env('UPDATE_SERVER'),
 
 ];
