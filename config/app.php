@@ -182,8 +182,6 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
 
