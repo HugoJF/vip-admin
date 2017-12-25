@@ -142,7 +142,7 @@ $control = 1;
                     @endphp
                     <div class="col-sm-6 col-md-2">
                         <div class="thumbnail">
-                            <img width="200px" src="http://steamcommunity-a.akamaihd.net/economy/image/{{ $item->icon_url }}" alt="...">
+                            <img width="200px" src="https://steamcommunity-a.akamaihd.net/economy/image/{{ $item->icon_url }}" alt="...">
 
                             <div class="caption">
 
