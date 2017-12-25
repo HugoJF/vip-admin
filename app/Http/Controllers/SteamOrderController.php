@@ -100,15 +100,15 @@ class SteamOrderController extends Controller
         }
 
         // Check if order is above maximum duration
-        if ($duration > config('app.max_order_duration', 120)) {
-            flash()->error('Your order is above the maximum allowed duration of '.config('app.max_order_duration', 120).' days!');
+        if ($duration > $maxDateMaxDuration) {
+            flash()->error('Your order is above the maximum allowed duration of '.$maxDateMaxDuration.' days!');
 
             return redirect()->route('inventory');
         }
 
         // Check if order is above maximum duration
-        if ($duration > $maxDateMaxDuration) {
-            flash()->error('Your order is above the maximum allowed duration of '.$maxDateMaxDuration.' days!');
+        if ($duration > config('app.max_order_duration', 120)) {
+            flash()->error('Your order is above the maximum allowed duration of '.config('app.max_order_duration', 120).' days!');
 
             return redirect()->route('inventory');
         }
