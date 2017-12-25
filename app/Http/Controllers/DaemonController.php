@@ -80,7 +80,7 @@ class DaemonController extends Controller
 
     public static function curl($path, $data = null, $post = false)
     {
-        $result = Curl::to(env('DAEMON_ADDRESS').'/'.$path);
+        $result = Curl::to(config('app.daemon_address').'/'.$path);
 
         if ($data) {
             $result = $result->withData($data);

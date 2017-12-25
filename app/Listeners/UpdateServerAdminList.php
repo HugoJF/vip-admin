@@ -54,7 +54,7 @@ class UpdateServerAdminList
             'html' => false,
         ]);
 
-        if (env('UPDATE_SERVER') == 'true') {
+        if (config('app.update_server') == 'true') {
             Storage::put('admins_simple.ini', $view);
 
             DaemonController::updateSourceMod();
