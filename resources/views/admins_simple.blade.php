@@ -48,9 +48,10 @@
 
 "STEAM_1:1:107619130"		"99:z" // Teaguenho			| Forevis
 "STEAM_1:1:36509127"		"99:z" // Eu				| Forevis
+"STEAM_0:0:53359806"		"50:a" // Lari				| Forevis
 
 "STEAM_1:1:64297652"		"50:a" // Vitorlk74			| Sub
-"STEAM_0:0:53359806"		"50:a" // Lari				| Forevis
+"STEAM_0:0:42974714"		"50:a" // Ximus				| Forevis
 
 // ZUERA NO SV
 "STEAM_1:1:163386176"		"50:a" // JRP				| Dezembro
