@@ -87,7 +87,7 @@ class RefreshOPSkinsCache extends Command
                         'price' => $meanSum / $sumCount,
                     ]);
                 } catch (\Exception $e) {
-                    $this->warn('Error: ' . $e->getMessage());
+                    $this->warn('Error: '.$e->getMessage());
                     continue;
                 }
                 if ($this->option('detailed')) {
