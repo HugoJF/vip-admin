@@ -247,9 +247,9 @@ return [
     'max_order_duration' => 120,
     'max_order_date'     => '20/02/2018',
 
-    'expiration_time_min' => 1,
+    'expiration_time_min' => 30,
 
-    'cost_per_day'   => 2,
+    'cost_per_day'   => 4,
     'sentry_enabled' => env('SENTRY_ENABLED'),
     'daemon_address' => env('DAEMON_ADDRESS'),
     'update_server'  => env('UPDATE_SERVER'),

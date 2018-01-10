@@ -53,28 +53,17 @@
 "STEAM_1:1:64297652"		"50:a" // Vitorlk74			| Sub
 "STEAM_0:0:42974714"		"50:a" // Ximus				| Forevis
 
-// ZUERA NO SV
-"STEAM_1:1:163386176"		"50:a" // JRP				| Dezembro
-"STEAM_1:1:33813987"		"50:a" // DaN				| Dezembro
-
-// TWEETER
-"STEAM_0:1:197194388"		"50:a" // Caio_Secundino	| Dezembro
-"STEAM_1:1:243947646"		"50:a" // No0box2			| Dezembro
-"STEAM_0:0:176447699"		"50:a" // ktwgg				| Dezembro
-"STEAM_0:1:58655438"		"50:a" // skyadm			| Dezembro
-"STEAM_0:1:79521404"		"50:a" // joao pedro		| Dezembro
-
 // CAPS
-// "STEAM_1:1:243947646"	"50:a" // No0box2			| Janeiro
-// "STEAM_1:1:243947646"	"50:a" // No0box2			| Fevereiro
+"STEAM_1:1:243947646"	"50:a" // No0box2			| Janeiro e Fevereiro
 
 // VIPS MERCADO PAGO
 "STEAM_0:1:176486595"		"50:a" // HUAL.2			| R$ 10,00 - #3254351134
 "STEAM_1:1:25030091"		"50:a" // HuaL				| R$ 10,00 - #3254351134
+"STEAM_0:0:50794943"		"50:a" // NuneS				| R$ 4,00 - #3313430344
 
 // VIPS MERCADO PAGO
 "STEAM_0:0:234743042"		"50:a" // Infel1z			| Glock-18 | Water Elemental (Field-Tested)
-"STEAM_0:0:66095696"		"50:a" // Analise de Variancia | Chroma Case 3 Key
+"STEAM_0:0:66095696"		"50:a" // Analise de Variancia | Chroma Case 3 Key + 2 chaves
 
 // VIP ADMIN GENERATED
 @foreach($list as $item)
