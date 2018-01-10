@@ -81,10 +81,15 @@ class RefreshOPSkinsCache extends Command
             }
 
             if ($sumCount >= 7) {
-                OPSkinsCache::create([
-                    'name'  => $name,
-                    'price' => $meanSum / $sumCount,
-                ]);
+                try {
+                    OPSkinsCache::create([
+                        'name'  => $name,
+                        'price' => $meanSum / $sumCount,
+                    ]);
+                } catch (\Exception $e) {
+                    $this->warn('Error: ' . $e->getMessage());
+                    continue;
+                }
                 if ($this->option('detailed')) {
                     $this->info($name.' added to database = '.$meanSum.' / '.$sumCount.' = '.($meanSum / $sumCount));
                 }
