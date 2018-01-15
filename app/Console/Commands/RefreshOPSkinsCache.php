@@ -6,6 +6,7 @@ use App\OPSkinsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Ixudra\Curl\Facades\Curl;
+use Illuminate\Support\Facades\Log;
 
 class RefreshOPSkinsCache extends Command
 {
@@ -41,25 +42,31 @@ class RefreshOPSkinsCache extends Command
     public function handle()
     {
         $this->info('Setting new memory limit.');
+        \Log::info('Setting new memory limit.');
         ini_set('memory_limit', '512M');
 
         $this->info('Downloading OPSkins information from CDN...');
+        \Log::info('Downloading OPSkins information from CDN...');
         $inventory = Curl::to('https://api.opskins.com/IPricing/GetPriceList/v2/?appid=730')->asJson()->get();
         $this->info('Received information from CDN!');
+        \Log::info('Received information from CDN!');
 
         if (!isset($inventory->response)) {
             $this->error('Invalid response from OPSkins, quitting before truncating database');
+            \Log::error('Invalid response from OPSkins, quitting before truncating database');
 
             return;
         }
 
         $size = count((array) $inventory->response);
         $this->info('Received '.$size.' items from OPSkins.');
+        \Log::info('Received '.$size.' items from OPSkins.');
 
         $index = 1;
         $oldPercent = 0;
 
         $this->info('Truncating database.');
+        \Log::info('Truncating database.');
         OPSkinsCache::truncate();
 
         $now = Carbon::now();
@@ -69,6 +76,7 @@ class RefreshOPSkinsCache extends Command
             if ($perCent != $oldPercent) {
                 // $this->info('Sending [' . $index++ . '/' . $size . '] items to database.');
                 $this->info('Sent '.($perCent * 10).'% items to database.');
+                \Log::info('Sent '.($perCent * 10).'% items to database.');
                 $oldPercent = $perCent;
             }
             $name = $key;
@@ -94,14 +102,17 @@ class RefreshOPSkinsCache extends Command
                     ]);
                 } catch (\Exception $e) {
                     $this->warn('Error: '.$e->getMessage());
+                    \Log::warning('Error: '.$e->getMessage());
                     continue;
                 }
                 if ($this->option('detailed')) {
                     $this->info($name.' added to database = '.$meanSum.' / '.$sumCount.' = '.($meanSum / $sumCount));
+                    \Log::info($name.' added to database = '.$meanSum.' / '.$sumCount.' = '.($meanSum / $sumCount));
                 }
             } else {
                 if ($this->option('detailed')) {
                     $this->warn($name.' returned < 7 counts');
+                    \Log::warning($name.' returned < 7 counts');
                 }
             }
         }
