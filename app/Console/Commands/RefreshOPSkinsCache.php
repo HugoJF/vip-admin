@@ -47,6 +47,12 @@ class RefreshOPSkinsCache extends Command
         $inventory = Curl::to('https://api.opskins.com/IPricing/GetPriceList/v2/?appid=730')->asJson()->get();
         $this->info('Received information from CDN!');
 
+        if(!isset($inventory->response) || !isset($inventory->error) || $inventory->error == true) {
+            $this->error('Invalid resposne from OPSkins, quitting before truncating database');
+
+            return;
+        }
+
         $size = count((array) $inventory->response);
         $this->info('Received '.$size.' items from OPSkins.');
 
