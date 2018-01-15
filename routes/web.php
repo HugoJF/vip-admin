@@ -19,6 +19,7 @@ Route::get('create-confirmation/{public_id}', 'ConfirmationsController@createCon
 Route::get('orders', 'OrdersController@view')->middleware('auth', 'accepted')->name('orders');
 
 Route::group(['middleware' => ['admin', 'daemon.online']], function () {
+    Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
     Route::get('logs', 'DaemonController@logs')->name('daemon-logs');
     Route::get('stdout', 'DaemonController@stdout')->name('daemon-stdout');
     Route::get('stderr', 'DaemonController@stderr')->name('daemon-stderr');

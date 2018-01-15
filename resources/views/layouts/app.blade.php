@@ -101,6 +101,9 @@
                 <ul class="nav nav-sidebar">
                     <li {{ Route::is('daemon-kill') ? 'class=active' : ''}}><a href="{{ route('daemon-kill') }}">Daemon Kill</a></li>
                 </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="{{ route('laravel-logs') }}" target="_blank">Laravel Logs</a></li>
+                </ul>
             @endif
             <ul class="nav nav-sidebar">
                 <li><a href="http://steamcommunity.com/id/de_nerd" target="_blank">Ajuda</a></li>
