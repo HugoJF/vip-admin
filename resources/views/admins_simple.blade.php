@@ -52,6 +52,12 @@
 
 "STEAM_1:1:64297652"		"50:a" // Vitorlk74			| Sub
 "STEAM_0:0:42974714"		"50:a" // Ximus				| Forevis
+"STEAM_0:1:197194388"		"50:a" // Caio				| Sub
+
+// PROS
+"STEAM_1:0:17418242"		"50:a" // tatazin
+"STEAM_1:0:24572716"		"50:a" // delboNi
+"STEAM_1:0:89523495"		"50:a" // land1n
 
 // CAPS
 "STEAM_1:1:243947646"	"50:a" // No0box2			| Janeiro e Fevereiro
