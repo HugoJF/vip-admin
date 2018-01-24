@@ -72,7 +72,7 @@ class Confirmation extends Model
 
 				DaemonController::updateSourceMod();
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			flash()->error("Error syncing server: " . $e->getMessage());
 
 			return redirect()->route('home');
