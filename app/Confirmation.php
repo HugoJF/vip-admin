@@ -5,6 +5,8 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\DaemonController;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class Confirmation extends Model
 {

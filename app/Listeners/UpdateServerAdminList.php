@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Confirmation;
 use App\Events\Event;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\View;
 
 class UpdateServerAdminList
 {
