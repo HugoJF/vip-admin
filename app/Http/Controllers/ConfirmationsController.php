@@ -102,7 +102,7 @@ class ConfirmationsController extends Controller
     {
         $result = Confirmation::syncServer();
 
-        if($result === true) {
+        if ($result === true) {
             flash()->success('Server synced!');
 
             return redirect()->route('home');

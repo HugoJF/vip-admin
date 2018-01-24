@@ -24,7 +24,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\SyncServerTriggered' => [
             'App\Listeners\UpdateServerAdminList',
-        ]
+        ],
     ];
 
     /**
