@@ -21,7 +21,7 @@
                 <td>{{ $confirmation->public_id }}</td>
                 <td scope="row"><a href="{{ route('view-steam-order', $confirmation->baseOrder->public_id) }}">#{{ $confirmation->baseOrder->public_id }}</a></td>
                 @if($isAdmin)
-                    <td><a href="http://steamcommunity.com/profiles/{{ $confirmation->user->steamid }}">{{ $confirmation->user->username }}</a></td>
+                    <td><a href="http://steamcommunity.com/profiles/{{ $confirmation->user->steamid }}">#{{ $confirmation->user->username }}</a></td>
                 @endif
                 <td>{{ $confirmation->start_period }}</td>
                 <td>{{ $confirmation->end_period }}</td>
