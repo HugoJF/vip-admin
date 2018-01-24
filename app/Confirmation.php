@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\DaemonController;
 
 class Confirmation extends Model
 {
