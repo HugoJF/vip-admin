@@ -87,7 +87,7 @@ class ConfirmationsController extends Controller
         $user = Auth::user();
 
         if ($user->isAdmin()) {
-            $confirmations = Confirmation::with('user', 'order')->get();
+            $confirmations = Confirmation::with('user', 'baseOrder')->get();
         } else {
             $confirmations = Auth::user()->confirmations()->with('user', 'baseOrder')->get();
         }
