@@ -92,7 +92,7 @@ class ConfirmationsController extends Controller
             $confirmations = Auth::user()->confirmations()->with('user', 'baseOrder')->get();
         }
 
-        return view('orders', [
+        return view('confirmations', [
             'confirmations' => $confirmations,
             'isAdmin'       => $user->isAdmin(),
         ]);
