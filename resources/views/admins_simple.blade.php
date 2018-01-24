@@ -73,7 +73,8 @@
 "STEAM_0:1:176486595"		"50:a" // HUAL.2			| R$ 10,00 - #3254351134
 "STEAM_1:1:25030091"		"50:a" // HuaL				| R$ 10,00 - #3254351134
 "STEAM_0:0:50794943"		"50:a" // NuneS				| R$ 4,00 - #3313430344
-"STEAM_0:1:58655438"		"50"a  // AdM 				| R$ 4,00 - #3346841365
+"STEAM_0:1:58655438"		"50:a"  // AdM 				| R$ 4,00 - #3346841365
+"STEAM_0:1:149750887"		"50:a"	// PeeP				| R$ 4,00 - Ainda nao caiu
 
 // VIPS MERCADO PAGO
 "STEAM_0:0:234743042"		"50:a" // Infel1z			| Glock-18 | Water Elemental (Field-Tested)
