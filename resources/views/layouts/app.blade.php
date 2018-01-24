@@ -23,7 +23,34 @@
 
     @yield('head')
 
-            <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <style>
+        #accordion .glyphicon {
+            margin-right: 10px;
+        }
+
+        .panel-collapse > .list-group .list-group-item:first-child {
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+        }
+
+        .panel-collapse > .list-group .list-group-item {
+            border-width: 1px 0;
+        }
+
+        .panel-collapse > .list-group {
+            margin-bottom: 0;
+        }
+
+        .panel-collapse .list-group-item {
+            border-radius: 0;
+        }
+
+        .panel-collapse .list-group .active a {
+            color: #fff;
+        }
+    </style>
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]>
     <script src="/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="/js/ie-emulation-modes-warning.js"></script>
@@ -62,6 +89,7 @@
                     <li><a><span class="label label-danger">Daemon is disconnected from Steam servers</span></a></li>
                 @endif
                 <li><a href="{{ route('settings') }}">Settings</a></li>
+
                 <li><a href="{{ route('logout') }}">Logout</a></li>
             </ul>
         </div>
@@ -91,24 +119,163 @@
             @if(Auth::user()->isAdmin())
                 <ul class="nav nav-sidebar">
                     <li {{ Route::is('daemon-logs') ? 'class=active' : ''}}><a href="{{ route('daemon-logs') }}">Daemon Logs</a></li>
-                </ul>
-                <ul class="nav nav-sidebar">
                     <li {{ Route::is('daemon-stdout') ? 'class=active' : ''}}><a href="{{ route('daemon-stdout') }}">Daemon stdout</a></li>
-                </ul>
-                <ul class="nav nav-sidebar">
                     <li {{ Route::is('daemon-stderr') ? 'class=active' : ''}}><a href="{{ route('daemon-stderr') }}">Daemon stderr</a></li>
-                </ul>
-                <ul class="nav nav-sidebar">
                     <li {{ Route::is('daemon-kill') ? 'class=active' : ''}}><a href="{{ route('daemon-kill') }}">Daemon Kill</a></li>
                 </ul>
                 <ul class="nav nav-sidebar">
                     <li><a href="{{ route('laravel-logs') }}" target="_blank">Laravel Logs</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="dropdown-header">Dropdown heading</li>
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
                 </ul>
             @endif
             <ul class="nav nav-sidebar">
                 <li><a href="http://steamcommunity.com/id/de_nerd" target="_blank">Ajuda</a></li>
             </ul>
+
+
+            <div class="panel-group" id="accordion">
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                <span class="glyphicon glyphicon-asterisk"></span>VIP-Admin
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <ul class="list-group">
+                            <li class="list-group-item {{ Route::is('home') ? 'active' : ''}}">
+                                <span class="glyphicon glyphicon-home"></span>
+                                <a href="{{ route('home') }}">Home</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                <span class="glyphicon glyphicon-star"></span>VIP
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <ul class="list-group">
+                            <li class="list-group-item {{ Route::is('inventory') ? 'active' : ''}}">
+                                <span class="glyphicon glyphicon-usd"></span>
+                                <a href="{{ route('inventory') }}">Buy VIP with Skins</a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <span class="glyphicon glyphicon-gift"></span>
+                                <a href="#">Buy VIP with Tokens</a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <span class="glyphicon glyphicon-credit-card"></span>
+                                <a href="#">Buy VIP with MercadoPago</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                <span class="glyphicon glyphicon-tasks"></span>Daemon
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                        <ul class="list-group">
+                            @if(\App\Http\Controllers\DaemonController::isOnline() && !\App\Http\Controllers\DaemonController::isLoggedIn())
+                                <li class="list-group-item {{ Route::is('daemon-login') ? 'active' : ''}}">
+                                    <span class="glyphicon glyphicon-play"></span>
+                                    <a href="{{ route('daemon-login') }}">Login</a>
+                                </li>
+                            @endif
+                            <li class="list-group-item {{ Route::is('daemon-logs') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-console"></span>
+                                <a href="{{ route('daemon-logs') }}">Logs</a>
+                            </li>
+
+                            <li class="list-group-item {{ Route::is('daemon-stdout') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-console"></span>
+                                <a href="{{ route('daemon-stdout') }}">Stdout</a>
+                            </li>
+
+                            <li class="list-group-item {{ Route::is('daemon-stderr') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-console"></span>
+                                <a href="{{ route('daemon-stderr') }}">Stderr</a>
+                            </li>
+
+                            <li class="list-group-item {{ Route::is('daemon-kill') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <a href="{{ route('daemon-kill') }}">Kill</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                <span class="glyphicon glyphicon-user"></span>Account
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse in">
+                        <ul class="list-group">
+                            <li class="list-group-item {{ Route::is('orders') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-usd"></span>
+                                <a href="{{ route('orders') }}">Orders</a>
+                                <span class="badge">{{ Auth::user()->orders()->count() }}</span>
+                            </li>
+                            <li class="list-group-item {{ Route::is('settings') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                <a href="{{ route('settings') }}">Settings</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                <span class="glyphicon glyphicon-cloud"></span>Laravel
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse in">
+                        <ul class="list-group">
+                            <li class="list-group-item {{ Route::is('laravel-logs') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-console"></span>
+                                <a href="{{ route('laravel-logs') }}">Logs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             @include('flash::message')
