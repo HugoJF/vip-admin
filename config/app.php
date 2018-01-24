@@ -246,7 +246,7 @@ return [
     // Make sure it has a value
     'max_order_price'    => 5200022,
     'max_order_duration' => 120,
-    'max_order_date'     => '20/02/2018',
+    'max_order_date'     => '20/03/2018',
 
     'expiration_time_min' => 30,
 
