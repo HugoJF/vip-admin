@@ -87,4 +87,5 @@ class Confirmation extends Model
 
 		return $this->start_period <= $now && $this->end_period >= $now;
 	}
+
 }
