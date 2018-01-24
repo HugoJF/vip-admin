@@ -108,12 +108,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero">
                                 <span class="glyphicon glyphicon-asterisk"></span>VIP-Admin
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
+                    <div id="collapseZero" class="panel-collapse collapse in">
                         <ul class="list-group">
                             <li class="list-group-item {{ Route::is('home') ? 'active' : ''}}">
                                 <span class="glyphicon glyphicon-home"></span>
