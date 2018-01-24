@@ -38,7 +38,7 @@ class Confirmation extends Model
     {
         DaemonController::consoleLog('Generating_new_admins_simple');
 
-        $confirmations = Confirmation::valid()->with('baseOrder.user', 'baseOrder')->get();
+        $confirmations = self::valid()->with('baseOrder.user', 'baseOrder')->get();
 
         $steamid = [];
 

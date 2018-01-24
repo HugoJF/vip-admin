@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ConfirmationGenerated
+class SyncServerTriggered
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,7 +22,6 @@ class ConfirmationGenerated
      */
     public function __construct()
     {
-
     }
 
     /**
