@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Http\Controllers\DaemonController;
+use App\Http\Controllers\DaemonController;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
