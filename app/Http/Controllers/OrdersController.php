@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use App\Order;
+use Illuminate\Support\Facades\Auth;
 
 class OrdersController extends Controller
 {
-	public function view()
-	{
-		$user = Auth::user();
+    public function view()
+    {
+        $user = Auth::user();
 
-		if ($user->isAdmin()) {
-			$orders = Order::with('orderable')->get();
-		} else {
-			$orders = Auth::user()->orders()->with('orderable', 'user')->get();
-		}
+        if ($user->isAdmin()) {
+            $orders = Order::with('orderable')->get();
+        } else {
+            $orders = Auth::user()->orders()->with('orderable', 'user')->get();
+        }
 
-		return view('orders', [
-			'orders' => $orders,
-			'isAdmin' => $user->isAdmin(),
-		]);
-	}
+        return view('orders', [
+            'orders'  => $orders,
+            'isAdmin' => $user->isAdmin(),
+        ]);
+    }
 }
