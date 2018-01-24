@@ -16,11 +16,11 @@
         <tbody>
         @foreach($confirmations as $confirmation)
             <tr>
-                <td scope="row"><a href="{{ route('view-steam-order', $confirmation->order->public_id) }}">#{{ $confirmation->order->public_id }}</a></td>
+                <td scope="row"><a href="{{ route('view-steam-order', $confirmation->baseOrder->public_id) }}">#{{ $confirmation->baseOrder->public_id }}</a></td>
                 <td>{{ $confirmation->start_period }}</td>
                 <td>{{ $confirmation->end_period }}</td>
                 <td><span class="label label-{{ $confirmation->isValid() ? 'success' : 'danger' }}"> {{ $confirmation->isValid() ? 'Valid' : 'Expired' }}</span></td>
-                <td><a class="btn btn-default" href="{{ route('view-steam-order', $confirmation->order->public_id) }}">View order</a></td>
+                <td><a class="btn btn-default" href="{{ route('view-steam-order', $confirmation->baseOrder->public_id) }}">View order</a></td>
             </tr>
         @endforeach
 
