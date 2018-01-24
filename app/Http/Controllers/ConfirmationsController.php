@@ -94,7 +94,7 @@ class ConfirmationsController extends Controller
 
         return view('orders', [
             'confirmations' => $confirmations,
-            'isAdmin' => $user->isAdmin(),
+            'isAdmin'       => $user->isAdmin(),
         ]);
     }
 
