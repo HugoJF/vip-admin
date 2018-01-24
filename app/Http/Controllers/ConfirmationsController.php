@@ -50,8 +50,10 @@ class ConfirmationsController extends Controller
             return redirect()->route('home');
         }
 
+        // Get last confirmation generated for the User
         $latestConfirmation = Auth::user()->confirmations()->valid()->orderBy('end_period', 'desc')->first();
 
+        // The base period for the Confirmation should be now or the last valid confirmation
         if ($latestConfirmation) {
             $basePeriod = $latestConfirmation->end_period;
         } else {
