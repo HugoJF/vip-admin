@@ -82,6 +82,22 @@ class ConfirmationsController extends Controller
         return redirect()->route('view-steam-order', $public_id);
     }
 
+    public function view()
+    {
+        $user = Auth::user();
+
+        if ($user->isAdmin()) {
+            $confirmations = Confirmation::with('user', 'order')->get();
+        } else {
+            $confirmations = Auth::user()->confirmations()->with('user', 'order')->get();
+        }
+
+        return view('orders', [
+            'confirmations' => $confirmations,
+            'isAdmin' => $user->isAdmin(),
+        ]);
+    }
+
     public function generateAdminsSimple()
     {
         // Caches Carbon::now();

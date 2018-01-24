@@ -213,6 +213,11 @@
                                 <a href="{{ route('orders') }}">Orders</a>
                                 <span class="badge">{{ Auth::user()->orders()->count() }}</span>
                             </li>
+                            <li class="list-group-item {{ Route::is('confirmations') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                <a href="{{ route('confirmations') }}">Confirmations</a>
+                                <span class="badge">{{ Auth::user()->confirmations()->count() }}</span>
+                            </li>
                             <li class="list-group-item {{ Route::is('settings') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-cog"></span>
                                 <a href="{{ route('settings') }}">Settings</a>

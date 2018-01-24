@@ -17,6 +17,7 @@ Route::get('admins_simple', 'ConfirmationsController@generateAdminsSimple')->mid
 Route::get('create-confirmation/{public_id}', 'ConfirmationsController@createConfirmation')->middleware(['auth', 'daemon', 'accepted'])->name('create-confirmation');
 
 Route::get('orders', 'OrdersController@view')->middleware('auth', 'accepted')->name('orders');
+Route::get('confirmations', 'ConfirmationsController@view')->middleware('auth', 'accepted')->name('confirmations');
 
 Route::group(['middleware' => ['admin', 'daemon.online']], function () {
     Route::get('laravel-logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
