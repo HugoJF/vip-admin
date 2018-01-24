@@ -34,6 +34,44 @@ class Confirmation extends Model
         ]);
     }
 
+    public static function syncServer()
+    {
+        DaemonController::consoleLog('Generating_new_admins_simple');
+
+        $confirmations = Confirmation::valid()->with('baseOrder.user', 'baseOrder')->get();
+
+        $steamid = [];
+
+        foreach ($confirmations as $confirmation) {
+            $steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
+            $steamid[] = [
+                'id'           => $steam2,
+                'confirmation' => $confirmation,
+            ];
+
+            $confirmation->baseOrder->server_uploaded = true;
+            $saved = $confirmation->baseOrder->save();
+            if (!$saved) {
+                flash()->error('Error saving confirmation details.');
+
+                return redirect()->route('home');
+            }
+        }
+
+        $view = View::make('admins_simple', [
+            'list' => $steamid,
+            'html' => false,
+        ]);
+
+        if (config('app.update_server') == 'true') {
+            Storage::put('admins_simple.ini', $view);
+
+            DaemonController::updateSourceMod();
+        }
+
+        return true;
+    }
+
     public function isValid()
     {
         $now = Carbon::now();

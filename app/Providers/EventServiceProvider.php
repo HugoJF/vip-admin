@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ConfirmationExpired' => [
             'App\Listeners\UpdateServerAdminList',
         ],
+        'App\Events\SyncServerTriggered' => [
+            'App\Listeners\UpdateServerAdminList',
+        ]
     ];
 
     /**

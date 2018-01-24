@@ -231,7 +231,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                                    <span class="glyphicon glyphicon-cloud"></span>Laravel
+                                    <span class="glyphicon glyphicon-cloud"></span>Administrative
                                 </a>
                             </h4>
                         </div>
@@ -240,6 +240,10 @@
                                 <li class="list-group-item {{ Route::is('laravel-logs') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-console"></span>
                                     <a href="{{ route('laravel-logs') }}">Logs</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="glyphicon glyphicon-refresh"></span>
+                                    <a href="{{ route('sync-server') }}">Sync Server</a>
                                 </li>
                             </ul>
                         </div>

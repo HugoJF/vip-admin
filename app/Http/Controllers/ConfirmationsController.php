@@ -98,6 +98,19 @@ class ConfirmationsController extends Controller
         ]);
     }
 
+    public function syncServer()
+    {
+        $result = Confirmation::syncServer();
+
+        if($result === true) {
+            flash()->success('Server synced!');
+
+            return redirect()->route('home');
+        } else {
+            return $result;
+        }
+    }
+
     public function generateAdminsSimple()
     {
         // Caches Carbon::now();
