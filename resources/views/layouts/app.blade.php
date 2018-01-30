@@ -120,7 +120,7 @@
                                 <a href="{{ route('home') }}">Home</a>
                             </li>
                             <li class="list-group-item">
-                                <span class="glyphicon glyphicon-home"></span>
+                                <span class="glyphicon glyphicon-question-sign"></span>
                                 <a href="http://steamcommunity.com/id/de_nerd" target="_blank">Ajuda</a>
                             </li>
                         </ul>

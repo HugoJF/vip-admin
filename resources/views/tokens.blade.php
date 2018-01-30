@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Current Orders</h1>
+    <h1>Current generated Tokens</h1>
 
     <table class="table table-striped">
         <thead>
