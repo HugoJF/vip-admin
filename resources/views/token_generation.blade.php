@@ -7,7 +7,7 @@
         <fieldset>
 
             <!-- Form Name -->
-            <legend>Form Name</legend>
+            <legend>Token generation form</legend>
 
             <!-- Select Basic -->
             <div class="form-group">

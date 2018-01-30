@@ -12,7 +12,7 @@
     <div class="form-group">
         {!! Form::label('tradelink', 'Trade Link') !!}
         {!! Form::text('tradelink', null, ['class' => 'form-control']) !!}
-        <p class="help-block">This is the link we will use to send trade offers. You can find your URL <a href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url">clicking here.</a></p>
+        <p class="help-block">This is the link we will use to send trade offers. You can find your URL <a target="_blank" href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url">clicking here.</a></p>
     </div>
 
     <button class="btn btn-success" type="submit">Update</button>

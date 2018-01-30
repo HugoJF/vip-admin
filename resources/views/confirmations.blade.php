@@ -26,7 +26,11 @@
                 <td>{{ $confirmation->start_period }}</td>
                 <td>{{ $confirmation->end_period }}</td>
                 <td><span class="label label-{{ $confirmation->stateClass() }}"> {{ $confirmation->stateText() }}</span></td>
-                <td><a class="btn btn-default" href="{{ route('view-steam-order', $confirmation->baseOrder->public_id) }}">View order</a></td>
+                @if($confirmation->baseOrder->isSteamOffer())
+                    <td><a class="btn btn-default" href="{{ route('view-steam-order', $confirmation->baseOrder->public_id) }}">View order</a></td>
+                @else
+                    <td><a class="btn btn-default" href="{{ route('view-token-order', $confirmation->baseOrder->public_id) }}">View order</a></td>
+                @endif
             </tr>
         @endforeach
 

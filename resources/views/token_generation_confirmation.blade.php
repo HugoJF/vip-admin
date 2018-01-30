@@ -2,6 +2,8 @@
 
 @section('content')
 
+    <h2>Token generation confirmation details</h2>
+
     {!! Form::open(['route' => 'token-generate', 'method' => 'POST']) !!}
     <table class="table table-hover">
         <tbody>
@@ -12,7 +14,7 @@
         </tr>
         <tr>
             <td>Expiration</td>
-            <td><span class="label label-success">${{ $expiration }} hours</span></td>
+            <td><span class="label label-success">{{ $expiration }} hours</span></td>
             <input type="hidden" name="expiration" value="{{ $expiration }}">
         </tr>
         <tr>
