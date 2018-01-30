@@ -16,7 +16,7 @@ class CreateTokenOrdersTable extends Migration
         Schema::create('token-orders', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->boolean('valid');
+            $table->integer('state')->unsigned()->nullable();
 
             $table->timestamps();
         });

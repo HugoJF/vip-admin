@@ -143,9 +143,9 @@
                                 <a href="{{ route('inventory') }}">Buy VIP with Skins</a>
                             </li>
 
-                            <li class="list-group-item">
+                            <li class="list-group-item {{ Route::is('token') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-gift"></span>
-                                <a href="#">Buy VIP with Tokens</a>
+                                <a href="{{ route('token') }}">Buy VIP with Tokens</a>
                             </li>
 
                             <li class="list-group-item">
@@ -241,9 +241,17 @@
                                     <span class="glyphicon glyphicon-console"></span>
                                     <a href="{{ route('laravel-logs') }}">Logs</a>
                                 </li>
+                                <li class="list-group-item {{ Route::is('tokens') ? 'active' : '' }}">
+                                    <span class="glyphicon glyphicon-tag"></span>
+                                    <a href="{{ route('tokens') }}">Tokens</a>
+                                </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                     <a href="{{ route('sync-server') }}">Sync Server</a>
+                                </li>
+                                <li class="list-group-item  {{ Route::is('token-generation') ? 'active' : '' }}">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <a href="{{ route('token-generation') }}">Generate token</a>
                                 </li>
                             </ul>
                         </div>

@@ -10,137 +10,152 @@ use Illuminate\Support\Facades\Auth;
 
 class ConfirmationsController extends Controller
 {
-    public function createConfirmation($public_id)
-    {
-        // Retrieve order from which we are creating the Confirmation
-        $order = Order::where([
-            'public_id' => $public_id,
-            'user_id'   => Auth::id(),
-        ])->get()->first();
+	public function createConfirmation($public_id)
+	{
+		// Retrieve order from which we are creating the Confirmation
+		$order = Order::where([
+			'public_id' => $public_id,
+			'user_id'   => Auth::id(),
+		])->get()->first();
 
-        // Check if Order with given public ID exists
-        if (!$order) {
-            flash()->error('Could not find order with ID #'.$public_id);
+		// Check if Order with given public ID exists
+		if (!$order) {
+			flash()->error('Could not find order with ID #' . $public_id);
 
-            return redirect()->route('home');
-        }
+			return redirect()->route('home');
+		}
 
-        // Retrieve confirmation count for given order
-        $confirmationCount = $order->confirmation()->count();
+		// Retrieve confirmation count for given order
+		$confirmationCount = $order->confirmation()->count();
 
-        // Check if confirmation exists first
-        if ($confirmationCount != 0) {
-            flash()->error('We already have a confirmation for this order is our database, please contact support!');
+		// Check if confirmation exists first
+		if ($confirmationCount != 0) {
+			flash()->error('We already have a confirmation for this order is our database, please contact support!');
 
-            return redirect()->route('home');
-        }
+			return redirect()->route('home');
+		}
 
-        // Check if user already has a valid confirmation
-        if (Auth::user()->confirmations()->valid()->get()->first()) {
-            flash()->error('You already have a valid confirmation, please wait for it to expire before generating another one!');
+		/*
+		// Check if user already has a valid confirmation
+		if (Auth::user()->confirmations()->valid()->get()->first()) {
+			flash()->error('You already have a valid confirmation, please wait for it to expire before generating another one!');
 
-            return redirect()->back();
-        }
+			return redirect()->back();
+		}*/
 
-        // Check if steam order is accepted
-        $steamOrder = $order->orderable()->first();
-        if (!$steamOrder || !$steamOrder->accepted()) {
-            flash()->error('You must accept the trade offer before creating a confirmation!');
+		if ($order->isSteamOffer()) {
+			// Check if steam order is accepted
+			$steamOrder = $order->orderable()->first();
+			if (!$steamOrder || !$steamOrder->accepted()) {
+				flash()->error('You must accept the trade offer before creating a confirmation!');
 
-            return redirect()->route('home');
-        }
+				return redirect()->route('home');
+			}
+		} else {
+			$tokenOrder = $order->orderable()->first();
 
-        // Get last confirmation generated for the User
-        $latestConfirmation = Auth::user()->confirmations()->valid()->orderBy('end_period', 'desc')->first();
+			if(!$tokenOrder || !$tokenOrder->token()->exists()) {
+				flash()->error('Your order must have a valid token associated with to generate a confirmation!');
 
-        // The base period for the Confirmation should be now or the last valid confirmation
-        if ($latestConfirmation) {
-            $basePeriod = $latestConfirmation->end_period;
-        } else {
-            $basePeriod = Carbon::now();
-        }
+				return redirect()->route('home');
+			}
+		}
 
-        // Start creating Confirmation entry
-        $confirmation = Confirmation::make();
+		// Get last confirmation generated for the User
+		$latestConfirmation = Auth::user()->confirmations()->notExpired()->orderBy('end_period', 'asc')->first();
 
-        $confirmation->public_id = substr(md5(microtime()), 0, config('app.public_id_size'));
-        $confirmation->baseOrder()->associate($order);
-        $confirmation->user()->associate(Auth::user());
-        $confirmation->start_period = $basePeriod;
-        $confirmation->end_period = $basePeriod->addDays($order->duration);
+		// The base period for the Confirmation should be now or the last valid confirmation
+		if ($latestConfirmation) {
+			$basePeriod = $latestConfirmation->end_period;
+		} else {
+			$basePeriod = Carbon::now();
+		}
 
-        $confirmed = $confirmation->save();
+		// Start creating Confirmation entry
+		$confirmation = Confirmation::make();
 
-        // Check if we confirmation was set to database and trigger event
-        if ($confirmed) {
-            event(new ConfirmationGenerated($confirmation));
-        } else {
-            flash()->error('Error saving confirmation to database!');
-        }
+		$confirmation->public_id = substr(md5(microtime()), 0, config('app.public_id_size'));
+		$confirmation->baseOrder()->associate($order);
+		$confirmation->user()->associate(Auth::user());
+		$confirmation->start_period = $basePeriod;
+		$confirmation->end_period = $basePeriod->addDays($order->duration);
 
-        // Redirect to updated order
-        return redirect()->route('view-steam-order', $public_id);
-    }
+		$confirmed = $confirmation->save();
 
-    public function view()
-    {
-        $user = Auth::user();
+		// Check if we confirmation was set to database and trigger event
+		if ($confirmed) {
+			event(new ConfirmationGenerated($confirmation));
+		} else {
+			flash()->error('Error saving confirmation to database!');
+		}
 
-        if ($user->isAdmin()) {
-            $confirmations = Confirmation::with('user', 'baseOrder')->get();
-        } else {
-            $confirmations = Auth::user()->confirmations()->with('user', 'baseOrder')->get();
-        }
+		// Redirect to updated order
+		if($order->isSteamOffer()) {
+			return redirect()->route('view-steam-order', $public_id);
+		} else {
+			return redirect()->route('view-token-order', $public_id);
+		}
+	}
 
-        return view('confirmations', [
-            'confirmations' => $confirmations,
-            'isAdmin'       => $user->isAdmin(),
-        ]);
-    }
+	public function view()
+	{
+		$user = Auth::user();
 
-    public function syncServer()
-    {
-        $result = Confirmation::syncServer();
+		if ($user->isAdmin()) {
+			$confirmations = Confirmation::with('user', 'baseOrder')->get();
+		} else {
+			$confirmations = Auth::user()->confirmations()->with('user', 'baseOrder')->get();
+		}
 
-        if ($result === true) {
-            flash()->success('Server synced!');
+		return view('confirmations', [
+			'confirmations' => $confirmations,
+			'isAdmin'       => $user->isAdmin(),
+		]);
+	}
 
-            return redirect()->route('home');
-        } else {
-            return $result;
-        }
-    }
+	public function syncServer()
+	{
+		$result = Confirmation::syncServer();
 
-    public function generateAdminsSimple()
-    {
-        // Caches Carbon::now();
-        $now = Carbon::now();
+		if ($result === true) {
+			flash()->success('Server synced!');
 
-        // Get valid confirmations
-        $confirmations = Confirmation::valid()->with('baseOrder.user')->get();
+			return redirect()->route('home');
+		} else {
+			return $result;
+		}
+	}
 
-        // Array of SteamID2 to Confirmation
-        $steamid = [];
+	public function generateAdminsSimple()
+	{
+		// Caches Carbon::now();
+		$now = Carbon::now();
 
-        // Parses each valid confirmation and adds to array
-        foreach ($confirmations as $confirmation) {
-            $steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
+		// Get valid confirmations
+		$confirmations = Confirmation::valid()->with('baseOrder.user')->get();
 
-            // If Steam2 could not be generated
-            if ($steam2 === false) {
-                return redirect()->route('home');
-            }
+		// Array of SteamID2 to Confirmation
+		$steamid = [];
 
-            $steamid[] = [
-                'id'           => $steam2,
-                'confirmation' => $confirmation,
-            ];
-        }
+		// Parses each valid confirmation and adds to array
+		foreach ($confirmations as $confirmation) {
+			$steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
 
-        // Render admin_simple.ini
-        return view('admins_simple', [
-            'list' => $steamid,
-            'html' => true,
-        ]);
-    }
+			// If Steam2 could not be generated
+			if ($steam2 === false) {
+				return redirect()->route('home');
+			}
+
+			$steamid[] = [
+				'id'           => $steam2,
+				'confirmation' => $confirmation,
+			];
+		}
+
+		// Render admin_simple.ini
+		return view('admins_simple', [
+			'list' => $steamid,
+			'html' => true,
+		]);
+	}
 }
