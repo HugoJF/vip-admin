@@ -36,7 +36,6 @@ Route::group(['middleware' => ['auth', 'daemon', 'accepted']], function () {
     Route::get('send-trade-order/{public_id}', 'SteamOrderController@sendTradeOffer')->name('send-trade-offer');
 });
 
-
 Route::group(['middleware' => ['auth', 'accepted']], function () {
     Route::get('token-order-preview', 'TokenOrderCOntroller@tokenOrderPreview')->name('token-order-preview');
     Route::get('token-generation', 'TokenOrderController@tokenGeneration')->name('token-generation');
@@ -51,7 +50,6 @@ Route::group(['middleware' => ['auth', 'accepted']], function () {
 Route::group(['middleware' => ['admin']], function () {
     Route::get('tokens', 'TokenOrderController@listTokens')->name('tokens');
 });
-
 
 Route::group(['middleware' => ['auth', 'tradelink', 'daemon', 'accepted']], function () {
     Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->name('create-steam-order');

@@ -20,7 +20,7 @@ class TokenOrder extends Model
 
     public function stateText()
     {
-        if($this->token()->exists()) {
+        if ($this->token()->exists()) {
             return 'Token used';
         } else {
             return 'Missing token';
@@ -30,13 +30,13 @@ class TokenOrder extends Model
     public function stateClass()
     {
         $s = [
-            'Token used' => 'success',
+            'Token used'    => 'success',
             'Missing token' => 'danger',
         ];
 
         $state = $this->stateText();
 
-        if(array_key_exists($state, $s)) {
+        if (array_key_exists($state, $s)) {
             return $s[$state];
         } else {
             return 'danger';
