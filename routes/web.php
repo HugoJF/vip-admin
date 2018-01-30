@@ -37,7 +37,7 @@ Route::group(['middleware' => ['auth', 'daemon', 'accepted']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'accepted']], function () {
-    Route::get('token-order-preview', 'TokenOrderCOntroller@tokenOrderPreview')->name('token-order-preview');
+    Route::get('token-order-preview', 'TokenOrderController@tokenOrderPreview')->name('token-order-preview');
     Route::get('token-generation', 'TokenOrderController@tokenGeneration')->name('token-generation');
     Route::post('token-generation', 'TokenOrderController@tokenGenerationPost')->name('token-generation');
     Route::post('token-generate', 'TokenOrderController@tokenGenerate')->name('token-generate');
