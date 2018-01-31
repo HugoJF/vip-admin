@@ -6,89 +6,88 @@ use Illuminate\Http\Request;
 
 class OPSkinsController extends Controller
 {
-	public function updateForm()
-	{
-		return view('opskins_form');
-	}
+    public function updateForm()
+    {
+        return view('opskins_form');
+    }
 
-	public function updateFromData(Request $request)
-	{
-		$data = $request->input('data');
+    public function updateFromData(Request $request)
+    {
+        $data = $request->input('data');
 
-		\Log::info('Setting new memory limit.');
-		ini_set('memory_limit', '512M');
+        \Log::info('Setting new memory limit.');
+        ini_set('memory_limit', '512M');
 
-		\Log::info('Decoding information from query');
-		$inventory = json_decode($data);
-		\Log::info('Received information from CDN!');
+        \Log::info('Decoding information from query');
+        $inventory = json_decode($data);
+        \Log::info('Received information from CDN!');
 
-		if (!isset($inventory->response)) {
-			\Log::error('Invalid data passed to updater', ['output' => $inventory]);
+        if (!isset($inventory->response)) {
+            \Log::error('Invalid data passed to updater', ['output' => $inventory]);
 
-			flash()->error('Invalid data passed to updater');
+            flash()->error('Invalid data passed to updater');
 
-			return redirect()->back();
-		}
+            return redirect()->back();
+        }
 
-		$size = count((array)$inventory->response);
-		\Log::info('Received ' . $size . ' items from OPSkins.');
+        $size = count((array) $inventory->response);
+        \Log::info('Received '.$size.' items from OPSkins.');
 
-		$index = 1;
-		$oldPercent = 0;
+        $index = 1;
+        $oldPercent = 0;
 
-		\Log::info('Truncating database.');
+        \Log::info('Truncating database.');
 
-		$now = Carbon::now();
+        $now = Carbon::now();
 
-		$added = 0;
+        $added = 0;
 
-		foreach ($inventory->response as $key => $value) {
-			$perCent = round($index++ / $size * 10);
-			if ($perCent != $oldPercent) {
-				// $this->info('Sending [' . $index++ . '/' . $size . '] items to database.');
-				\Log::info('Sent ' . ($perCent * 10) . '% items to database.');
-				$oldPercent = $perCent;
-			}
-			$name = $key;
-			$meanSum = 0;
-			$sumCount = 0;
+        foreach ($inventory->response as $key => $value) {
+            $perCent = round($index++ / $size * 10);
+            if ($perCent != $oldPercent) {
+                // $this->info('Sending [' . $index++ . '/' . $size . '] items to database.');
+                \Log::info('Sent '.($perCent * 10).'% items to database.');
+                $oldPercent = $perCent;
+            }
+            $name = $key;
+            $meanSum = 0;
+            $sumCount = 0;
 
-			foreach ($value as $k => $v) {
-				$maxDate = Carbon::createFromFormat('Y-m-d', $k);
+            foreach ($value as $k => $v) {
+                $maxDate = Carbon::createFromFormat('Y-m-d', $k);
 
-				if ($maxDate->diffInDays($now) > 7) {
-					continue;
-				}
+                if ($maxDate->diffInDays($now) > 7) {
+                    continue;
+                }
 
-				$std_dev_rel = $v->std_dev / $v->normalized_mean;
+                $std_dev_rel = $v->std_dev / $v->normalized_mean;
 
-				if ($std_dev_rel > 3) {
-					continue;
-				}
+                if ($std_dev_rel > 3) {
+                    continue;
+                }
 
-				$sumCount++;
-				$meanSum += $v->normalized_mean;
-			}
+                $sumCount++;
+                $meanSum += $v->normalized_mean;
+            }
 
-			if ($sumCount >= 7) {
-				try {
-					OPSkinsCache::create([
-						'name'  => $name,
-						'price' => $meanSum / $sumCount,
-					]);
-					$added++;
-				} catch (\Exception $e) {
-					\Log::warning('Error: ' . $e->getMessage());
-					continue;
-				}
-			}
-		}
+            if ($sumCount >= 7) {
+                try {
+                    OPSkinsCache::create([
+                        'name'  => $name,
+                        'price' => $meanSum / $sumCount,
+                    ]);
+                    $added++;
+                } catch (\Exception $e) {
+                    \Log::warning('Error: '.$e->getMessage());
+                    continue;
+                }
+            }
+        }
 
-		\Log::info('OPSkins cache refreshed! Added total of ' . $added . ' items to database.');
+        \Log::info('OPSkins cache refreshed! Added total of '.$added.' items to database.');
 
-		flash()->success('OPSkins cache was refreshed with success. Added a total of ' . $added . ' items to the database');
+        flash()->success('OPSkins cache was refreshed with success. Added a total of '.$added.' items to the database');
 
-		return redirect()->route('home');
-	}
-
+        return redirect()->route('home');
+    }
 }
