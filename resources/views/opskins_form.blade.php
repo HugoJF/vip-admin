@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    {!! Form::open(['route' => 'opskins-update-form-post', 'method' => 'POST']) !!}
+    {!! Form::open(['route' => 'opskins-update-form-post', 'method' => 'POST', 'files' => true]) !!}
 
     <div class="form-group">
         {!! Form::label('data', 'Data') !!}

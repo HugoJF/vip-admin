@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\OPSkinsCache;
 
 class OPSkinsController extends Controller
 {
@@ -13,7 +15,7 @@ class OPSkinsController extends Controller
 
     public function updateFromData(Request $request)
     {
-        $data = $request->file('data');
+        $data = file_get_contents($request->file('data')->getRealPath());
 
         \Log::info('Setting new memory limit.');
         ini_set('memory_limit', '512M');
