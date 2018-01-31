@@ -253,6 +253,10 @@
                                     <span class="glyphicon glyphicon-plus"></span>
                                     <a href="{{ route('token-generation') }}">Generate token</a>
                                 </li>
+                                <li class="list-group-item  {{ Route::is('opskins-update-form') ? 'active' : '' }}">
+                                    <span class="glyphicon glyphicon-check"></span>
+                                    <a href="{{ route('opskins-update-form') }}">OPSkins updater</a>
+                                </li>
                             </ul>
                         </div>
                     </div>

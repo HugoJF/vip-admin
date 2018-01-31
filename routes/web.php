@@ -31,6 +31,11 @@ Route::group(['middleware' => ['admin', 'daemon.online']], function () {
     Route::post('daemon-login', 'DaemonController@loginPost')->name('daemon-login-post');
 });
 
+Route::group(['middleware' => ['admin', 'daemon.online']], function () {
+    Route::get('opskins_updater', 'OPSkinsController@updateForm')->name('opskins-update-form');
+    Route::post('opskins_updater', 'OPSkinsController@updateFromData')->name('opskins-update-form-post');
+});
+
 Route::group(['middleware' => ['auth', 'daemon', 'accepted']], function () {
     Route::get('view-steam-order/{public_id}', 'SteamOrderController@viewSteamOrder')->name('view-steam-order');
     Route::get('send-trade-order/{public_id}', 'SteamOrderController@sendTradeOffer')->name('send-trade-offer');
