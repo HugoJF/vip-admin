@@ -22,7 +22,11 @@
                     <td scope="row"><a href="{{ route('view-token', $token->token) }}">{{ $token->token}}</a></td>
                     <td>{{ $token->duration }} days</td>
                     <td>{{ $token->expiration }} hours</td>
-                    <td>{{ \Carbon\Carbon::now()->addHours($token->expiration)->diffForHumans() }}</td>
+                    @if($token->status() == 'Used')
+                        <td>N/A</td>
+                    @else
+                        <td>{{ $token->created_at->addHours($token->expiration)->diffForHumans() }}</td>
+                    @endif
                     @if($token->tokenOrder && $token->tokenOrder->baseOrder)
                         <td><a href="http://steamcommunity.com/profiles/{{ $token->tokenOrder->baseOrder->user->steamid }}">{{ $token->tokenOrder->baseOrder->user->username }}</a></td>
                     @else

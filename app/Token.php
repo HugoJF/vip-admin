@@ -17,7 +17,7 @@ class Token extends Model
 
     public function status()
     {
-        $expiration_date = \Carbon\Carbon::now()->addHours($this->expiration);
+        $expiration_date = $this->created_at->addHours($this->expiration);
 
         if ($this->tokenOrder()->exists()) {
             return 'Used';
