@@ -52,7 +52,7 @@ class RefreshOPSkinsCache extends Command
 
         if (!isset($inventory->response)) {
             $this->error('Invalid response from OPSkins, quitting before truncating database');
-            \Log::error('Invalid response from OPSkins, quitting before truncating database');
+            \Log::error('Invalid response from OPSkins, quitting before truncating database', ['output' => $inventory]);
 
             return;
         }
