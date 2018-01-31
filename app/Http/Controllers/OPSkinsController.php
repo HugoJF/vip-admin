@@ -20,7 +20,7 @@ class OPSkinsController extends Controller
         \Log::info('Setting new memory limit.');
 
         \Log::info('Decoding information from query');
-        $inventory = json_decode(file_get_contents($request->file('data')->getRealPath());
+        $inventory = json_decode(file_get_contents($request->file('data')->getRealPath()));
         \Log::info('Received information from CDN!');
 
         if (!isset($inventory->response)) {
