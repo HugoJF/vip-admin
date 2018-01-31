@@ -31,7 +31,7 @@ Route::group(['middleware' => ['admin', 'daemon.online']], function () {
     Route::post('daemon-login', 'DaemonController@loginPost')->name('daemon-login-post');
 });
 
-Route::group(['middleware' => ['admin', 'daemon.online']], function () {
+Route::group(['middleware' => ['admin']], function () {
     Route::get('opskins_updater', 'OPSkinsController@updateForm')->name('opskins-update-form');
     Route::post('opskins_updater', 'OPSkinsController@updateFromData')->name('opskins-update-form-post');
 });

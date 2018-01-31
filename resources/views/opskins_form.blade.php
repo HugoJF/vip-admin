@@ -5,7 +5,7 @@
 
     <div class="form-group">
         {!! Form::label('data', 'Data') !!}
-        {!! Form::textarea('data', null, ['class' => 'form-control']) !!}
+        {!! Form::file('data', null, ['class' => 'form-control']) !!}
     </div>
     <button class="btn btn-success" type="submit">Update OPSkins data</button>
 
