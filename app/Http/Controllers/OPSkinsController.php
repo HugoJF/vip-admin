@@ -15,13 +15,12 @@ class OPSkinsController extends Controller
 
     public function updateFromData(Request $request)
     {
-        $data = file_get_contents($request->file('data')->getRealPath());
-
-        \Log::info('Setting new memory limit.');
         ini_set('memory_limit', '512M');
 
+        \Log::info('Setting new memory limit.');
+
         \Log::info('Decoding information from query');
-        $inventory = json_decode($data);
+        $inventory = json_decode(file_get_contents($request->file('data')->getRealPath());
         \Log::info('Received information from CDN!');
 
         if (!isset($inventory->response)) {
