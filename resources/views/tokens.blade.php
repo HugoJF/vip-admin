@@ -3,7 +3,7 @@
 @section('content')
     <h1>Current generated Tokens</h1>
 
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>Token</th>

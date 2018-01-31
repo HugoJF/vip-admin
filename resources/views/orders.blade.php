@@ -3,7 +3,7 @@
 @section('content')
     <h1>Current Orders</h1>
 
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>Order Public ID</th>
