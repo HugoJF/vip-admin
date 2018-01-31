@@ -90,4 +90,5 @@ class OPSkinsController extends Controller
 
 		return redirect()->route('home');
 	}
+
 }

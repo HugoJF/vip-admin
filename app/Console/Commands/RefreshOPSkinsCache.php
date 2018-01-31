@@ -53,7 +53,7 @@ class RefreshOPSkinsCache extends Command
         if (!isset($inventory->response)) {
             $this->error('Invalid response from OPSkins, quitting before truncating database');
             \Log::error('Invalid response from OPSkins, quitting before truncating database', ['output' => $inventory]);
-            \Log::error('Retrying OPSkins... Logging raw output', ['raw-output' => Curl::to('https://api.opskins.com/IPricing/GetPriceList/v2/?appid=730&key=' . env('OPSKINS_API_KEY'))->get()]);
+            \Log::error('Retrying OPSkins... Logging raw output', ['raw-output' => Curl::to('https://api.opskins.com/IPricing/GetPriceList/v2/?appid=730&key='.env('OPSKINS_API_KEY'))->get()]);
 
             return;
         }
