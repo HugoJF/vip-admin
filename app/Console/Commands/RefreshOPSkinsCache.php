@@ -46,7 +46,7 @@ class RefreshOPSkinsCache extends Command
 
         $this->info('Downloading OPSkins information from CDN...');
         \Log::info('Downloading OPSkins information from CDN...');
-        $inventory = Curl::to('https://api.opskins.com/IPricing/GetPriceList/v2/?appid=730')->asJson()->get();
+        $inventory = Curl::to('https://api.opskins.com/IPricing/GetPriceList/v2/?appid=730&key=' . env('OPSKINS_API_KEY'))->asJson()->get();
         $this->info('Received information from CDN!');
         \Log::info('Received information from CDN!');
 
