@@ -13,7 +13,7 @@ class OPSkinsController extends Controller
 
     public function updateFromData(Request $request)
     {
-        $data = $request->input('data');
+        $data = $request->file('data');
 
         \Log::info('Setting new memory limit.');
         ini_set('memory_limit', '512M');
