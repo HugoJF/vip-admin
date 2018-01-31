@@ -24,6 +24,8 @@
                     <td>{{ $token->expiration }} hours</td>
                     @if($token->status() == 'Used')
                         <td>N/A</td>
+                    @elseif($token->status() == 'Expired')
+                        <td>Expired {{ $token->created_at->addHours($token->expiration)->diffForHumans() }}</td>
                     @else
                         <td>{{ $token->created_at->addHours($token->expiration)->diffForHumans() }}</td>
                     @endif
