@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Carbon\Carbon;
 use App\OPSkinsCache;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class OPSkinsController extends Controller
 {
