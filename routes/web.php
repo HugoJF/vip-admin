@@ -37,24 +37,22 @@ Route::group(['middleware' => ['admin']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'daemon', 'accepted']], function () {
-    Route::get('view-steam-order/{public_id}', 'SteamOrderController@viewSteamOrder')->name('view-steam-order');
+    Route::get('view-steam-order/{order}', 'SteamOrderController@viewSteamOrder')->name('view-steam-order');
     Route::get('send-trade-order/{public_id}', 'SteamOrderController@sendTradeOffer')->name('send-trade-offer');
 });
 
 Route::group(['middleware' => ['auth', 'accepted']], function () {
     Route::get('token-order-preview', 'TokenOrderController@tokenOrderPreview')->name('token-order-preview');
-    Route::get('token-generation', 'TokenOrderController@tokenGeneration')->name('token-generation');
-    Route::post('token-generation', 'TokenOrderController@tokenGenerationPost')->name('token-generation');
-    Route::post('token-generate', 'TokenOrderController@tokenGenerate')->name('token-generate');
-    Route::get('view-token/{token}', 'TokenOrderController@viewToken')->name('view-token');
-    Route::get('token', 'TokenOrderController@tokenView')->name('token');
-    Route::post('create-token-order', 'TokenOrderController@createTokenOrder')->name('create-token-order');
-    Route::get('view-token-order/{public_id}', 'TokenOrderController@view')->name('view-token-order');
-});
-
-Route::group(['middleware' => ['admin']], function () {
+    Route::get('token-generation', 'TokenOrderController@tokenGeneration')->name('token-generation')->middleware('can:create,App\Token');
+    Route::post('token-generation', 'TokenOrderController@tokenGenerationPost')->name('token-generation')->middleware('can:create,App\Token');
+    Route::post('token-generate', 'TokenOrderController@tokenGenerate')->name('token-generate')->middleware('can:create,App\Token');
+    Route::get('view-token/{token}', 'TokenOrderController@viewToken')->name('view-token')->middleware('can:view,token');
+    Route::get('token', 'TokenOrderController@tokenView')->name('token')->middleware('can:create,App\Order');
+    Route::post('create-token-order', 'TokenOrderController@createTokenOrder')->name('create-token-order')->middleware('can:create,App\Order');
+    Route::get('view-token-order/{order}', 'TokenOrderController@view')->name('view-token-order')->middleware('can:view,order');
     Route::get('tokens', 'TokenOrderController@listTokens')->name('tokens');
 });
+;
 
 Route::group(['middleware' => ['auth', 'tradelink', 'daemon', 'accepted']], function () {
     Route::get('create-steam-offer', 'SteamOrderController@createSteamOffer')->name('create-steam-order');

@@ -18,6 +18,11 @@ class Order extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function getRouteKeyName()
+    {
+        return 'public_id';
+    }
+
     public function confirmation()
     {
         return $this->hasOne('App\Confirmation');

@@ -15,6 +15,11 @@ class Token extends Model
         return $this->belongsTo('App\TokenOrder');
     }
 
+    public function getRouteKeyName()
+    {
+        return 'token';
+    }
+
     public function status()
     {
         $expiration_date = $this->created_at->addHours($this->expiration);

@@ -18,6 +18,11 @@ class SteamOrder extends Model
         return $this->morphOne('App\Order', 'orderable');
     }
 
+    public function getRouteKeyName()
+    {
+        return 'public_id';
+    }
+
     public function refresh()
     {
         $id = $this->attributes['tradeoffer_id'];

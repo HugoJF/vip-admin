@@ -10,150 +10,156 @@ use Illuminate\Support\Facades\Auth;
 
 class TokenOrderController extends Controller
 {
-    public function tokenView()
-    {
-        return view('token');
-    }
+	public function tokenView()
+	{
+		return view('token');
+	}
 
-    public function tokenGeneration()
-    {
-        return view('token_generation');
-    }
+	public function tokenGeneration()
+	{
+		return view('token_generation');
+	}
 
-    public function listTokens()
-    {
-        $tokens = Token::with('tokenOrder', 'tokenOrder.baseOrder', 'tokenOrder.baseOrder.user')->get();
+	public function listTokens()
+	{
+		$tokens = Token::with('tokenOrder', 'tokenOrder.baseOrder', 'tokenOrder.baseOrder.user')->get();
 
-        return view('tokens', [
-            'tokens' => $tokens,
-        ]);
-    }
+		return view('tokens', [
+			'tokens' => $tokens,
+		]);
+	}
 
-    public function view($public_id)
-    {
-        $order = Order::where('public_id', $public_id)->with('orderable', 'user')->first();
+	public function view(Order $order)
+	{
+		if (!$order) {
+			flash()->error('Could not find any Token Orders.');
 
-        if (!$order) {
-            flash()->error('Could not find any Token Orders with public ID #'.$public_id);
+			return redirect('home');
+		}
 
-            return redirect('home');
-        }
+		if (Auth::user()->cant('view', $order)) {
+			flash()->error('You cannot view this order!');
 
-        return view('token_order', [
-            'order'      => $order,
-            'tokenOrder' => $order->orderable,
-        ]);
-    }
+			return redirect()->route('home');
+		}
 
-    public function tokenGenerationPost(Request $request)
-    {
-        $duration = $request->input('duration');
-        if ($duration == -1) {
-            $duration = intval($request->input('custom-duration'));
-        }
+		$order->load(['orderable', 'user']);
 
-        $expiration = $request->input('expiration');
-        if ($expiration == -1) {
-            $expiration = intval($request->input('custom-expiration'));
-        }
+		return view('token_order', [
+			'order'      => $order,
+			'tokenOrder' => $order->orderable,
+		]);
+	}
 
-        $note = $request->input('note');
+	public function tokenGenerationPost(Request $request)
+	{
+		$duration = $request->input('duration');
+		if ($duration == -1) {
+			$duration = intval($request->input('custom-duration'));
+		}
 
-        return view('token_generation_confirmation', [
-            'duration'        => $duration,
-            'expiration'      => $expiration,
-            'expiration_date' => \Carbon\Carbon::now()->addHours($expiration),
-            'note'            => $note,
-        ]);
-    }
+		$expiration = $request->input('expiration');
+		if ($expiration == -1) {
+			$expiration = intval($request->input('custom-expiration'));
+		}
 
-    public function tokenGenerate(Request $request)
-    {
-        $token = Token::make();
+		$note = $request->input('note');
 
-        $token->token = substr(md5(microtime()), 0, 15);
-        $token->duration = $request->input('duration');
-        $token->expiration = $request->input('expiration');
-        $token->note = $request->input('note');
+		return view('token_generation_confirmation', [
+			'duration'        => $duration,
+			'expiration'      => $expiration,
+			'expiration_date' => \Carbon\Carbon::now()->addHours($expiration),
+			'note'            => $note,
+		]);
+	}
 
-        $token->save();
+	public function tokenGenerate(Request $request)
+	{
+		$token = Token::make();
 
-        return redirect()->route('view-token', $token->token);
-    }
+		$token->token = substr(md5(microtime()), 0, 15);
+		$token->duration = $request->input('duration');
+		$token->expiration = $request->input('expiration');
+		$token->note = $request->input('note');
 
-    public function viewToken($token)
-    {
-        $token = Token::where('token', $token)->with('tokenOrder', 'tokenOrder.baseOrder', 'tokenOrder.baseOrder.user')->first();
+		$token->save();
 
-        if ($token) {
-            return view('token_view', [
-                'token' => $token,
-            ]);
-        } else {
-            flash()->error('Could not find this token!');
+		return redirect()->route('view-token', $token->token);
+	}
 
-            return redirect()->back();
-        }
-    }
+	public function viewToken(Token $token)
+	{
+		if ($token) {
+			$token->load(['tokenOrder', 'tokenOrder.baseOrder', 'tokenOrder.baseOrder.user']);
 
-    public function tokenOrderPreview(Request $request)
-    {
-        if (!$request->has('token')) {
-            flash()->error('No token specified!');
+			return view('token_view', [
+				'token' => $token,
+			]);
+		} else {
+			flash()->error('Could not find this token!');
 
-            return redirect()->route('token');
-        }
+			return redirect()->back();
+		}
+	}
 
-        $token = Token::where([
-            'token'          => $request->input('token'),
-            'token_order_id' => null,
-        ])->first();
+	public function tokenOrderPreview(Request $request)
+	{
+		if (!$request->has('token')) {
+			flash()->error('No token specified!');
 
-        if (!$token) {
-            flash()->error('Given token is not valid!');
+			return redirect()->route('token');
+		}
 
-            return redirect()->route('token');
-        }
+		$token = Token::where([
+			'token'          => $request->input('token'),
+			'token_order_id' => null,
+		])->first();
 
-        return view('token_order_preview', [
-            'token' => $token,
-        ]);
-    }
+		if (!$token) {
+			flash()->error('Given token is not valid!');
 
-    public function createTokenOrder(Request $request)
-    {
-        $tokenString = $request->input('token');
+			return redirect()->route('token');
+		}
 
-        if (!isset($tokenString)) {
-            flash()->error('No token specified!');
+		return view('token_order_preview', [
+			'token' => $token,
+		]);
+	}
 
-            return redirect()->back();
-        }
+	public function createTokenOrder(Request $request)
+	{
+		$tokenString = $request->input('token');
 
-        $token = Token::where([
-            'token'          => $tokenString,
-            'token_order_id' => null,
-        ])->first();
+		if (!isset($tokenString)) {
+			flash()->error('No token specified!');
 
-        if (!$token) {
-            flash()->error('Given token is not valid!');
+			return redirect()->back();
+		}
 
-            return redirect()->back();
-        }
-        $tokenOrder = TokenOrder::create();
+		$token = Token::where([
+			'token'          => $tokenString,
+			'token_order_id' => null,
+		])->first();
 
-        $token->tokenOrder()->associate($tokenOrder);
-        $token->save();
+		if (!$token) {
+			flash()->error('Given token is not valid!');
 
-        $order = Order::make();
+			return redirect()->back();
+		}
+		$tokenOrder = TokenOrder::create();
 
-        $order->duration = $token->duration;
-        $order->public_id = $rand = substr(md5(microtime()), 0, config('app.public_id_size'));
-        $order->orderable()->associate($tokenOrder);
-        $order->user()->associate(Auth::user());
+		$token->tokenOrder()->associate($tokenOrder);
+		$token->save();
 
-        $order->save();
+		$order = Order::make();
 
-        return redirect()->route('view-token-order', $order->public_id);
-    }
+		$order->duration = $token->duration;
+		$order->public_id = $rand = substr(md5(microtime()), 0, config('app.public_id_size'));
+		$order->orderable()->associate($tokenOrder);
+		$order->user()->associate(Auth::user());
+
+		$order->save();
+
+		return redirect()->route('view-token-order', $order->public_id);
+	}
 }
