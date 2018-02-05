@@ -2,8 +2,8 @@
 
 @section('content')
 
-
-    {!! Form::open(['route' => 'token-generation', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+@if(!isset($confirming) || $confirming == false)
+    {!! Form::open(['route' => 'tokens.create', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
         <fieldset>
 
             <!-- Form Name -->
@@ -75,6 +75,8 @@
                 </div>
             </div>
 
+            <input type="hidden" name="confirming" value="true">
+
             <!-- Button -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="generate">Generate Token</label>
@@ -85,7 +87,42 @@
 
         </fieldset>
     {!! Form::close() !!}
+@else
+    {!! Form::open(['route' => 'token-generate', 'method' => 'POST']) !!}
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <td>Duration</td>
+            <td><span class="label label-success">{{ $duration }} days</span></td>
+            <input type="hidden" name="duration" value="{{ $duration }}">
+        </tr>
+        <tr>
+            <td>Expiration</td>
+            <td><span class="label label-success">{{ $expiration }} hours</span></td>
+            <input type="hidden" name="expiration" value="{{ $expiration }}">
+        </tr>
+        <tr>
+            <td>Expiration Date</td>
+            <td><span class="label label-success">{{ $expiration_date }}</span></td>
+        </tr>
+        <tr>
+            <td>Note</td>
+            <td><span class="label label-success">{{ $note }}</span></td>
+            <input type="hidden" name="note" value="{{ $note }}">
+        </tr>
+        </tbody>
+    </table>
 
+    <input type="hidden" name="confirmed" value="true">
+
+    <!-- Button -->
+    <div class="form-group">
+        <div class="col-md-12">
+            <button id="generate" type="submit" name="generate" class="btn btn-block btn-success">Generate</button>
+        </div>
+    </div>
+    {!! Form::close() !!}
+@endif
 
 
 @endsection

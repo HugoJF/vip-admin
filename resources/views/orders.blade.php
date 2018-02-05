@@ -12,6 +12,7 @@
             <th>Order Type</th>
             @endif
             <th>Duration</th>
+            <th>Extra tokens</th>
             <th>State</th>
             <th>Actions</th>
         </tr>
@@ -20,25 +21,26 @@
         @foreach($orders as $order)
             @if($order->isSteamOffer())
                 <tr>
-                    <td scope="row"><a href="{{ route('view-steam-order', $order->public_id) }}">#{{ $order->public_id }}</a></td>
+                    <td scope="row"><a href="{{ route('steam-order.show', $order->public_id) }}">#{{ $order->public_id }}</a></td>
                     @if($isAdmin)
                         <td><a href="http://steamcommunity.com/profiles/{{ $order->user->steamid }}">{{ $order->user->username }}</a></td>
                         <td>{{ $order->orderable_type }}</td>
                     @endif
                     <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
-                    <td><span class="label label-{{ $order->orderable()->get()->first()->stateClass() }}">{{ $order->orderable()->get()->first()->stateText() }}</span></td>
-                    <td><a class="btn btn-default" href="{{ route('view-steam-order', $order->public_id) }}">View order details</a></td>
+                    <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
+                    <td><a class="btn btn-default" href="{{ route('steam-order.show', $order->public_id) }}">View order details</a></td>
                 </tr>
             @else
                 <tr>
-                    <td scope="row"><a href="{{ route('view-token-order', $order->public_id) }}">#{{ $order->public_id }}</a></td>
+                    <td scope="row"><a href="{{ route('token-order.show', $order->public_id) }}">#{{ $order->public_id }}</a></td>
                     @if($isAdmin)
                         <td><a href="http://steamcommunity.com/profiles/{{ $order->user->steamid }}">{{ $order->user->username }}</a></td>
                         <td>{{ $order->orderable_type }}</td>
                     @endif
                     <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
-                    <td><span class="label label-{{ $order->orderable()->first()->stateClass() }}">{{ $order->orderable()->first()->stateText() }}</span></td>
-                    <td><a class="btn btn-default" href="{{ route('view-token-order', $order->public_id) }}">View order details</a></td>
+                    <td>{{ $order->extraTokens() }} tokens</td>
+                    <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
+                    <td><a class="btn btn-default" href="{{ route('token-order.show', $order->public_id) }}">View order details</a></td>
                 </tr>
 
             @endif

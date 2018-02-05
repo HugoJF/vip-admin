@@ -4,7 +4,7 @@
 
     <h2>Token generation confirmation details</h2>
 
-    {!! Form::open(['route' => 'token-generate', 'method' => 'POST']) !!}
+    {!! Form::open(['route' => 'tokens.store', 'method' => 'POST']) !!}
     <table class="table table-hover">
         <tbody>
         <tr>
@@ -35,5 +35,7 @@
         </div>
     </div>
     {!! Form::close() !!}
+
+
 
 @endsection

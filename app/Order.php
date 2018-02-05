@@ -32,4 +32,9 @@ class Order extends Model
     {
         return $this->orderable_type == 'App\SteamOrder';
     }
+
+    public function extraTokens()
+    {
+        return floor($this->duration / \Setting::get('order-duration-per-extra-token', 30));
+    }
 }

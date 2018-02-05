@@ -21,6 +21,8 @@
     <!-- Custom styles for this template -->
     <link href="/css/dashboard.css" rel="stylesheet">
 
+    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
     @yield('head')
 
     <style>
@@ -138,14 +140,14 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                         <ul class="list-group">
-                            <li class="list-group-item {{ Route::is('inventory') ? 'active' : ''}}">
+                            <li class="list-group-item {{ Route::is('steam-order.create') ? 'active' : ''}}">
                                 <span class="glyphicon glyphicon-usd"></span>
-                                <a href="{{ route('inventory') }}">Buy VIP with Skins</a>
+                                <a href="{{ route('steam-order.create') }}">Buy VIP with Skins</a>
                             </li>
 
-                            <li class="list-group-item {{ Route::is('token') ? 'active' : '' }}">
+                            <li class="list-group-item {{ Route::is('token-order.create') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-gift"></span>
-                                <a href="{{ route('token') }}">Buy VIP with Tokens</a>
+                                <a href="{{ route('token-order.create') }}">Buy VIP with Tokens</a>
                             </li>
 
                             <li class="list-group-item">
@@ -218,6 +220,11 @@
                                 <a href="{{ route('confirmations') }}">Confirmations</a>
                                 <span class="badge">{{ Auth::user()->confirmations()->count() }}</span>
                             </li>
+                            <li class="list-group-item {{ Route::is('tokens.index') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-th-list"></span>
+                                <a href="{{ route('tokens.index') }}" >Tokens</a>
+                                <span class="badge" title="Generated tokens / Allowed tokens">{{ Auth::user()->tokens()->count() }} / {{ Auth::user()->allowedTokens() }}</span>
+                            </li>
                             <li class="list-group-item {{ Route::is('settings') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-cog"></span>
                                 <a href="{{ route('settings') }}">Settings</a>
@@ -237,25 +244,29 @@
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse in">
                             <ul class="list-group">
+                                <li class="list-group-item  {{ Route::is('tokens.create') ? 'active' : '' }}">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <a href="{{ route('tokens.create') }}">Generate token</a>
+                                </li>
+                                <li class="list-group-item {{ Route::is('users.index') ? 'active' : '' }}">
+                                    <span class="glyphicon glyphicon-th-list"></span>
+                                    <a href="{{ route('users.index') }}">Users</a>
+                                </li>
                                 <li class="list-group-item {{ Route::is('laravel-logs') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-console"></span>
                                     <a href="{{ route('laravel-logs') }}">Logs</a>
-                                </li>
-                                <li class="list-group-item {{ Route::is('tokens') ? 'active' : '' }}">
-                                    <span class="glyphicon glyphicon-tag"></span>
-                                    <a href="{{ route('tokens') }}">Tokens</a>
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                     <a href="{{ route('sync-server') }}">Sync Server</a>
                                 </li>
-                                <li class="list-group-item  {{ Route::is('token-generation') ? 'active' : '' }}">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                    <a href="{{ route('token-generation') }}">Generate token</a>
-                                </li>
                                 <li class="list-group-item  {{ Route::is('opskins-update-form') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-check"></span>
                                     <a href="{{ route('opskins-update-form') }}">OPSkins updater</a>
+                                </li>
+                                <li class="list-group-item {{ Route::is('laravel-settings-ui') ? 'active' : '' }}">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    <a href="{{ route('laravel-settings-ui') }}">Application Settings</a>
                                 </li>
                             </ul>
                         </div>
@@ -277,12 +288,14 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/bootstrap-datetimepicker.min.js"></script>
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 <script src="/js/vendor/holder.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="/js/ie10-viewport-bug-workaround.js"></script>
-@yield('script')
+@stack('scripts')
 </body>
 </html>

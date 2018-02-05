@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    {!! Form::open(['route' => 'token-order.store', 'method' => 'POST']) !!}
 
+    <input type="hidden" name="token" value="{{ $token->token }}">
     <h2>Viewing token: <strong>{{ $token->token }}</strong></h2>
 
     <table class="table table-hover">
@@ -36,5 +38,10 @@
         </tr>
         </tbody>
     </table>
+
+    <button class="btn btn-success btn-block" type="submit">Confirm token</button>
+
+    {!! Form::close() !!}
+
 
 @endsection

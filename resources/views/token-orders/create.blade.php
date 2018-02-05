@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    {!! Form::open(['route' => 'token-order-preview', 'method' => 'GET']) !!}
+    {!! Form::open(['route' => 'token-order.create', 'method' => 'GET']) !!}
 
     <div class="form-group">
         {!! Form::label('token', 'Token') !!}

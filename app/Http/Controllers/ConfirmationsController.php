@@ -10,17 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ConfirmationsController extends Controller
 {
-    public function createConfirmation($public_id)
+    public function generate(Order $order)
     {
-        // Retrieve order from which we are creating the Confirmation
-        $order = Order::where([
-            'public_id' => $public_id,
-            'user_id'   => Auth::id(),
-        ])->get()->first();
-
         // Check if Order with given public ID exists
         if (!$order) {
-            flash()->error('Could not find order with ID #'.$public_id);
+            flash()->error('Could not find order');
 
             return redirect()->route('home');
         }
@@ -74,7 +68,7 @@ class ConfirmationsController extends Controller
         // Start creating Confirmation entry
         $confirmation = Confirmation::make();
 
-        $confirmation->public_id = substr(md5(microtime()), 0, config('app.public_id_size'));
+        $confirmation->public_id = substr(md5(microtime()), 0, \Setting::get('public-id-size'));
         $confirmation->baseOrder()->associate($order);
         $confirmation->user()->associate(Auth::user());
         $confirmation->start_period = $basePeriod;
@@ -91,9 +85,9 @@ class ConfirmationsController extends Controller
 
         // Redirect to updated order
         if ($order->isSteamOffer()) {
-            return redirect()->route('view-steam-order', $public_id);
+            return redirect()->route('steam-order.show', $order->public_id);
         } else {
-            return redirect()->route('view-token-order', $public_id);
+            return redirect()->route('token-order.show', $order->public_id);
         }
     }
 
@@ -107,7 +101,7 @@ class ConfirmationsController extends Controller
             $confirmations = Auth::user()->confirmations()->with('user', 'baseOrder')->get();
         }
 
-        return view('confirmations', [
+        return view('confirmations.index', [
             'confirmations' => $confirmations,
             'isAdmin'       => $user->isAdmin(),
         ]);

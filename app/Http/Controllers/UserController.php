@@ -4,52 +4,62 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class UserController extends Controller
 {
-    public function settings()
-    {
-        return view('user_settings', [
-            'user' => Auth::user(),
-        ]);
-    }
+	public function index()
+	{
+		$users = User::all();
 
-    public function settingsUpdate(Request $request)
-    {
-        $user = Auth::user();
+		return view('users.index', [
+			'users' => $users,
+		]);
+	}
 
-        $user->fill($request->all());
+	public function settings()
+	{
+		return view('user_settings', [
+			'user' => Auth::user(),
+		]);
+	}
 
-        $saved = $user->save();
+	public function settingsUpdate(Request $request)
+	{
+		$user = Auth::user();
 
-        if ($saved) {
-            flash()->success('Updated settings successfully.');
-        } else {
-            flash()->error('Error updating settings!');
-        }
+		$user->fill($request->all());
 
-        return redirect()->route('settings');
-    }
+		$saved = $user->save();
 
-    public function accept()
-    {
-        $user = Auth::user();
+		if ($saved) {
+			flash()->success('Updated settings successfully.');
+		} else {
+			flash()->error('Error updating settings!');
+		}
 
-        $user->accepted = true;
+		return redirect()->route('settings');
+	}
 
-        $saved = $user->save();
+	public function accept()
+	{
+		$user = Auth::user();
 
-        if ($saved) {
-            flash()->success('User settings saved with success.');
-        } else {
-            flash()->error('Could not save user settings!');
-        }
+		$user->accepted = true;
 
-        return redirect()->route('home');
-    }
+		$saved = $user->save();
 
-    public function home()
-    {
-        return view('welcome');
-    }
+		if ($saved) {
+			flash()->success('User settings saved with success.');
+		} else {
+			flash()->error('Could not save user settings!');
+		}
+
+		return redirect()->route('home');
+	}
+
+	public function home()
+	{
+		return view('home');
+	}
 }

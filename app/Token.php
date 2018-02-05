@@ -15,6 +15,11 @@ class Token extends Model
         return $this->belongsTo('App\TokenOrder');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     public function getRouteKeyName()
     {
         return 'token';
@@ -22,11 +27,11 @@ class Token extends Model
 
     public function status()
     {
-        $expiration_date = $this->created_at->addHours($this->expiration);
-
         if ($this->tokenOrder()->exists()) {
             return 'Used';
         }
+
+        $expiration_date = $this->created_at->addHours($this->expiration);
 
         if ($expiration_date->isPast()) {
             return 'Expired';

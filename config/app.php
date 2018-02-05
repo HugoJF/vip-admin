@@ -183,6 +183,9 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        anlutro\LaravelSettings\ServiceProvider::class,
+        Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
+        Imtigger\LaravelSettingsUI\LaravelSettingsUIServiceProvider::class,
 
     ],
 
@@ -233,11 +236,13 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
 
-        'Curl'     => Ixudra\Curl\Facades\Curl::class,
-        'Form'     => Collective\Html\FormFacade::class,
-        'Html'     => Collective\Html\HtmlFacade::class,
-        'Sentry'   => Sentry\SentryLaravel\SentryFacade::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Curl'          => Ixudra\Curl\Facades\Curl::class,
+        'Form'          => Collective\Html\FormFacade::class,
+        'Html'          => Collective\Html\HtmlFacade::class,
+        'Sentry'        => Sentry\SentryLaravel\SentryFacade::class,
+        'Debugbar'      => Barryvdh\Debugbar\Facade::class,
+        'Setting'       => anlutro\LaravelSettings\Facade::class,
+        'FormBuilder'   => Kris\LaravelFormBuilder\Facades\FormBuilder::class,
 
     ],
 

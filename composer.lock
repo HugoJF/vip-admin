@@ -4,8 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b20c42b918542e5c708c5b689af49960",
+    "content-hash": "5a27a8f54fc5e4bc6a85f74bfee7bee6",
     "packages": [
+        {
+            "name": "anlutro/l4-settings",
+            "version": "0.4.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anlutro/laravel-settings.git",
+                "reference": "3c389dcef5e1d2dd8830c1254a70b56f430d3ea0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anlutro/laravel-settings/zipball/3c389dcef5e1d2dd8830c1254a70b56f430d3ea0",
+                "reference": "3c389dcef5e1d2dd8830c1254a70b56f430d3ea0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=4.1 <6.0",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "illuminate/database": ">=4.1 <6.0",
+                "illuminate/filesystem": ">=4.1 <6.0",
+                "mockery/mockery": "0.9.*"
+            },
+            "suggest": {
+                "illuminate/database": "Save settings to a database table.",
+                "illuminate/filesystem": "Save settings to a JSON file."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "anlutro\\LaravelSettings\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Lutro",
+                    "email": "anlutro@gmail.com"
+                }
+            ],
+            "description": "Persistent settings in Laravel.",
+            "time": "2016-02-28T18:37:50+00:00"
+        },
         {
             "name": "barryvdh/laravel-debugbar",
             "version": "v2.4.3",
@@ -382,6 +428,52 @@
             "time": "2017-03-20T17:10:46+00:00"
         },
         {
+            "name": "imtigger/laravel-settings-ui",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/imTigger/laravel-settings-ui.git",
+                "reference": "a72075f5c676e0f1aa02123a467642e0b036b60f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/imTigger/laravel-settings-ui/zipball/a72075f5c676e0f1aa02123a467642e0b036b60f",
+                "reference": "a72075f5c676e0f1aa02123a467642e0b036b60f",
+                "shasum": ""
+            },
+            "require": {
+                "anlutro/l4-settings": "^0.4.8",
+                "kris/laravel-form-builder": "^1.7",
+                "laravel/framework": "5.*",
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Imtigger\\LaravelSettingsUI\\LaravelSettingsUIServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Imtigger\\LaravelSettingsUI\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "property"
+            ],
+            "authors": [
+                {
+                    "name": "Tiger",
+                    "email": "tiger@tiger-workshop.com"
+                }
+            ],
+            "description": "Laravel Settings UI",
+            "time": "2017-08-23 14:58:48"
+        },
+        {
             "name": "invisnik/laravel-steam-auth",
             "version": "v3.1.2",
             "source": {
@@ -576,6 +668,68 @@
                 }
             ],
             "time": "2015-04-20T18:58:01+00:00"
+        },
+        {
+            "name": "kris/laravel-form-builder",
+            "version": "1.14.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kristijanhusak/laravel-form-builder.git",
+                "reference": "8d1c67102e20c485717823f1be02b4b2235d072f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kristijanhusak/laravel-form-builder/zipball/8d1c67102e20c485717823f1be02b4b2235d072f",
+                "reference": "8d1c67102e20c485717823f1be02b4b2235d072f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "5.*@dev",
+                "illuminate/validation": "5.*@dev",
+                "laravelcollective/html": "5.*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.4",
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.12.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Kris\\LaravelFormBuilder\\FormBuilderServiceProvider"
+                    ],
+                    "aliases": {
+                        "FormBuilder": "Kris\\LaravelFormBuilder\\Facades\\FormBuilder"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Kris\\LaravelFormBuilder": "src/"
+                },
+                "classmap": [
+                    "tests/FormBuilderTestCase.php"
+                ],
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kristijan Husak",
+                    "email": "husakkristijan@gmail.com"
+                }
+            ],
+            "description": "Laravel form builder - symfony like",
+            "time": "2017-12-17T16:41:18+00:00"
         },
         {
             "name": "laracasts/flash",
@@ -4354,8 +4508,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "imtigger/laravel-settings-ui": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

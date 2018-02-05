@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    {!! Form::open(['route' => 'create-token-order', 'method' => 'POST']) !!}
 
-    <input type="hidden" name="token" value="{{ $token->token }}">
     <h2>Viewing token: <strong>{{ $token->token }}</strong></h2>
 
     <table class="table table-hover">
@@ -18,7 +16,7 @@
         </tr>
         <tr>
             <td>Expiration</td>
-            <td><span class="label label-success">${{ $token->expiration }} hours</span></td>
+            <td><span class="label label-success">{{ $token->expiration }} hours</span></td>
         </tr>
         <tr>
             <td>Expiration Date</td>
@@ -38,10 +36,5 @@
         </tr>
         </tbody>
     </table>
-
-    <button class="btn btn-success btn-block" type="submit">Confirm token</button>
-
-    {!! Form::close() !!}
-
 
 @endsection

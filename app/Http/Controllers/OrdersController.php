@@ -12,7 +12,7 @@ class OrdersController extends Controller
         $user = Auth::user();
 
         if ($user->isAdmin()) {
-            $orders = Order::with('orderable')->get();
+            $orders = Order::with('orderable', 'user')->get();
         } else {
             $orders = Auth::user()->orders()->with('orderable', 'user')->get();
         }

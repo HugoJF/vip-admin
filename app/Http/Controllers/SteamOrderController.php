@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SteamOrderController extends Controller
 {
-	public function inventoryView()
+	public function create()
 	{
 		// Gets client raw inventory information
 		$inventory = DaemonController::getInventoryFromAuthedUser();
@@ -41,13 +41,13 @@ class SteamOrderController extends Controller
 		}
 
 		// Return inventory view
-		return view('inventory', [
+		return view('steam-orders.create', [
 			'inventory' => $inventory,
 			'prices'    => $associativePrices,
 		]);
 	}
 
-	public function createSteamOffer(Request $request)
+	public function store(Request $request)
 	{
 		// Gets client raw inventory information
 		$inventory = DaemonController::getInventoryFromAuthedUser();
@@ -78,10 +78,10 @@ class SteamOrderController extends Controller
 		$totalPrice = DaemonController::calculateTotalPrice($full_item_list);
 
 		// Check if order is above maximum price
-		if ($totalPrice > config('app.max_order_price', 5000)) {
-			flash()->error('Your order is above the maximum allowed price of $' . config('app.max_order_price', 5000) / 100 . '!');
+		if ($totalPrice > \Setting::get('max-order-price', 5000)) {
+			flash()->error('Your order is above the maximum allowed price of $' . \Setting::get('max-order-price', 5000) / 100 . '!');
 
-			return redirect()->route('inventory');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Pre-calculate the duration before anything
@@ -89,28 +89,28 @@ class SteamOrderController extends Controller
 
 		// Get maximum date from configuration
 		$now = Carbon::now();
-		$maxDate = Carbon::createFromFormat('d/m/Y', config('app.max_order_date', '21/02/2018'));
+		$maxDate = Carbon::createFromFormat('d/m/Y', \Setting::get('max-order-date'));
 		$maxDateMaxDuration = $maxDate->diffInDays($now);
 
 		// Check if order has enough value to be above 1 unit of item
 		if ($duration < 7) {
 			flash('Current order is below the minimum allowed of 7 days.');
 
-			return redirect()->route('inventory');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Check if order is above maximum duration
 		if ($duration > $maxDateMaxDuration) {
 			flash()->error('Your order is above the maximum allowed duration of ' . $maxDateMaxDuration . ' days!');
 
-			return redirect()->route('inventory');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Check if order is above maximum duration
-		if ($duration > config('app.max_order_duration', 120)) {
-			flash()->error('Your order is above the maximum allowed duration of ' . config('app.max_order_duration', 120) . ' days!');
+		if ($duration > \Setting::get('max-order-duration', 120)) {
+			flash()->error('Your order is above the maximum allowed duration of ' . \Setting::get('max-order-duration', 120) . ' days!');
 
-			return redirect()->route('inventory');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Prepare orders
@@ -121,7 +121,7 @@ class SteamOrderController extends Controller
 		$steamOrder->encoded_items = json_encode($full_item_list);
 
 		// Fill base order information
-		$order->public_id = $rand = substr(md5(microtime()), 0, config('app.public_id_size'));
+		$order->public_id = $rand = substr(md5(microtime()), 0, \Setting::get('public-id-size', 120));
 		$order->duration = $duration;
 		$order->user()->associate(Auth::user());
 
@@ -144,7 +144,7 @@ class SteamOrderController extends Controller
 		}
 	}
 
-	public function viewSteamOrder(Order $order)
+	public function show(Order $order)
 	{
 		// Gets the client raw inventory information
 		$inventory = DaemonController::getInventoryFromAuthedUser();
@@ -172,7 +172,7 @@ class SteamOrderController extends Controller
 
 		// Checks if we found Steam order details
 		if (!$steamOrder) {
-			flash()->error('Could not find details of order #' . $public_id);
+			flash()->error('Could not find details of order #' . $order->public_id);
 
 			return redirect()->route('home');
 		}
@@ -196,17 +196,11 @@ class SteamOrderController extends Controller
 		]);
 	}
 
-	public function sendTradeOffer($public_id)
+	public function sendTradeOffer(Order $order)
 	{
-		// Get what order are we trying to send the offer
-		$order = Order::where([
-			'public_id' => $public_id,
-
-		])->get()->first();
-
 		// Check if given order exists
 		if (!$order) {
-			flash()->error('Could not find order #' . $public_id);
+			flash()->error('Could not find order!');
 
 			return redirect()->route('home');
 		}
@@ -216,7 +210,7 @@ class SteamOrderController extends Controller
 
 		// Checks if we found Steam order details
 		if (!$steamOrder) {
-			flash()->error('Could not find details of order #' . $public_id);
+			flash()->error('Could not find details of order #' . $order->public_id);
 
 			return redirect()->route('home');
 		}
@@ -255,9 +249,9 @@ class SteamOrderController extends Controller
 
 		// Redirect to view if successful
 		if ($steamOrderSaved) {
-			flash()->success('Trade offer sent! Please notice you have ' . config('app.expiration_time_min') . ' minutes to accept it before this order expires!');
+			flash()->success('Trade offer sent! Please notice you have ' . \Setting::get('expiration-time-min', 60) . ' minutes to accept it before this order expires!');
 
-			return redirect()->route('view-steam-order', $public_id);
+			return redirect()->route('steam-orders.show', $order->public_id);
 		} else {
 			flash()->error('Error saving order details to database!');
 

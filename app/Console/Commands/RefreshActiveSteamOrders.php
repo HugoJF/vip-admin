@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\SteamOrder;
 use Illuminate\Console\Command;
+use anlutro\LaravelSettings\Facade;
 
 class RefreshActiveSteamOrders extends Command
 {
@@ -47,7 +48,7 @@ class RefreshActiveSteamOrders extends Command
             $item->refresh();
             $this->info('Refreshing order #'.$item->baseOrder->public_id.' with new state: ['.$item->tradeoffer_state.'] '.$item->stateText().' {'.$item->tradeoffer_sent->diffInMinutes().'}');
 
-            if ($item->tradeoffer_sent->diffInMinutes() > config('app.expiration_time_min')) {
+            if ($item->tradeoffer_sent->diffInMinutes() > \Setting::get('expiration-time-min', 30)) {
                 $item->cancel();
                 $this->warn('Cancelling order #'.$item->baseOrder->public_id.' as it expired!');
             }

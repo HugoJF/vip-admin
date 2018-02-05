@@ -27,7 +27,7 @@ class TokenPolicy
 	 */
 	public function view(User $user, Token $token)
 	{
-		return $user->accepted === true;
+		return true;
 	}
 
 	/**
@@ -39,7 +39,7 @@ class TokenPolicy
 	 */
 	public function create(User $user)
 	{
-		return $user->isAdmin();
+		return true;
 	}
 
 	/**
@@ -52,7 +52,7 @@ class TokenPolicy
 	 */
 	public function update(User $user, Token $token)
 	{
-		return $user->isAdmin();
+		return $token->user->id === $user->id;
 	}
 
 	/**

@@ -181,7 +181,7 @@ $control = 1;
     <li><a id="totalDays"><span class="label label-primary"><u>Total days: 0 days</u></span></a></li>
 @endsection
 
-@section('script')
+@push('scripts')
     <script>
 
         function updateNumbers()
@@ -192,7 +192,7 @@ $control = 1;
                     price += JSON.parse(elem.value).price;
                 });
 
-                var days = Math.floor(price / {{ config('app.cost_per_day') }} * 100 );
+                var days = Math.floor(price / {{ Setting::get('cost-per-day') }} * 100 );
                 price = Math.floor(price * 100) / 100;
 
                 $('#totalPrice > span > u').text('Total Price: $ ' + price)
@@ -207,4 +207,4 @@ $control = 1;
             updateNumbers();
         });
     </script>
-@endsection
+@endpush

@@ -39,7 +39,7 @@ class OrderPolicy
 	 */
 	public function create(User $user)
 	{
-		return $user->accepted === true;
+		return true;
 	}
 
 	/**
