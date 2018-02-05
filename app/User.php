@@ -44,7 +44,7 @@ class User extends Authenticatable
 
 	public function allowedTokens()
 	{
-		$orders = $this->orders()->with('orderable', 'orderable.token')->get();
+		$orders = $this->orders()->with('orderable')->get();
 		$allowedTokens = 0;
 
 		foreach ($orders as $order) {
