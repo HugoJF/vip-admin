@@ -96,6 +96,7 @@ class TokenController extends Controller
         $token = Token::make();
 
         $token->token = substr(md5(microtime()), 0, \Setting::get('token-size', 15));
+		$token->user()->associate(Auth::user());
         $token->duration = $request->input('duration');
         $token->expiration = $request->input('expiration');
         $token->note = $request->input('note');
