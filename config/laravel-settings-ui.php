@@ -1,4 +1,5 @@
 <?php
+
 return [
-    'form' => 'App\Forms\LaravelSettingsForm'
+    'form' => 'App\Forms\LaravelSettingsForm',
 ];

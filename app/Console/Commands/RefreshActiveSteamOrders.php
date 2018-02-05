@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\SteamOrder;
 use Illuminate\Console\Command;
-use anlutro\LaravelSettings\Facade;
 
 class RefreshActiveSteamOrders extends Command
 {

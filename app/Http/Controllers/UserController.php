@@ -2,64 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 
 class UserController extends Controller
 {
-	public function index()
-	{
-		$users = User::all();
+    public function index()
+    {
+        $users = User::all();
 
-		return view('users.index', [
-			'users' => $users,
-		]);
-	}
+        return view('users.index', [
+            'users' => $users,
+        ]);
+    }
 
-	public function settings()
-	{
-		return view('user_settings', [
-			'user' => Auth::user(),
-		]);
-	}
+    public function settings()
+    {
+        return view('user_settings', [
+            'user' => Auth::user(),
+        ]);
+    }
 
-	public function settingsUpdate(Request $request)
-	{
-		$user = Auth::user();
+    public function settingsUpdate(Request $request)
+    {
+        $user = Auth::user();
 
-		$user->fill($request->all());
+        $user->fill($request->all());
 
-		$saved = $user->save();
+        $saved = $user->save();
 
-		if ($saved) {
-			flash()->success('Updated settings successfully.');
-		} else {
-			flash()->error('Error updating settings!');
-		}
+        if ($saved) {
+            flash()->success('Updated settings successfully.');
+        } else {
+            flash()->error('Error updating settings!');
+        }
 
-		return redirect()->route('settings');
-	}
+        return redirect()->route('settings');
+    }
 
-	public function accept()
-	{
-		$user = Auth::user();
+    public function accept()
+    {
+        $user = Auth::user();
 
-		$user->accepted = true;
+        $user->accepted = true;
 
-		$saved = $user->save();
+        $saved = $user->save();
 
-		if ($saved) {
-			flash()->success('User settings saved with success.');
-		} else {
-			flash()->error('Could not save user settings!');
-		}
+        if ($saved) {
+            flash()->success('User settings saved with success.');
+        } else {
+            flash()->error('Could not save user settings!');
+        }
 
-		return redirect()->route('home');
-	}
+        return redirect()->route('home');
+    }
 
-	public function home()
-	{
-		return view('home');
-	}
+    public function home()
+    {
+        return view('home');
+    }
 }

@@ -20,9 +20,9 @@ class TokenOrder extends Model
 
     public function stateText()
     {
-        if($this->baseOrder->confirmation()->exists()) {
+        if ($this->baseOrder->confirmation()->exists()) {
             return 'Confirmed';
-        } else if ($this->token()->exists()) {
+        } elseif ($this->token()->exists()) {
             return 'Token used';
         } else {
             return 'Missing token';

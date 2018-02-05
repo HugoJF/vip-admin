@@ -8,7 +8,7 @@ return [
         'field_class'         => 'form-control',
         'help_block_class'    => 'help-block',
         'error_class'         => 'text-danger',
-        'required_class'      => 'required'
+        'required_class'      => 'required',
 
         // Override a class from a field.
         //'text'                => [
@@ -44,6 +44,6 @@ return [
     'default_namespace' => '',
 
     'custom_fields' => [
-        'datetimepicker' => App\Forms\Fields\DateTimePicker::class
-    ]
+        'datetimepicker' => App\Forms\Fields\DateTimePicker::class,
+    ],
 ];
