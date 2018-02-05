@@ -21,51 +21,50 @@ Route::get('confirmations', 'ConfirmationsController@view')->middleware('auth', 
 Route::get('sync-server', 'ConfirmationsController@syncServer')->middleware('auth', 'admin')->name('sync-server');
 
 Route::group(['middleware' => ['admin', 'daemon.online']], function () {
-	Route::get('laravel/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
-	Route::get('daemon/logs', 'DaemonController@logs')->name('daemon-logs');
-	Route::get('daemon/stdout', 'DaemonController@stdout')->name('daemon-stdout');
-	Route::get('daemon/stderr', 'DaemonController@stderr')->name('daemon-stderr');
-	Route::get('daemon/kill', 'DaemonController@kill')->name('daemon-kill');
+    Route::get('laravel/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('laravel-logs');
+    Route::get('daemon/logs', 'DaemonController@logs')->name('daemon-logs');
+    Route::get('daemon/stdout', 'DaemonController@stdout')->name('daemon-stdout');
+    Route::get('daemon/stderr', 'DaemonController@stderr')->name('daemon-stderr');
+    Route::get('daemon/kill', 'DaemonController@kill')->name('daemon-kill');
 
-	Route::get('daemon-login', 'DaemonController@login')->name('daemon-login');
-	Route::post('daemon-login', 'DaemonController@loginPost')->name('daemon-login-post');
+    Route::get('daemon-login', 'DaemonController@login')->name('daemon-login');
+    Route::post('daemon-login', 'DaemonController@loginPost')->name('daemon-login-post');
 
-	Route::get('/settings', ['as' => 'laravel-settings-ui', 'uses' => '\\Imtigger\\LaravelSettingsUI\\Controller@get']);
-	Route::post('/settings', ['as' => 'laravel-settings-ui.post', 'uses' => '\\Imtigger\\LaravelSettingsUI\\Controller@post']);
+    Route::get('/settings', ['as' => 'laravel-settings-ui', 'uses' => '\\Imtigger\\LaravelSettingsUI\\Controller@get']);
+    Route::post('/settings', ['as' => 'laravel-settings-ui.post', 'uses' => '\\Imtigger\\LaravelSettingsUI\\Controller@post']);
 
-	Route::get('/users', 'UserController@index')->name('users.index');
+    Route::get('/users', 'UserController@index')->name('users.index');
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', 'UserController@home')->name('home');
+    Route::get('accept', 'UserController@accept')->name('accept');
+    Route::get('users/settings', 'UserController@settings')->name('settings');
+    Route::post('users/settings', 'UserController@settingsUpdate')->name('settings.update');
 
-	Route::get('/', 'UserController@home')->name('home');
-	Route::get('accept', 'UserController@accept')->name('accept');
-	Route::get('users/settings', 'UserController@settings')->name('settings');
-	Route::post('users/settings', 'UserController@settingsUpdate')->name('settings.update');
+    Route::group(['middleware' => ['admin']], function () {
+        Route::get('opskins-updater', 'OPSkinsController@updateForm')->name('opskins-update-form');
+        Route::post('opskins-updater', 'OPSkinsController@updateFromData')->name('opskins-update-form-post');
+    });
 
-	Route::group(['middleware' => ['admin']], function () {
-		Route::get('opskins-updater', 'OPSkinsController@updateForm')->name('opskins-update-form');
-		Route::post('opskins-updater', 'OPSkinsController@updateFromData')->name('opskins-update-form-post');
-	});
+    Route::group(['middleware' => ['accepted']], function () {
+        Route::get('token-orders/{order}', 'TokenOrderController@view')->name('token-order.show')->middleware('can:view,order');
 
-	Route::group(['middleware' => ['accepted']], function () {
-		Route::get('token-orders/{order}', 'TokenOrderController@view')->name('token-order.show')->middleware('can:view,order');
+        Route::post('tokens-orders/store', 'TokenOrderController@store')->name('token-order.store')->middleware('can:create,App\Order');
+        Route::get('tokens-orders/create', 'TokenOrderController@create')->name('token-order.create')->middleware('can:create,App\Order');
 
-		Route::post('tokens-orders/store', 'TokenOrderController@store')->name('token-order.store')->middleware('can:create,App\Order');
-		Route::get('tokens-orders/create', 'TokenOrderController@create')->name('token-order.create')->middleware('can:create,App\Order');
+        Route::get('tokens/create', 'TokenController@create')->name('tokens.create')->middleware('can:create,App\Token');
+        Route::post('tokens/create', 'TokenController@create')->name('tokens.create')->middleware('can:create,App\Token');
+        Route::get('tokens/{token}', 'TokenController@show')->name('tokens.show')->middleware('can:view,App\Token');
+        Route::post('tokens', 'TokenController@store')->name('tokens.store')->middleware('can:create,App\Token');
+        Route::post('tokens/extra', 'TokenController@storeExtra')->name('tokens.storeExtra')->middleware('can:create,App\Token');
+        Route::get('tokens', 'TokenController@index')->name('tokens.index');
 
-		Route::get('tokens/create', 'TokenController@create')->name('tokens.create')->middleware('can:create,App\Token');
-		Route::post('tokens/create', 'TokenController@create')->name('tokens.create')->middleware('can:create,App\Token');
-		Route::get('tokens/{token}', 'TokenController@show')->name('tokens.show')->middleware('can:view,App\Token');
-		Route::post('tokens', 'TokenController@store')->name('tokens.store')->middleware('can:create,App\Token');
-		Route::post('tokens/extra', 'TokenController@storeExtra')->name('tokens.storeExtra')->middleware('can:create,App\Token');
-		Route::get('tokens', 'TokenController@index')->name('tokens.index');
-
-		Route::group(['middleware' => ['tradelink', 'daemon']], function () {
-			Route::post('steam-orders', 'SteamOrderController@store')->name('steam-order.store');
-			Route::get('steam-orders/create', 'SteamOrderController@create')->name('steam-order.create')->middleware('can:create,App\Order');
-			Route::get('steam-orders/{order}', 'SteamOrderController@show')->name('steam-order.show')->middleware('can:view,order');
-			Route::get('steam-orders/{order}/send-tradeoffer', 'SteamOrderController@sendTradeOffer')->name('steam-order.send-tradeoffer')->middleware('can:view,order');
-		});
-	});;
+        Route::group(['middleware' => ['tradelink', 'daemon']], function () {
+            Route::post('steam-orders', 'SteamOrderController@store')->name('steam-order.store');
+            Route::get('steam-orders/create', 'SteamOrderController@create')->name('steam-order.create')->middleware('can:create,App\Order');
+            Route::get('steam-orders/{order}', 'SteamOrderController@show')->name('steam-order.show')->middleware('can:view,order');
+            Route::get('steam-orders/{order}/send-tradeoffer', 'SteamOrderController@sendTradeOffer')->name('steam-order.send-tradeoffer')->middleware('can:view,order');
+        });
+    });
 });
