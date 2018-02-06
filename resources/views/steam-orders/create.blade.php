@@ -126,7 +126,8 @@ $control = 1;
 @section('content')
     <h1>Select your items you want to trade</h1>
 
-    <form action="{{ route('steam-order.store') }}" method="POST">
+    <form action="{{ route('steam-order.store') }}" method="POST">\\
+        {{ csrf_field() }}
         <div class="row">
             @foreach($inventory as $key=>$item)
                 @if(array_key_exists($item->market_name, $prices))
