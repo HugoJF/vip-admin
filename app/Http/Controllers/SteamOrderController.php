@@ -187,7 +187,7 @@ class SteamOrderController extends Controller
         $days = DaemonController::calculateOfferDuration($totalPrice);
 
         // Return Steam Order view
-        return view('steam_order', [
+        return view('steam-orders.show', [
             'steamOrder' => $steamOrder,
             'order'      => $order,
             'duration'   => $days,
