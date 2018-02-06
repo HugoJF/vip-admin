@@ -39,13 +39,13 @@
                     @else
                         <td>N/A</td>
                     @endif
-                        <td>{{ $token->note }}</td>
+                    <td>{{ $token->note }}</td>
                     @if($token->user)
                         <td><a href="http://steamcommunity.com/profiles/{{ $token->user->steamid }}">{{ $token->user->username }}</a></td>
                     @else
                         <td>System</td>
                     @endif
-                        <td><span class="label label-{{ $token->statusClass() }}">{{ $token->status() }}</span></td>
+                    <td><span class="label label-{{ $token->statusClass() }}">{{ $token->status() }}</span></td>
                     @if($token->tokenOrder && $token->tokenOrder->baseOrder)
                         <td><a class="btn btn-default" href="{{ route('token-order.show', $token->tokenOrder->baseOrder->public_id) }}">View order details</a></td>
                     @else
