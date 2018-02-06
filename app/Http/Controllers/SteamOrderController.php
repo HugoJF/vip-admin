@@ -89,7 +89,7 @@ class SteamOrderController extends Controller
 
         // Get maximum date from configuration
         $now = Carbon::now();
-        $maxDate = Carbon::createFromFormat('d/m/Y', \Setting::get('max-order-date'));
+        $maxDate = Carbon::createFromFormat('Y-m-d H-i-s', \Setting::get('max-order-date'));
         $maxDateMaxDuration = $maxDate->diffInDays($now);
 
         // Check if order has enough value to be above 1 unit of item
