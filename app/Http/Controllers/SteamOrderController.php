@@ -136,7 +136,7 @@ class SteamOrderController extends Controller
         if ($steamOrderSaved && $orderSaved) {
             flash()->success('Order created successfully!');
 
-            return redirect()->route('view-steam-order', $order->public_id);
+            return redirect()->route('steam-order.show', $order->public_id);
         } else {
             flash()->error('Error saving orders to database!');
 
