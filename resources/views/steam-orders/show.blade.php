@@ -207,7 +207,7 @@
         @if(!$order->confirmation)
             <h3>Actions</h3>
             @if($steamOrder->notSent())
-                <a class="btn btn-success btn-lg btn-block" href="{{ route('send-trade-offer', $order->public_id) }}">Send Trade Link</a>
+                <a class="btn btn-success btn-lg btn-block" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Link</a>
             @elseif($steamOrder->active())
                 <a class="btn btn-success btn-lg btn-block" target="_blank" href="https://steamcommunity.com/tradeoffer/{{ $steamOrder->tradeoffer_id }}">Open Trade Offer</a>
             @elseif($steamOrder->accepted())
