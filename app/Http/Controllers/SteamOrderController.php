@@ -186,8 +186,8 @@ class SteamOrderController extends Controller
         // Computes the amount of days the order will result
         $days = DaemonController::calculateOfferDuration($totalPrice);
 
-        // Return Steam Order view
-        return view('steam-orders.show', [
+        // Return Steam Order
+        return view('steam-order.show', [
             'steamOrder' => $steamOrder,
             'order'      => $order,
             'duration'   => $days,
@@ -251,7 +251,7 @@ class SteamOrderController extends Controller
         if ($steamOrderSaved) {
             flash()->success('Trade offer sent! Please notice you have '.\Setting::get('expiration-time-min', 60).' minutes to accept it before this order expires!');
 
-            return redirect()->route('steam-orders.show', $order->public_id);
+            return redirect()->route('steam-order.show', $order->public_id);
         } else {
             flash()->error('Error saving order details to database!');
 
