@@ -186,6 +186,7 @@ return [
         anlutro\LaravelSettings\ServiceProvider::class,
         Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
         Imtigger\LaravelSettingsUI\LaravelSettingsUIServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
 
     ],
 

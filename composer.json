@@ -8,6 +8,7 @@
         "php": ">=5.6.4",
         "anlutro/l4-settings": "0.4.8",
         "barryvdh/laravel-debugbar": "~2.4",
+        "guzzlehttp/guzzle": "^6.2@dev",
         "imtigger/laravel-settings-ui": "dev-master",
         "invisnik/laravel-steam-auth": "3.*",
         "ixudra/curl": "6.*",
@@ -17,11 +18,13 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.2.0",
         "rap2hpoutre/laravel-log-viewer": "^0.11.0",
-        "sentry/sentry-laravel": "^0.8.0"
+        "sentry/sentry-laravel": "^0.8.0",
+        "spatie/laravel-backup": "^3.0.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.4",
         "fzaninotto/faker": "~1.4",
+        "laravel/dusk": "^1.0",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.7"
     },

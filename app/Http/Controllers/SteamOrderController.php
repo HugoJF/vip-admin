@@ -121,7 +121,7 @@ class SteamOrderController extends Controller
         $steamOrder->encoded_items = json_encode($full_item_list);
 
         // Fill base order information
-        $order->public_id = $rand = substr(md5(microtime()), 0, \Setting::get('public-id-size', 120));
+        $order->public_id = $rand = substr(md5(microtime()), 0, \Setting::get('public-id-size', 15));
         $order->duration = $duration;
         $order->user()->associate(Auth::user());
 

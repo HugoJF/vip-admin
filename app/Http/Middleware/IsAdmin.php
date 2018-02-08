@@ -18,7 +18,7 @@ class IsAdmin
     public function handle($request, Closure $next)
     {
         if (!Auth::user()->isAdmin()) {
-            flash()->error('You are not allowed to see this page!');
+            flash()->error('You are not allowed to see this page: ' . $request->fullUrl());
 
             return redirect('/');
         }
