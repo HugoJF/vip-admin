@@ -96,9 +96,9 @@ class ConfirmationsController extends Controller
 		$user = Auth::user();
 
 		if ($user->isAdmin()) {
-			$confirmations = Confirmation::with('user', 'baseOrder')->get();
+			$confirmations = Confirmation::withTrashed()->with('user', 'baseOrder')->get();
 		} else {
-			$confirmations = Auth::user()->confirmations()->with('user', 'baseOrder')->get();
+			$confirmations = Auth::user()->withTrashed()->confirmations()->with('user', 'baseOrder')->get();
 		}
 
 		return view('confirmations.index', [
@@ -118,6 +118,32 @@ class ConfirmationsController extends Controller
 		} else {
 			return $result;
 		}
+	}
+
+	public function destroy(Confirmation $confirmation)
+	{
+		$deleted = $confirmation->delete();
+
+		if($deleted) {
+			flash()->success('Confirmation deleted successfully!');
+		} else {
+			flash()->error('Error while trying to delete confirmation from database!');
+		}
+
+		return redirect()->back();
+	}
+
+	public function restore(Confirmation $confirmation)
+	{
+		$restored = $confirmation->restore();
+
+		if($restored) {
+			flash()->success('Confirmation restored successfully!');
+		} else {
+			flash()->error('Error while trying to restore confirmation from database!');
+		}
+
+		return redirect()->back();
 	}
 
 	public function generateAdminsSimple()

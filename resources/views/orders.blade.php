@@ -29,7 +29,14 @@
                     <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
                     <td>{{ $order->extra_tokens }} tokens</td>
                     <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
-                    <td><a class="btn btn-default" href="{{ route('steam-order.show', $order->public_id) }}">View order details</a></td>
+                    <td>
+                        <a class="btn btn-default" href="{{ route('steam-order.show', $order->public_id) }}">View order details</a>
+                        @if(!$order->orderable->tradeoffer_id)
+                            @if($isAdmin)
+                                <a class="btn btn-primary" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Offer</a>
+                            @endif
+                        @endif
+                    </td>
                 </tr>
             @else
                 <tr>

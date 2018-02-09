@@ -28,11 +28,22 @@
                 <td>{{ $confirmation->start_period }}</td>
                 <td>{{ $confirmation->end_period }}</td>
                 <td><span class="label label-{{ $confirmation->stateClass() }}"> {{ $confirmation->stateText() }}</span></td>
-                @if($confirmation->baseOrder->isSteamOffer())
-                    <td><a class="btn btn-default" href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}">View order</a></td>
-                @else
-                    <td><a class="btn btn-default" href="{{ route('token-order.show', $confirmation->baseOrder->public_id) }}">View order</a></td>
-                @endif
+                <td>
+                    @if($confirmation->baseOrder->isSteamOffer())
+                        <a class="btn btn-default" href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}">View order</a>
+                    @else
+                        <a class="btn btn-default" href="{{ route('token-order.show', $confirmation->baseOrder->public_id) }}">View order</a>
+                    @endif
+                    @if($confirmation->trashed())
+                        {!! Form::open(['route' => ['confirmations.restore', $confirmation], 'method' => 'PUT']) !!}
+                             <button class="btn btn-primary">Restore</button>
+                        {!! Form::close() !!}
+                    @else
+                        {!! Form::open(['route' => ['confirmations.destroy', $confirmation], 'method' => 'DELETE']) !!}
+                            <button class="btn btn-danger">Delete</button>
+                        {!! Form::close() !!}
+                    @endif
+                </td>
             </tr>
         @endforeach
 

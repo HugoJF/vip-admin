@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Confirmation;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,10 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        Route::bind('confirmation', function ($value) {
+            return Confirmation::withTrashed()->where('public_id', $value)->first();
+        });
     }
 
     /**

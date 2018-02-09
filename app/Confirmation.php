@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\View;
 
 class Confirmation extends Model
 {
+    use \Illuminate\Database\Eloquent\SoftDeletes;
+
     protected $dates = [
         'start_period',
         'end_period',
@@ -25,6 +27,11 @@ class Confirmation extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'public_id';
     }
 
     public function scopeValid($query)
