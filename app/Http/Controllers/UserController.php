@@ -29,6 +29,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         $user->fill($request->all());
+        $user->email = $request->input('email');
 
         $saved = $user->save();
 

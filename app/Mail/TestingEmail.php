@@ -29,8 +29,8 @@ class TestingEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('This is my testing subject...')->view('users.index', [
-            'users' => User::all(),
+        return $this->subject('This is my testing subject...')->markdown('mails.message', [
+            'url' => 'http://vip-admin.com/'
         ]);
     }
 }

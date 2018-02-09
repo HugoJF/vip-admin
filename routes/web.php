@@ -19,7 +19,7 @@ Route::get('email', function () {
 });
 
 Route::get('email-view', function () {
-	return new App\Mail\TestingEmail();
+	return view('mails.message');
 });
 
 Route::get('admins_simple', 'ConfirmationsController@generateAdminsSimple')->middleware(['daemon', 'admin'])->name('admins-simple');

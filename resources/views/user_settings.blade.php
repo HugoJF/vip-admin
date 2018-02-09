@@ -15,6 +15,12 @@
         <p class="help-block">This is the link we will use to send trade offers. You can find your URL <a target="_blank" href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url">clicking here.</a></p>
     </div>
 
+    <div class="form-group">
+        {!! Form::label('email', 'Email') !!}
+        {!! Form::email('email', null, ['class' => 'form-control']) !!}
+        <p class="help-block">We will use this email to send notifications about everything related to your account and VIP-Admin. <strong>(recommended)</strong></p>
+    </div>
+
     <button id="submit" class="btn btn-success" type="submit">Update</button>
     {!! Form::close() !!}
 @endsection
