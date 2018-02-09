@@ -234,6 +234,10 @@ class SteamOrderController extends Controller
 
 		// Check if response was successful
 		if ($result === false) {
+			flash()->error('We could not sent the Trade Offer for your Order because the system could not authenticate with Steam servers (this soon will be fixed).
+			<strong>An Admin will re-send it manually (via VIP-Admin) in the next 24 hours</strong>, be sure to check your pending Trade Offers and remember to <strong>verify the Order ID in the Trade Offer message!</strong>
+			If you save your email in the <strong><a href="' . route('settings') . '">Settings</a></strong> page, <strong>we can send an email once the Trade Offer is manually sent!</strong>');
+
 			return redirect()->back();
 		}
 
