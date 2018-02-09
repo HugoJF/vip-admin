@@ -23,6 +23,7 @@ Route::get('email-view', function () {
 });
 
 Route::get('admins_simple', 'ConfirmationsController@generateAdminsSimple')->middleware(['daemon', 'admin'])->name('admins-simple');
+Route::get('admins_simple/preview', 'ConfirmationsController@viewAdminsSimple')->middleware(['daemon', 'admin'])->name('admins-simple-preview');
 Route::get('confirmations/generate/{order}', 'ConfirmationsController@generate')->middleware(['auth', 'accepted'])->name('create-confirmation');
 
 Route::get('orders', 'OrdersController@view')->middleware('auth', 'accepted')->name('orders');

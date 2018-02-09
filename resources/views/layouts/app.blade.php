@@ -248,6 +248,10 @@
                                     <span class="glyphicon glyphicon-plus"></span>
                                     <a href="{{ route('tokens.create') }}">Generate token</a>
                                 </li>
+                                <li class="list-group-item  {{ Route::is('admins-simple-preview') ? 'active' : '' }}">
+                                    <span class="glyphicon glyphicon-align-justify"></span>
+                                    <a href="{{ route('admins-simple-preview') }}">admins_simple.ini</a>
+                                </li>
                                 <li class="list-group-item {{ Route::is('users.index') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-th-list"></span>
                                     <a href="{{ route('users.index') }}">Users</a>
