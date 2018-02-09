@@ -82,6 +82,7 @@ class TokenOrderController extends Controller
         $order = Order::make();
 
         $order->duration = $token->duration;
+        $order->extra_tokens = floor($token->duration / \Setting::get('order-duration-per-extra-token', 30));
         $order->public_id = $rand = substr(md5(microtime()), 0, \Setting::get('public-id-size', 60));
         $order->orderable()->associate($tokenOrder);
         $order->user()->associate(Auth::user());

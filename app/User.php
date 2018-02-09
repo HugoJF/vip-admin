@@ -15,7 +15,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'avatar', 'tradelink',
+        'name', 'username', 'avatar', 'tradelink','steamid',
+    ];
+
+    protected $guarded = [
+        'email',
     ];
 
     /**
@@ -24,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'email', 'steamid',
+        'password', 'remember_token',
     ];
 
     public function orders()
@@ -50,11 +54,11 @@ class User extends Authenticatable
         foreach ($orders as $order) {
             if ($order->isSteamOffer()) {
                 if ($order->orderable->accepted()) {
-                    $allowedTokens += $order->extraTokens();
+                    $allowedTokens += $order->extra_tokens;
                 }
             } else {
                 if ($order->orderable->token) {
-                    $allowedTokens += $order->extraTokens();
+                    $allowedTokens += $order->extra_tokens;
                 }
             }
         }

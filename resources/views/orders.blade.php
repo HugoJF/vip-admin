@@ -27,7 +27,7 @@
                         <td>{{ $order->orderable_type }}</td>
                     @endif
                     <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
-                    <td>{{ $order->extraTokens() }} tokens</td>
+                    <td>{{ $order->extra_tokens }} tokens</td>
                     <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
                     <td><a class="btn btn-default" href="{{ route('steam-order.show', $order->public_id) }}">View order details</a></td>
                 </tr>
@@ -39,7 +39,7 @@
                         <td>{{ $order->orderable_type }}</td>
                     @endif
                     <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
-                    <td>{{ $order->extraTokens() }} tokens</td>
+                    <td>{{ $order->extra_tokens }} tokens</td>
                     <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
                     <td><a class="btn btn-default" href="{{ route('token-order.show', $order->public_id) }}">View order details</a></td>
                 </tr>
