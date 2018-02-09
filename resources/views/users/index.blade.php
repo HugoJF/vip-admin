@@ -11,6 +11,7 @@
             <th>Steam ID</th>
             <th>Order Count</th>
             <th>Confirmation Count</th>
+            <th>Extra tokens</th>
             <th>Terms</th>
             <th>Trade Link</th>
             <th>Joined date</th>
@@ -24,6 +25,7 @@
                 <td><a href="http://steamcommunity.com/profiles/{{ $user->steamid }}">{{ $user->steamid }}</a></td>
                 <td>{{ $user->orders()->count() }} orders</td>
                 <td>{{ $user->confirmations()->count() }} confirmations</td>
+                <td><span class="label label-default" >{{ $user->tokens()->count() }} / {{ $user->allowedTokens() }}</span></td>
                 @if($user->accepted)
                     <td><span class="label label-success">Accepted</span></td>
                 @else
