@@ -34,14 +34,16 @@
                     @else
                         <a class="btn btn-default" href="{{ route('token-order.show', $confirmation->baseOrder->public_id) }}">View order</a>
                     @endif
-                    @if($confirmation->trashed())
-                        {!! Form::open(['route' => ['confirmations.restore', $confirmation], 'method' => 'PUT']) !!}
-                             <button class="btn btn-primary">Restore</button>
-                        {!! Form::close() !!}
-                    @else
-                        {!! Form::open(['route' => ['confirmations.destroy', $confirmation], 'method' => 'DELETE']) !!}
-                            <button class="btn btn-danger">Delete</button>
-                        {!! Form::close() !!}
+                    @if(Auth::user()->isAdmin())
+                        @if($confirmation->trashed())
+                            {!! Form::open(['route' => ['confirmations.restore', $confirmation], 'method' => 'PUT']) !!}
+                                 <button class="btn btn-primary">Restore</button>
+                            {!! Form::close() !!}
+                        @else
+                            {!! Form::open(['route' => ['confirmations.destroy', $confirmation], 'method' => 'DELETE']) !!}
+                                <button class="btn btn-danger">Delete</button>
+                            {!! Form::close() !!}
+                        @endif
                     @endif
                 </td>
             </tr>

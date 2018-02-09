@@ -24,9 +24,9 @@ Route::get('email-view', function () {
 
 Route::get('admins_simple', 'ConfirmationsController@generateAdminsSimple')->middleware(['daemon', 'admin'])->name('admins-simple');
 Route::get('admins_simple/preview', 'ConfirmationsController@viewAdminsSimple')->middleware(['daemon', 'admin'])->name('admins-simple-preview');
-Route::get('confirmations/generate/{order}', 'ConfirmationsController@generate')->middleware(['auth', 'accepted'])->name('create-confirmation');
-Route::delete('confirmations/{confirmation}', 'ConfirmationsController@destroy')->middleware(['auth', 'admin'])->name('confirmations.destroy');
-Route::put('confirmations/{confirmation}', 'ConfirmationsController@restore')->middleware(['auth', 'admin'])->name('confirmations.restore');
+Route::get('confirmations/generate/{order}', 'ConfirmationsController@generate')->middleware(['auth', 'accepted'])->name('create-confirmation')->middleware('can:create,App\Confirmation');
+Route::delete('confirmations/{confirmation}', 'ConfirmationsController@destroy')->middleware(['auth', 'admin'])->name('confirmations.destroy')->middleware('can:delete,confirmation');
+Route::put('confirmations/{confirmation}', 'ConfirmationsController@restore')->middleware(['auth', 'admin'])->name('confirmations.restore')->middleware('can:delete,confirmation');
 
 Route::get('orders', 'OrdersController@view')->middleware('auth', 'accepted')->name('orders');
 Route::get('confirmations', 'ConfirmationsController@view')->middleware('auth', 'accepted')->name('confirmations');
