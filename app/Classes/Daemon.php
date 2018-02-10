@@ -18,7 +18,6 @@ class Daemon
 	private static $mocking = false;
 	private static $responses = [];
 
-
 	public static function startMock()
 	{
 		static::$mocking = true;
@@ -32,6 +31,23 @@ class Daemon
 	public static function mock($request, $response)
 	{
 		static::$responses[ $request ] = $response;
+	}
+
+	public static function flushMock()
+	{
+		static::$responses = [];
+	}
+
+	public static function fileMock($request, $fileName)
+	{
+		$path = __DIR__ . '/../../storage/mock-requests/' . $fileName;
+		$file = fopen($path, 'r');
+
+		$content = fread($file, filesize($path));
+
+		fclose($file);
+
+		static::mock($request, json_decode($content));
 	}
 
 	public static function curl($path, $data = null, $post = false)

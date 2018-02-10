@@ -177,7 +177,7 @@
             </tr>
             <tr>
                 <td>Public ID</td>
-                <td><span class="label label-success">{{ $order->public_id }}</span></td>
+                <td><span id="public-id" class="label label-success">{{ $order->public_id }}</span></td>
             </tr>
             <tr>
                 <td>Current state</td>
@@ -207,7 +207,7 @@
         @if(!$order->confirmation)
             <h3>Actions</h3>
             @if($steamOrder->notSent())
-                <a class="btn btn-success btn-lg btn-block" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Link</a>
+                <a id="send-trade-link" class="btn btn-success btn-lg btn-block" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Link</a>
             @elseif($steamOrder->active())
                 <a class="btn btn-success btn-lg btn-block" target="_blank" href="https://steamcommunity.com/tradeoffer/{{ $steamOrder->tradeoffer_id }}">Open Trade Offer</a>
             @elseif($steamOrder->accepted())

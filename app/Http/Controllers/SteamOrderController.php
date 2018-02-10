@@ -94,8 +94,8 @@ class SteamOrderController extends Controller
 		$maxDateMaxDuration = $maxDate->diffInDays($now);
 
 		// Check if order has enough value to be above 1 unit of item
-		if ($duration < 7) {
-			flash('Current order is below the minimum allowed of 7 days.');
+		if ($duration < \Setting::get('min-order-duration', 7)) {
+			flash('Current order is below the minimum allowed of ' . \Setting::get('min-order-duration', 7) . ' days.');
 
 			return redirect()->route('steam-orders.create');
 		}

@@ -152,7 +152,7 @@ $control = 1;
                                 <div class="funkyradio">
                                     <div class="funkyradio-success">
                                         <input type="checkbox" name="items[]" value="{{ $value }}" id="checkbox-{{ $control }}"/>
-                                        <label for="checkbox-{{ $control }}">Use this item on trade</label>
+                                        <label id="checkbox-label-{{ $control }}" for="checkbox-{{ $control }}">Use this item on trade</label>
                                     </div>
                                 </div>
                             </div>

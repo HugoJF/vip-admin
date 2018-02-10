@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Classes\Daemon;
 use App\Events\OrderCreated;
 use App\Events\TokenCreated;
 use App\Events\UserCreated;
