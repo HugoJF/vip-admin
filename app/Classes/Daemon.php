@@ -39,7 +39,7 @@ class Daemon
 
     public static function fileMock($request, $fileName)
     {
-        $path = base_path('storage/mock-requests/').$fileName;
+        $path = app_path('Mock/').$fileName;
         $file = fopen($path, 'r');
 
         $content = fread($file, filesize($path));
