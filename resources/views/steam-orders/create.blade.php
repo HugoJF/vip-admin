@@ -169,7 +169,7 @@ $control = 1;
         </div>
         <button id="submit-items" type="submit" class="btn btn-success btn-lg btn-block">Submit items to trade</button>
         <pre>
-            {{ App\Classes\Daemon::getInventoryFromAuthedUser() }}
+            {{ json_encode(App\Classes\Daemon::getInventoryFromAuthedUser()) }}
         </pre>
     {!! Form::close() !!}
 @endsection
