@@ -7,12 +7,10 @@ use App\OPSkinsCache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 use Ixudra\Curl\Facades\Curl;
 
 class DaemonController extends Controller
 {
-
 	public function loginPost(Request $request)
 	{
 		$code = $request->input('code');

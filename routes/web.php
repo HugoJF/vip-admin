@@ -14,6 +14,7 @@ Route::get('login', 'AuthController@login')->name('login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('email', function () {
+
 	Mail::to('hugo_jeller@hotmail.com')->send(new \App\Mail\TestingEmail());
 
 	return 'sent';

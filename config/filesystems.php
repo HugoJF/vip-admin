@@ -49,7 +49,7 @@ return [
         ],
         'backups' => [
             'driver' => 'local',
-            'root' => storage_path('laravel-backups'),
+            'root'   => storage_path('laravel-backups'),
         ],
         'public' => [
             'driver'     => 'local',

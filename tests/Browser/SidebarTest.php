@@ -3,10 +3,9 @@
 namespace Tests\Browser;
 
 use App\User;
-use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\Browser\Pages\Home;
+use Tests\DuskTestCase;
 
 class SidebarTest extends DuskTestCase
 {
