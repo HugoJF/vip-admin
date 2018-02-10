@@ -80,7 +80,6 @@ class TokenOrderController extends Controller
         $token->tokenOrder()->associate($tokenOrder);
         $token->save();
 
-
         $order = Order::make();
 
         $order->duration = $token->duration;

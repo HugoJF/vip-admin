@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Classes\Daemon;
 use App\Events\OrderCreated;
 use App\Events\TokenCreated;
 use App\Events\UserCreated;
@@ -15,41 +14,41 @@ use Laravel\Dusk\DuskServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-	/**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		Schema::defaultStringLength(191);
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Schema::defaultStringLength(191);
 
-		Order::creating(function ($order) {
-			event(new OrderCreated($order));
-		});
+        Order::creating(function ($order) {
+            event(new OrderCreated($order));
+        });
 
-		Token::creating(function ($token) {
-			event(new TokenCreated($token));
-		});
+        Token::creating(function ($token) {
+            event(new TokenCreated($token));
+        });
 
-		User::creating(function ($user) {
-			event(new UserCreated($user));
-		});
-	}
+        User::creating(function ($user) {
+            event(new UserCreated($user));
+        });
+    }
 
-	/**
-	 * Register any application services.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		if ($this->app->environment() && $this->app->environment() !== 'production') {
-			$this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
-			$this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
-		}
-		if ($this->app->environment('local', 'testing')) {
-			$this->app->register(DuskServiceProvider::class);
-		}
-	}
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        if ($this->app->environment() && $this->app->environment() !== 'production') {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+            $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
+        }
+        if ($this->app->environment('local', 'testing')) {
+            $this->app->register(DuskServiceProvider::class);
+        }
+    }
 }

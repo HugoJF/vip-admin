@@ -4,12 +4,10 @@ namespace App\Events;
 
 use App\Order;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class TradeOfferSent implements IMailableEvent
 {
@@ -34,18 +32,18 @@ class TradeOfferSent implements IMailableEvent
 
     public function subject()
     {
-        return 'Trade Offer for ' . $this->order->public_id . ' sent!';
+        return 'Trade Offer for '.$this->order->public_id.' sent!';
     }
 
     public function preHeader()
     {
-        return 'Trade Offer for ' . $this->order->public_id . ' sent!';
+        return 'Trade Offer for '.$this->order->public_id.' sent!';
     }
 
     public function preLinkMessages()
     {
         return [
-            'We just sent a Trade Offer for your Order #' . $this->order->public_id . ' just registered!',
+            'We just sent a Trade Offer for your Order #'.$this->order->public_id.' just registered!',
         ];
     }
 
@@ -65,6 +63,7 @@ class TradeOfferSent implements IMailableEvent
     {
         return route('steam-order.show', $this->order);
     }
+
     /**
      * Get the channels the event should broadcast on.
      *

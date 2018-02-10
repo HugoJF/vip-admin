@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Confirmation;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ConfirmationPolicy
@@ -16,11 +16,13 @@ class ConfirmationPolicy
             return true;
         }
     }
+
     /**
      * Determine whether the user can view the confirmation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Confirmation  $confirmation
+     * @param \App\User         $user
+     * @param \App\Confirmation $confirmation
+     *
      * @return mixed
      */
     public function view(User $user, Confirmation $confirmation)
@@ -31,7 +33,8 @@ class ConfirmationPolicy
     /**
      * Determine whether the user can create confirmations.
      *
-     * @param  \App\User  $user
+     * @param \App\User $user
+     *
      * @return mixed
      */
     public function create(User $user)
@@ -42,8 +45,9 @@ class ConfirmationPolicy
     /**
      * Determine whether the user can update the confirmation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Confirmation  $confirmation
+     * @param \App\User         $user
+     * @param \App\Confirmation $confirmation
+     *
      * @return mixed
      */
     public function update(User $user, Confirmation $confirmation)
@@ -54,8 +58,9 @@ class ConfirmationPolicy
     /**
      * Determine whether the user can delete the confirmation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Confirmation  $confirmation
+     * @param \App\User         $user
+     * @param \App\Confirmation $confirmation
+     *
      * @return mixed
      */
     public function delete(User $user, Confirmation $confirmation)

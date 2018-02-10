@@ -67,15 +67,15 @@ $factory->define(App\TokenOrder::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Confirmation::class, function (Faker\Generator $faker) {
-	return [
-		'public_id'    => substr(md5(microtime()), 0, 15),
-		'start_period' => Carbon\Carbon::now(),
-		'end_period'   => Carbon\Carbon::now()->addDays($faker->numberBetween(7, 60)),
-		'order_id'     => function () {
-			return factory(App\Order::class)->create()->id;
-		},
-		'user_id'      => \App\User::all()->random()->id,
-	];
+    return [
+        'public_id'    => substr(md5(microtime()), 0, 15),
+        'start_period' => Carbon\Carbon::now(),
+        'end_period'   => Carbon\Carbon::now()->addDays($faker->numberBetween(7, 60)),
+        'order_id'     => function () {
+            return factory(App\Order::class)->create()->id;
+        },
+        'user_id'      => \App\User::all()->random()->id,
+    ];
 });
 
 $factory->define(App\Token::class, function (Faker\Generator $faker) {

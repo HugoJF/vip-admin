@@ -27,19 +27,19 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\OrderCreated' => [
             'App\Listeners\SendMailableEvent',
-            'App\Listeners\NotifyAdmins'
+            'App\Listeners\NotifyAdmins',
         ],
         'App\Events\TokenCreated' => [
             'App\Listeners\SendMailableEvent',
-            'App\Listeners\NotifyAdmins'
+            'App\Listeners\NotifyAdmins',
         ],
         'App\Events\TokenUsed' => [
             'App\Listeners\SendMailableEvent',
-            'App\Listeners\NotifyAdmins'
+            'App\Listeners\NotifyAdmins',
         ],
         'App\Events\UserCreated' => [
-            'App\Listeners\NotifyAdmins'
-        ]
+            'App\Listeners\NotifyAdmins',
+        ],
     ];
 
     /**
