@@ -15,7 +15,12 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('email', function () {
 	Mail::to('hugo_jeller@hotmail.com')->send(new \App\Mail\TestingEmail());
+
 	return 'sent';
+});
+
+Route::get('class', function () {
+	return \App\Classes\Daemon::calculateOfferDuration(4242);
 });
 
 Route::get('email-view', function () {
@@ -70,7 +75,7 @@ Route::group(['middleware' => ['auth']], function () {
 			Route::post('tokens/create', 'TokenController@create')->name('tokens.create')->middleware('can:create,App\Token');
 		});
 
-		Route::get('tokens/{token}', 'TokenController@show')->name('tokens.show')->middleware('can:view,App\Token');
+		Route::get('tokens/{token}', 'TokenController@show')->name('tokens.show')->middleware('can:view,token');
 		Route::post('tokens', 'TokenController@store')->name('tokens.store')->middleware('can:create,App\Token');
 		Route::post('tokens/extra', 'TokenController@storeExtra')->name('tokens.storeExtra')->middleware('can:create,App\Token');
 		Route::get('tokens', 'TokenController@index')->name('tokens.index');

@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Http\Controllers\DaemonController;
+use App\Classes\Daemon;
 use Illuminate\Database\Eloquent\Model;
 
 class SteamOrder extends Model
@@ -31,7 +31,7 @@ class SteamOrder extends Model
 
         $this->save();
 
-        $offer = DaemonController::getTradeOffer($id);
+        $offer = Daemon::getTradeOffer($id);
 
         if ($offer === false || !property_exists($offer, 'state')) {
             return false;
@@ -46,7 +46,7 @@ class SteamOrder extends Model
 
     public function cancel()
     {
-        DaemonController::cancelTradeOffer($this->tradeoffer_id);
+        Daemon::cancelTradeOffer($this->tradeoffer_id);
         $this->refresh();
         $this->save();
     }

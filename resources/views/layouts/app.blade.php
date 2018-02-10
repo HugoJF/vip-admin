@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -22,6 +22,7 @@
     <link href="{{ asset('/css/dashboard.css') }}" rel="stylesheet">
 
     <link href="{{ asset('/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
 
     @yield('head')
 
@@ -80,12 +81,12 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 @yield('navbar')
-                @if(\App\Http\Controllers\DaemonController::isOnline())
+                @if(\App\Classes\Daemon::isOnline())
                     <li><a><span class="label label-success">Daemon is online</span></a></li>
                 @else
                     <li><a><span class="label label-danger">Daemon is offline</span></a></li>
                 @endif
-                @if(\App\Http\Controllers\DaemonController::isLoggedIn())
+                @if(\App\Classes\Daemon::isLoggedIn())
                     <li><a><span class="label label-success">Daemon is connected to Steam</span></a></li>
                 @else
                     <li><a><span class="label label-danger">Daemon is disconnected from Steam servers</span></a></li>
@@ -170,7 +171,7 @@
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse in">
                             <ul class="list-group">
-                                @if(\App\Http\Controllers\DaemonController::isOnline() && !\App\Http\Controllers\DaemonController::isLoggedIn())
+                                @if(\App\Classes\Daemon::isOnline() && !\App\Classes\Daemon::isLoggedIn())
                                     <li class="list-group-item {{ Route::is('daemon-login') ? 'active' : ''}}">
                                         <span class="glyphicon glyphicon-play"></span>
                                         <a href="{{ route('daemon-login') }}">Login</a>
@@ -288,6 +289,7 @@
     </div>
 </div>
 
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -300,6 +302,7 @@
 <script src="{{ asset('/js/vendor/holder.min.js') }}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="{{ asset('/js/ie10-viewport-bug-workaround.js') }}"></script>
+<script src="{{ asset('/js/summernote.js') }}"></script>
 @stack('scripts')
 </body>
 </html>

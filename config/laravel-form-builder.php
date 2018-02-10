@@ -45,5 +45,6 @@ return [
 
     'custom_fields' => [
         'datetimepicker' => App\Forms\Fields\DateTimePicker::class,
+        'summernote' => App\Forms\Fields\SummerNote::class,
     ],
 ];

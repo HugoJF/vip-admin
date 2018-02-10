@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\DaemonController;
+use App\Classes\Daemon;
 use Closure;
 
 class CheckDaemonOnline
@@ -17,7 +17,7 @@ class CheckDaemonOnline
      */
     public function handle($request, Closure $next)
     {
-        if (DaemonController::isOnline() !== true) {
+        if (Daemon::isOnline() !== true) {
             flash()->error('Our daemon server is offline, Steam servers are unreachable!');
 
             return redirect('/');

@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\DaemonController;
+use App\Classes\Daemon;
 use Closure;
 
 class CheckDaemonLogged
@@ -17,7 +17,7 @@ class CheckDaemonLogged
      */
     public function handle($request, Closure $next)
     {
-        if (DaemonController::isLoggedIn() !== true) {
+        if (Daemon::isLoggedIn() !== true) {
             flash()->error('Our daemon server is not logged to Steam servers.');
 
             return redirect('/');

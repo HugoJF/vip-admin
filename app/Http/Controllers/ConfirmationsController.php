@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Daemon;
 use App\Confirmation;
 use App\Events\ConfirmationGenerated;
 use App\Order;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ConfirmationsController extends Controller
@@ -91,7 +93,7 @@ class ConfirmationsController extends Controller
 		}
 	}
 
-	public function view()
+	public function view(Request $request)
 	{
 		$user = Auth::user();
 
@@ -104,6 +106,7 @@ class ConfirmationsController extends Controller
 		return view('confirmations.index', [
 			'confirmations' => $confirmations,
 			'isAdmin'       => $user->isAdmin(),
+			'highlight' => $request->get('highlight'),
 		]);
 	}
 
@@ -159,7 +162,7 @@ class ConfirmationsController extends Controller
 
 		// Parses each valid confirmation and adds to array
 		foreach ($confirmations as $confirmation) {
-			$steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
+			$steam2 = Daemon::getSteam2ID($confirmation->baseOrder->user->steamid);
 
 			// If Steam2 could not be generated
 			if ($steam2 === false) {
@@ -192,7 +195,7 @@ class ConfirmationsController extends Controller
 
 		// Parses each valid confirmation and adds to array
 		foreach ($confirmations as $confirmation) {
-			$steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
+			$steam2 = Daemon::getSteam2ID($confirmation->baseOrder->user->steamid);
 
 			// If Steam2 could not be generated
 			if ($steam2 === false) {

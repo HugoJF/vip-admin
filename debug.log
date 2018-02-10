@@ -30,3 +30,24 @@
 [0207/185644.759:ERROR:exception_snapshot_win.cc(87)] thread ID 113204 not found in process
 [0207/185644.759:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed
 [0207/185644.759:ERROR:scoped_process_suspend.cc(39)] NtResumeProcess: An attempt was made to access an exiting process.  (0xc000010a)
+[0209/192758.638:ERROR:process_info.cc(350)] VirtualQueryEx: Access is denied. (0x5)
+[0209/192758.639:ERROR:process_info.cc(571)] ReadMemoryInfo failed
+[0209/192758.644:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights.  (0xc0000022)
+[0209/192758.645:ERROR:exception_snapshot_win.cc(87)] thread ID 25624 not found in process
+[0209/192758.645:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed
+[0209/192758.645:ERROR:scoped_process_suspend.cc(39)] NtResumeProcess: An attempt was made to access an exiting process.  (0xc000010a)
+[0209/193901.709:ERROR:process_info.cc(350)] VirtualQueryEx: Access is denied. (0x5)
+[0209/193901.710:ERROR:process_info.cc(571)] ReadMemoryInfo failed
+[0209/193901.715:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights.  (0xc0000022)
+[0209/193901.715:ERROR:exception_snapshot_win.cc(87)] thread ID 23752 not found in process
+[0209/193901.715:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed
+[0209/193901.715:ERROR:scoped_process_suspend.cc(39)] NtResumeProcess: An attempt was made to access an exiting process.  (0xc000010a)
+[0209/194458.758:ERROR:process_info.cc(350)] VirtualQueryEx: Access is denied. (0x5)
+[0209/194458.758:ERROR:process_info.cc(571)] ReadMemoryInfo failed
+[0209/194458.762:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights.  (0xc0000022)
+[0209/194458.763:ERROR:exception_snapshot_win.cc(87)] thread ID 24188 not found in process
+[0209/194458.763:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed
+[0209/194458.763:ERROR:scoped_process_suspend.cc(39)] NtResumeProcess: An attempt was made to access an exiting process.  (0xc000010a)
+[0209/195241.023:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights.  (0xc0000022)
+[0209/195241.024:ERROR:exception_snapshot_win.cc(87)] thread ID 27320 not found in process
+[0209/195241.024:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed

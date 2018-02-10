@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TokenUsed;
 use App\Order;
 use App\Token;
 use App\TokenOrder;
@@ -79,6 +80,7 @@ class TokenOrderController extends Controller
         $token->tokenOrder()->associate($tokenOrder);
         $token->save();
 
+
         $order = Order::make();
 
         $order->duration = $token->duration;
@@ -88,6 +90,8 @@ class TokenOrderController extends Controller
         $order->user()->associate(Auth::user());
 
         $order->save();
+
+        event(new TokenUsed($token));
 
         return redirect()->route('token-order.show', $order->public_id);
     }

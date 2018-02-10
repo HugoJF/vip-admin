@@ -19,11 +19,14 @@
         </thead>
         <tbody>
         @foreach($confirmations as $confirmation)
-            <tr>
+            <tr {{ isset($highlight) && $confirmation->user->steamid == $highlight ? 'class=info' : '' }}>
                 <td>#{{ $confirmation->public_id }}</td>
                 <td scope="row"><a href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}">#{{ $confirmation->baseOrder->public_id }}</a></td>
                 @if($isAdmin)
-                    <td><a href="http://steamcommunity.com/profiles/{{ $confirmation->user->steamid }}">{{ $confirmation->user->username }}</a></td>
+                    <td>
+                        <a href="http://steamcommunity.com/profiles/{{ $confirmation->user->steamid }}">{{ $confirmation->user->username }}</a>
+                        <a href="?highlight={{ $confirmation->user->steamid }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                    </td>
                 @endif
                 <td>{{ $confirmation->start_period }}</td>
                 <td>{{ $confirmation->end_period }}</td>

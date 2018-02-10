@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         @if (session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}

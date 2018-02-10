@@ -55,6 +55,16 @@ class LaravelSettingsForm extends Form
                 'label'      => 'Cost per day',
                 'pre-addon'  => '$',
                 'post-addon' => 'dollar cents',
-            ]);
+            ])
+            ->add('global-home', 'summernote', [
+                'label'     => 'Global Home',
+            ])
+            ->add('not-accepted-home', 'summernote', [
+                'label' => 'Not Accepted Home',
+            ])
+            ->add('accepted-home', 'summernote', [
+                'label' => 'Accepted Home',
+            ])
+        ;
     }
 }

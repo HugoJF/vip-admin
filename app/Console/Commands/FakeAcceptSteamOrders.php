@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\DaemonController;
+use App\Classes\Daemon;
 use App\SteamOrder;
 use Illuminate\Console\Command;
 
@@ -46,7 +46,7 @@ class FakeAcceptSteamOrders extends Command
         foreach ($steamOrders as $order) {
             $order->tradeoffer_state = 3;
 
-            DaemonController::cancelTradeOffer($order->tradeoffer_id);
+            Daemon::cancelTradeOffer($order->tradeoffer_id);
 
             $order->save();
 

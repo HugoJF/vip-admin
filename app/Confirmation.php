@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Http\Controllers\DaemonController;
+use App\Classes\Daemon;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -80,14 +80,14 @@ class Confirmation extends Model
     public static function syncServer()
     {
         try {
-            DaemonController::consoleLog('Generating_new_admins_simple');
+            Daemon::consoleLog('Generating_new_admins_simple');
 
             $confirmations = self::valid()->with('baseOrder.user', 'baseOrder')->get();
 
             $steamid = [];
 
             foreach ($confirmations as $confirmation) {
-                $steam2 = DaemonController::getSteam2ID($confirmation->baseOrder->user->steamid);
+                $steam2 = Daemon::getSteam2ID($confirmation->baseOrder->user->steamid);
                 $steamid[] = [
                     'id'           => $steam2,
                     'confirmation' => $confirmation,
@@ -110,7 +110,7 @@ class Confirmation extends Model
             if (config('app.update_server') == 'true') {
                 Storage::put('admins_simple.ini', $view);
 
-                DaemonController::updateSourceMod();
+                Daemon::updateSourceMod();
             }
         } catch (\Exception $e) {
             flash()->error('Error syncing server: '.$e->getMessage());

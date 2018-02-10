@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use App\Http\Controllers\DaemonController;
 use Tests\Browser\Pages\Settings;
 use Tests\Browser\Pages\Home;
 use Tests\DuskTestCase;

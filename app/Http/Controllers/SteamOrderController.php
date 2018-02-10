@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Daemon;
 use App\OPSkinsCache;
 use App\Order;
 use App\SteamOrder;
@@ -14,7 +15,7 @@ class SteamOrderController extends Controller
 	public function create()
 	{
 		// Gets client raw inventory information
-		$inventory = DaemonController::getInventoryFromAuthedUser();
+		$inventory = Daemon::getInventoryFromAuthedUser();
 
 		// Check if response was successful
 		if ($inventory === false) {
@@ -50,7 +51,7 @@ class SteamOrderController extends Controller
 	public function store(Request $request)
 	{
 		// Gets client raw inventory information
-		$inventory = DaemonController::getInventoryFromAuthedUser();
+		$inventory = Daemon::getInventoryFromAuthedUser();
 
 		// Check if response was successful
 		if ($inventory === false) {
@@ -67,7 +68,7 @@ class SteamOrderController extends Controller
 		}
 
 		// Fills the rest of the information Steam API gives us
-		$full_item_list = DaemonController::fillItemArray($items_decoded, $inventory);
+		$full_item_list = Daemon::fillItemArray($items_decoded, $inventory);
 
 		// Check if response was successful
 		if ($full_item_list === false) {
@@ -75,7 +76,7 @@ class SteamOrderController extends Controller
 		}
 
 		// Computes the value of the selected items
-		$totalPrice = DaemonController::calculateTotalPrice($full_item_list);
+		$totalPrice = Daemon::calculateTotalPrice($full_item_list);
 
 		// Check if order is above maximum price
 		if ($totalPrice > \Setting::get('max-order-price', 5000)) {
@@ -85,7 +86,7 @@ class SteamOrderController extends Controller
 		}
 
 		// Pre-calculate the duration before anything
-		$duration = DaemonController::calculateOfferDuration($totalPrice);
+		$duration = Daemon::calculateOfferDuration($totalPrice);
 
 		// Get maximum date from configuration
 		$now = Carbon::now();
@@ -148,7 +149,7 @@ class SteamOrderController extends Controller
 	public function show(Order $order)
 	{
 		// Gets the client raw inventory information
-		$inventory = DaemonController::getInventoryFromAuthedUser();
+		$inventory = Daemon::getInventoryFromAuthedUser();
 
 		// Check if response was successful
 		if ($inventory === false) {
@@ -182,10 +183,10 @@ class SteamOrderController extends Controller
 		$full_item_list = json_decode($steamOrder->encoded_items);
 
 		// Calculates total price of order and fills list of items in order
-		$totalPrice = DaemonController::calculateTotalPrice($full_item_list);
+		$totalPrice = Daemon::calculateTotalPrice($full_item_list);
 
 		// Computes the amount of days the order will result
-		$days = DaemonController::calculateOfferDuration($totalPrice);
+		$days = Daemon::calculateOfferDuration($totalPrice);
 
 		// Return Steam Order
 		return view('steam-orders.show', [
@@ -230,7 +231,7 @@ class SteamOrderController extends Controller
 		}
 
 		// Call SendTradeOffer
-		$result = DaemonController::sendTradeOffer(Auth::user()->tradelink, $message, $steamOrder->encoded_items);
+		$result = Daemon::sendTradeOffer(Auth::user()->tradelink, $message, $steamOrder->encoded_items);
 
 		// Check if response was successful
 		if ($result === false) {

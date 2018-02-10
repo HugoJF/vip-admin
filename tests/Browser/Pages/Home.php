@@ -5,7 +5,7 @@ namespace Tests\Browser\Pages;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Page as BasePage;
 
-class Home extends BasePage
+class Home extends Page
 {
 	/**
 	 * Get the URL for the page.
@@ -38,25 +38,25 @@ class Home extends BasePage
 	public function elements()
 	{
 		return [
-			'@home'            => '#collapseZero > ul > li:nth-child(1) > a',
+			'@home'            	=> '#collapseZero > ul > li:nth-child(1) > a',
 
-			'@buy-with-skins'  => '#collapseOne > ul > li:nth-child(1) > a',
-			'@buy-with-tokens' => '#collapseOne > ul > li:nth-child(2) > a',
+			'@buy-with-skins'  	=> '#collapseOne > ul > li:nth-child(1) > a',
+			'@buy-with-tokens' 	=> '#collapseOne > ul > li:nth-child(2) > a',
 
-			'@logs'            => '#collapseTwo > ul > li:nth-child(1) > a',
-			'@stdout'          => '#collapseTwo > ul > li:nth-child(2) > a',
-			'@stderr'          => '#collapseTwo > ul > li:nth-child(3) > a',
+			'@logs'            	=> '#collapseTwo > ul > li:nth-child(1) > a',
+			'@stdout'          	=> '#collapseTwo > ul > li:nth-child(2) > a',
+			'@stderr'          	=> '#collapseTwo > ul > li:nth-child(3) > a',
 
-			'@orders'          => '#collapseThree > ul > li:nth-child(1) > a',
-			'@confirmations'   => '#collapseThree > ul > li:nth-child(2) > a',
-			'@tokens'          => '#collapseThree > ul > li:nth-child(3) > a',
-			'@settings'        => '#collapseThree > ul > li:nth-child(4) > a',
+			'@orders'          	=> '#collapseThree > ul > li:nth-child(1) > a',
+			'@confirmations'   	=> '#collapseThree > ul > li:nth-child(2) > a',
+			'@tokens'          	=> '#collapseThree > ul > li:nth-child(3) > a',
+			'@settings'        	=> '#collapseThree > ul > li:nth-child(4) > a',
 
 			'@generate-tokens'  => '#collapseFour > ul > li:nth-child(1) > a',
-			'@users'           => '#collapseFour > ul > li:nth-child(2) > a',
-			'@laravel-logs'    => '#collapseFour > ul > li:nth-child(3) > a',
-			'@opskins-updater' => '#collapseFour > ul > li:nth-child(5) > a',
-			'@app-settings'    => '#collapseFour > ul > li:nth-child(6) > a',
+			'@users'           	=> '#collapseFour > ul > li:nth-child(3) > a',
+			'@laravel-logs'   	=> '#collapseFour > ul > li:nth-child(4) > a',
+			'@opskins-updater' 	=> '#collapseFour > ul > li:nth-child(6) > a',
+			'@app-settings'    	=> '#collapseFour > ul > li:nth-child(7) > a',
 		];
 	}
 }
