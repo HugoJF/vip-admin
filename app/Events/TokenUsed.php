@@ -4,12 +4,10 @@ namespace App\Events;
 
 use App\Token;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class TokenUsed implements IMailableEvent
 {
@@ -41,12 +39,12 @@ class TokenUsed implements IMailableEvent
 
     public function preHeader()
     {
-        return 'Your token ' . $this->token->token . ' has been used by ' . $this->redeem->username;
+        return 'Your token '.$this->token->token.' has been used by '.$this->redeem->username;
     }
 
     public function preLinkMessages()
     {
-        return ['Your token ' . $this->token->token . ' has been used by ' . $this->redeem->username,
+        return ['Your token '.$this->token->token.' has been used by '.$this->redeem->username,
         ];
     }
 
