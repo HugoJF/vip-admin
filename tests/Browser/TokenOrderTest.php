@@ -73,6 +73,7 @@ class TokenOrderTest extends DuskTestCase
 
         $order = factory(Order::class)->create([
             'user_id' => $adminUser->id,
+            'extra_tokens' => 4,
         ]);
 
         $this->browse(function (Browser $browser) use ($adminUser, $order) {

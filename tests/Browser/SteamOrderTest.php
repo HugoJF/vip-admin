@@ -14,12 +14,6 @@ class SteamOrderTest extends DuskTestCase
 {
     public function testSteamOrderCanBeCreated()
     {
-        Daemon::startMock();
-        Daemon::fileMock('inventory', 'inventory-1518287051.txt');
-        Daemon::fileMock('status', 'status-1518238964.txt');
-        Daemon::fileMock('sendTradeOffer', 'sendTradeOffer-1518287172.txt');
-        Daemon::fileMock('getTradeOffer', 'getTradeOffer-1518287519.txt');
-
         $adminUser = factory(User::class)->create([
             'steamid' => '76561198033283983',
         ]);

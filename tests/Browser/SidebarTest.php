@@ -21,7 +21,7 @@ class SidebarTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($adminUser) {
             $browser->loginAs($adminUser)
                     ->visit(new Home())
-                    ->scrollToViewAndClick('@home')
+                    ->scrollToViewNativeAndClick('@home')
                     ->assertRouteIs('home');
         });
     }
@@ -35,7 +35,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@buy-with-skins')
+                    ->scrollToViewNativeAndClick('@buy-with-skins')
                     ->assertRouteIs('steam-order.create');
         });
     }
@@ -44,7 +44,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@buy-with-tokens')
+                    ->scrollToViewNativeAndClick('@buy-with-tokens')
                     ->assertRouteIs('token-order.create');
         });
     }
@@ -53,7 +53,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@logs')
+                    ->scrollToViewNativeAndClick('@logs')
                     ->assertRouteIs('daemon-logs');
         });
     }
@@ -62,7 +62,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@stdout')
+                    ->scrollToViewNativeAndClick('@stdout')
                     ->assertRouteIs('daemon-stdout');
         });
     }
@@ -71,7 +71,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@stderr')
+                    ->scrollToViewNativeAndClick('@stderr')
                     ->assertRouteIs('daemon-stderr');
         });
     }
@@ -80,7 +80,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@orders')
+                    ->scrollToViewNativeAndClick('@orders')
                     ->assertRouteIs('orders');
         });
     }
@@ -89,7 +89,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@confirmations')
+                    ->scrollToViewNativeAndClick('@confirmations')
                     ->assertRouteIs('confirmations');
         });
     }
@@ -98,7 +98,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@tokens')
+                    ->scrollToViewNativeAndClick('@tokens')
                     ->assertRouteIs('tokens.index');
         });
     }
@@ -107,7 +107,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@settings')
+                    ->scrollToViewNativeAndClick('@settings')
                     ->assertRouteIs('settings');
         });
     }
@@ -116,7 +116,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@generate-tokens')
+                    ->scrollToViewNativeAndClick('@generate-tokens')
                     ->assertRouteIs('tokens.create');
         });
     }
@@ -125,7 +125,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@users')
+                    ->scrollToViewNativeAndClick('@users')
                     ->assertRouteIs('users.index');
         });
     }
@@ -134,7 +134,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@laravel-logs')
+                    ->scrollToViewNativeAndClick('@laravel-logs')
                     ->assertRouteIs('laravel-logs');
         });
     }
@@ -143,7 +143,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@opskins-updater')
+                    ->scrollToViewNativeAndClick('@opskins-updater')
                     ->assertRouteIs('opskins-update-form');
         });
     }
@@ -152,7 +152,7 @@ class SidebarTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
-                    ->scrollToViewAndClick('@app-settings')
+                    ->scrollToViewNativeAndClick('@app-settings')
                     ->assertRouteIs('laravel-settings-ui');
         });
     }
