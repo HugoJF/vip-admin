@@ -20,4 +20,4 @@ before_script:
     - php artisan serve > /dev/null 2>&1 &
 
 script:
-    - php artisan dusk
+    - php artisan dusk --filter ExampleTest
