@@ -24,17 +24,19 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        Order::creating(function ($order) {
-            event(new OrderCreated($order));
-        });
+        if ($this->app->environment('production')) {
+            Order::creating(function ($order) {
+                event(new OrderCreated($order));
+            });
 
-        Token::creating(function ($token) {
-            event(new TokenCreated($token));
-        });
+            Token::creating(function ($token) {
+                event(new TokenCreated($token));
+            });
 
-        User::creating(function ($user) {
-            event(new UserCreated($user));
-        });
+            User::creating(function ($user) {
+                event(new UserCreated($user));
+            });
+        }
         if ($this->app->environment('local', 'testing')) {
             Daemon::startMock();
             Daemon::fileMock('inventory', 'inventory-1518287051.txt');
