@@ -39,7 +39,7 @@ class EmailDuskScreenshots extends Command
 	 */
 	public function handle()
 	{
-		$directory = __DIR__ . base_path('tests/Browser/screenshots/');
+		$directory = base_path('tests/Browser/screenshots/');
 
 		$files = File::allFiles($directory);
 
