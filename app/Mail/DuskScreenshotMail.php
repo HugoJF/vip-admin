@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Events\IMailableEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -30,7 +29,7 @@ class DuskScreenshotMail extends Mailable
      */
     public function build()
     {
-        foreach($this->files as $file) {
+        foreach ($this->files as $file) {
             $this->attach((string) $file);
         }
 
