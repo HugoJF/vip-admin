@@ -19,6 +19,10 @@ Route::get('email', function () {
     return 'sent';
 });
 
+Route::get('travis', function (){
+  return Artisan::call('dusk:email-screenshots');
+});
+
 Route::get('class', function () {
     return \App\Classes\Daemon::calculateOfferDuration(4242);
 });

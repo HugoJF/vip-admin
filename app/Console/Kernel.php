@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\RefreshActiveSteamOrders::class,
         Commands\FakeAcceptSteamOrders::class,
         Commands\CheckConfirmations::class,
+        Commands\EmailDuskScreenshots::class,
     ];
 
     /**
