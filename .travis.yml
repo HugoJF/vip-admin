@@ -7,7 +7,7 @@ before_script:
     - ./vendor/laravel/dusk/bin/chromedriver-linux &
     - cp .env.testing .env
 
-    - mysql -e 'create database homestead_test;'
+    - mysql -e 'create database vipadmin;'
     - composer self-update
     - composer install --no-interaction
     - php artisan serve > /dev/null 2>&1 &
