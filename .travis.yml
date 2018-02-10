@@ -18,6 +18,7 @@ before_script:
     - composer self-update
     - composer install --no-interaction
     - php artisan serve > /dev/null 2>&1 &
+    - php artisan migrate
 
 script:
     - php artisan dusk --filter ExampleTest
