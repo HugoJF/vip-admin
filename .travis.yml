@@ -8,6 +8,10 @@ services:
 php:
   - 7.0
 
+cache:
+  directories:
+    - vendor
+
 before_script:
     - cp .env.travis .env
     - mysql -e 'create database homestead_test;'
