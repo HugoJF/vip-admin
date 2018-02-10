@@ -7,7 +7,7 @@
         {!! Form::label('token', 'Token') !!}
         {!! Form::text('token', null, ['class' => 'form-control']) !!}
     </div>
-    <button class="btn btn-success" type="submit">Use token</button>
+    <button id="use-token" class="btn btn-success" type="submit">Use token</button>
 
     {!! Form::close() !!}
 

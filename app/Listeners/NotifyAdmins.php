@@ -30,6 +30,8 @@ class NotifyAdmins
 	 */
 	public function handle(IMailableEvent $event)
 	{
-		Mail::to('hugo_jeller@hotmail.com')->send(new AdminMessageMail($event));
+		if($event->user()) {
+			Mail::to('hugo_jeller@hotmail.com')->send(new AdminMessageMail($event));
+		}
 	}
 }

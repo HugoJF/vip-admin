@@ -31,7 +31,7 @@ class SendMailableEvent
 	public function handle(IMailableEvent $event)
 	{
 
-		if ($event->user()->email) {
+		if ($event->user() && $event->user()->email) {
 			Mail::to($event->user()->email)->send(new MailableEventMail($event));
 		}
 	}
