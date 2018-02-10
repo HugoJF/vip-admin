@@ -72,7 +72,7 @@ class TokenOrderTest extends DuskTestCase
         ]);
 
         $order = factory(Order::class)->create([
-            'user_id' => $adminUser->id,
+            'user_id'      => $adminUser->id,
             'extra_tokens' => 4,
         ]);
 

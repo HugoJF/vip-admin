@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use App\Classes\Daemon;
 use App\Order;
 use App\User;
 use Illuminate\Support\Facades\Artisan;
