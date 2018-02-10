@@ -22,4 +22,4 @@ before_script:
 
 
 script:
-    - php artisan dusk --filter ExampleTest
+    - php artisan dusk
