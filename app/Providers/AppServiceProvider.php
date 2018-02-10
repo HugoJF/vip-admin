@@ -35,14 +35,13 @@ class AppServiceProvider extends ServiceProvider
         User::creating(function ($user) {
             event(new UserCreated($user));
         });
-        if($this->app->environment('local', 'testing')) {
+        if ($this->app->environment('local', 'testing')) {
             Daemon::startMock();
             Daemon::fileMock('inventory', 'inventory-1518287051.txt');
             Daemon::fileMock('status', 'status-1518238964.txt');
             Daemon::fileMock('sendTradeOffer', 'sendTradeOffer-1518287172.txt');
             Daemon::fileMock('getTradeOffer', 'getTradeOffer-1518287519.txt');
         }
-
     }
 
     /**
