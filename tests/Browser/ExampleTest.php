@@ -18,7 +18,7 @@ class ExampleTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($normalUser) {
             $browser->loginAs($normalUser)
                     ->visitRoute('laravel-settings-ui')
-                    ->assertRouteIs('homes');
+                    ->assertRouteIs('home');
         });
     }
 }
