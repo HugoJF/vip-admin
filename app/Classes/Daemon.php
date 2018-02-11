@@ -15,7 +15,7 @@ use Ixudra\Curl\Facades\Curl;
 class Daemon
 {
     public static $mocking = false;
-    public  static $responses = [];
+    public static $responses = [];
 
     public static function startMock()
     {
