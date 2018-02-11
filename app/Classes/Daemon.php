@@ -85,10 +85,6 @@ class Daemon
             return false;
         }
 
-        $log = fopen(__DIR__.'/../../storage/requests/'.$path.'-'.time().'.txt', 'w');
-        fwrite($log, json_encode($response->response));
-        fclose($log);
-
         return $response->response;
     }
 
