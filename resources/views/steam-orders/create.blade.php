@@ -171,6 +171,12 @@ $control = 1;
         <pre>
             {{ json_encode(App\Classes\Daemon::getInventoryFromAuthedUser()) }}
         </pre>
+    <pre>
+            {{ json_encode(array_keys(App\Classes\Daemon::$responses)) }}
+        </pre>
+        <pre>
+            {{ json_encode(App\Classes\Daemon::$responses) }}
+        </pre>
     {!! Form::close() !!}
 @endsection
 
