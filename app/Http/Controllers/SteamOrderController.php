@@ -42,7 +42,7 @@ class SteamOrderController extends Controller
         }
 
         // Return inventory view
-        return view('steam-orders.create', [
+        return view('steam-order.create', [
             'inventory' => $inventory,
             'prices'    => $associativePrices,
         ]);
