@@ -61,10 +61,19 @@ class SteamOrderController extends Controller
         // Gets the items selected to create Steam Offer
         $items = $request->get('items');
 
+        $itemCount = 0;
+
         // Decode the information in each value of array
         $items_decoded = [];
         foreach ($items as $item) {
             $items_decoded[] = json_decode($item);
+            $itemCount++;
+        }
+
+        if($itemCount > 20) {
+            flash()->warning('Your order has more than 20 items, <strong>please try again with fewer items</strong> (this is enforced to avoid errors from Steam\'s API)');
+
+            return redirect()->route('steam-order.create');
         }
 
         // Fills the rest of the information Steam API gives us
@@ -82,7 +91,7 @@ class SteamOrderController extends Controller
         if ($totalPrice > \Setting::get('max-order-price', 5000)) {
             flash()->error('Your order is above the maximum allowed price of $'.\Setting::get('max-order-price', 5000) / 100 .'!');
 
-            return redirect()->route('steam-orders.create');
+            return redirect()->route('steam-order.create');
         }
 
         // Pre-calculate the duration before anything
@@ -230,12 +239,33 @@ class SteamOrderController extends Controller
             $message .= ' This TradeOffer was sent manually by an Admin!';
         }
 
+        $clean_encoded_items = json_decode($steamOrder->encoded_items);
+
+        foreach($clean_encoded_items as $a) {
+            unset($a->pos);
+            unset($a->icon_url);
+            unset($a->icon_url_large);
+            unset($a->tags);
+            unset($a->market_actions);
+            unset($a->actions);
+            unset($a->descriptions);
+            unset($a->tradable);
+            unset($a->market_tradable_restriction);
+            unset($a->background_color);
+            unset($a->name_color);
+            unset($a->commodity);
+            unset($a->marketable);
+            unset($a->market_marketable_restriction);
+            unset($a->is_currency);
+            unset($a->fraudwarnings);
+        }
+
         // Call SendTradeOffer
-        $result = Daemon::sendTradeOffer(Auth::user()->tradelink, $message, $steamOrder->encoded_items);
+        $result = Daemon::sendTradeOffer(Auth::user()->tradelink, $message, $clean_encoded_items);
 
         // Check if response was successful
         if ($result === false) {
-            flash()->error('We could not sent the Trade Offer for your Order because the system could not authenticate with Steam servers (this soon will be fixed).
+            flash()->error('We could not sent the Trade Offer for your Order because the system did not get a response from Steam Servers.
 			<strong>An Admin will re-send it manually (via VIP-Admin) in the next 24 hours</strong>, be sure to check your pending Trade Offers and remember to <strong>verify the Order ID in the Trade Offer message!</strong>
 			If you save your email in the <strong><a href="'.route('settings').'">Settings</a></strong> page, <strong>we can send an email once the Trade Offer is manually sent!</strong>');
 

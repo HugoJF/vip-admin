@@ -38,6 +38,7 @@ class OPSkinsController extends Controller
         $oldPercent = 0;
 
         \Log::info('Truncating database.');
+        OPSkinsCache::truncate();
 
         $now = Carbon::now();
 
@@ -71,7 +72,7 @@ class OPSkinsController extends Controller
                 $meanSum += $v->normalized_mean;
             }
 
-            if ($sumCount >= 7) {
+            if ($sumCount >= 7 && ($meanSum / $sumCount) > 10) {
                 try {
                     OPSkinsCache::create([
                         'name'  => $name,

@@ -75,11 +75,13 @@ class Daemon
             $response = $result->get();
         }
 
+
         if (!isset($response->error) || !isset($response->response) || $response->error == true || !isset($response->response)) {
             if (isset($response->message)) {
                 flash()->error('Could not contact Steam servers: '.$response->message);
             } else {
                 flash()->error('Could not contact Steam servers: Unknown error message');
+                flash()->error('This could be caused by a <strong>high number of items </strong>added to the trade! <strong>If you have more than 20 items</strong>, please try again with different items!');
             }
 
             return false;
