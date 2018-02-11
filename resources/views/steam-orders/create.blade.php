@@ -168,15 +168,6 @@ $control = 1;
             @endforeach
         </div>
         <button id="submit-items" type="submit" class="btn btn-success btn-lg btn-block">Submit items to trade</button>
-        <pre>
-            {{ json_encode(App\Classes\Daemon::getInventoryFromAuthedUser()) }}
-        </pre>
-    <pre>
-            {{ json_encode(array_keys(App\Classes\Daemon::$responses)) }}
-        </pre>
-        <pre>
-            {{ json_encode(App\Classes\Daemon::$responses) }}
-        </pre>
     {!! Form::close() !!}
 @endsection
 

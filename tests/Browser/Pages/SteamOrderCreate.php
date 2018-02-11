@@ -39,10 +39,10 @@ class SteamOrderCreate extends Page
     public function elements()
     {
         return [
-            '@item1'       => '#checkbox-11',
-            '@item1-label' => '#checkbox-label-11',
-            '@item2'       => '#checkbox-12',
-            '@item2-label' => '#checkbox-label-12',
+            '@item1'       => '#checkbox-14',
+            '@item1-label' => '#checkbox-label-14',
+            '@item2'       => '#checkbox-15',
+            '@item2-label' => '#checkbox-label-15',
             '@send'        => '#submit-items',
         ];
     }

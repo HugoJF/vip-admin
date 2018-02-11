@@ -27,6 +27,10 @@
     @yield('head')
 
     <style>
+        body {
+            margin-top:30px;
+        }
+
         #accordion .glyphicon {
             margin-right: 10px;
         }

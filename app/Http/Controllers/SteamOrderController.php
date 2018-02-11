@@ -42,7 +42,7 @@ class SteamOrderController extends Controller
         }
 
         // Return inventory view
-        return view('steam-order.create', [
+        return view('steam-orders.create', [
             'inventory' => $inventory,
             'prices'    => $associativePrices,
         ]);
@@ -97,21 +97,21 @@ class SteamOrderController extends Controller
         if ($duration < \Setting::get('min-order-duration', 7)) {
             flash('Current order is below the minimum allowed of '.\Setting::get('min-order-duration', 7).' days.');
 
-            return redirect()->route('steam-orders.create');
+            return redirect()->route('steam-order.create');
         }
 
         // Check if order is above maximum duration
         if ($duration > $maxDateMaxDuration) {
             flash()->error('Your order is above the maximum allowed duration of '.$maxDateMaxDuration.' days!');
 
-            return redirect()->route('steam-orders.create');
+            return redirect()->route('steam-order.create');
         }
 
         // Check if order is above maximum duration
         if ($duration > \Setting::get('max-order-duration', 120)) {
             flash()->error('Your order is above the maximum allowed duration of '.\Setting::get('max-order-duration', 120).' days!');
 
-            return redirect()->route('steam-orders.create');
+            return redirect()->route('steam-order.create');
         }
 
         // Prepare orders
