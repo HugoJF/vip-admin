@@ -11,12 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
         ini_set('memory_limit', '1024M');
 
         \Log::info('Setting new memory limit.');
 
-        $path = __DIR__ . '/data/opskins_cache.txt';
+        $path = __DIR__.'/data/opskins_cache.txt';
         $file = fopen($path, 'r');
 
         $content = fread($file, filesize($path));
@@ -55,7 +54,6 @@ class DatabaseSeeder extends Seeder
 
             foreach ($value as $k => $v) {
                 $maxDate = Carbon\Carbon::createFromFormat('Y-m-d', $k);
-
 
                 $std_dev_rel = $v->std_dev / $v->normalized_mean;
 
