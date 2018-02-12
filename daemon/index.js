@@ -52,6 +52,7 @@ process.on('uncaughtException', function(err) {
  *******************/
 
 var rconConnection;
+var lastLoginAttempt = 0;
 var logged = false;
 
 var client = new SteamUser();
@@ -68,6 +69,10 @@ if (fs.existsSync(__dirname + '/polldata.json')) {
 
 client.on('loggedOn', function(det) {
     console.log("Logged on");
+
+    setInterval(function () {
+        log('Automatic session refresher called');
+    }, 1000*60*30);
 });
 
 client.on('error', function(err) {
@@ -105,6 +110,31 @@ client.on('webSession', function(sessionID, cookies) {
         logged = true;
         console.log("Got API key: " + manager.apiKey);
     });
+});
+
+
+client.on("sessionExpired", function(err) {
+    log('Client triggered sessionExpired, trying to reloing');
+
+    if(Date.now() - lastLoginAttempt > 30000) {
+        lastLoginAttempt = Date.now();
+        console.log(" > Session Expired, relogging.");
+        client.webLogOn();
+    } else {
+        console.log(" Session Expired, waiting a while before attempting to relogin.");
+    }
+});
+
+community.on("sessionExpired", function(err) {
+    log('Community triggered sessionExpired, trying to reloing');
+
+    if(Date.now() - lastLoginAttempt > 30000) {
+        lastLoginAttempt = Date.now();
+        console.log(" > Session Expired, relogging.");
+        client.webLogOn();
+    } else {
+        console.log(" Session Expired, waiting a while before attempting to relogin.");
+    }
 });
 
 manager.on('pollData', function(pollData) {
