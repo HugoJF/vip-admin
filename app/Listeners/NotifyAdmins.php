@@ -28,7 +28,7 @@ class NotifyAdmins
      */
     public function handle(IMailableEvent $event)
     {
-        if ($event->user()) {
+        if ($event->user() && App::environment('production')) {
             Mail::to('hugo_jeller@hotmail.com')->send(new AdminMessageMail($event));
         }
     }
