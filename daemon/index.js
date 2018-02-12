@@ -72,6 +72,8 @@ client.on('loggedOn', function(det) {
 
     setInterval(function () {
         log('Automatic session refresher called');
+        
+        client.webLogOn();
     }, 1000*60*30);
 });
 
@@ -345,6 +347,8 @@ app.post('/sendTradeOffer', (req, res) => {
 
     // var encoded_data = req.query.data;
     var encoded_data = req.body.items;
+
+    log('EncodedData: ' + encoded_data);
 
     var data = JSON.parse(encoded_data);
 
