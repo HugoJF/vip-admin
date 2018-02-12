@@ -6,6 +6,7 @@ use App\Events\IMailableEvent;
 use App\Events\OrderCreated;
 use App\Mail\AdminMessageMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\App;
 
 class NotifyAdmins
 {
