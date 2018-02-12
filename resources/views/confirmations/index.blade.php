@@ -3,7 +3,7 @@
 @section('content')
     <h1>Current Confirmations</h1>
 
-    <table class="table table-striped table-bordered">
+    <table class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
         <tr>
             <th>Confirmation Public ID</th>
@@ -20,23 +20,31 @@
         <tbody>
         @foreach($confirmations as $confirmation)
             <tr {{ isset($highlight) && $confirmation->user->steamid == $highlight ? 'class=info' : '' }}>
-                <td>#{{ $confirmation->public_id }}</td>
-                <td scope="row"><a href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}">#{{ $confirmation->baseOrder->public_id }}</a></td>
+                <!-- Confirmation Public ID -->
+                <td><a href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}"><code>#{{ $confirmation->public_id }}</code></a></td>
+
+                <!-- Order Public ID -->
+                <td scope="row"><a href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}"><code>#{{ $confirmation->baseOrder->public_id }}</code></a></td>
+
+                <!-- Username -->
                 @if($isAdmin)
                     <td>
                         <a href="http://steamcommunity.com/profiles/{{ $confirmation->user->steamid }}">{{ $confirmation->user->username }}</a>
-                        <a href="?highlight={{ $confirmation->user->steamid }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="?highlight={{ $confirmation->user->steamid }}" title="Highlight confirmations from {{ $confirmation->user->username }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
                 @endif
+                <!-- Starting Period -->
                 <td>{{ $confirmation->start_period }}</td>
+
+                <!-- Ending Period -->
                 <td>{{ $confirmation->end_period }}</td>
+
+                <!-- State -->
                 <td><span class="label label-{{ $confirmation->stateClass() }}"> {{ $confirmation->stateText() }}</span></td>
+
+                <!-- Actions -->
                 <td>
-                    @if($confirmation->baseOrder->isSteamOffer())
-                        <a class="btn btn-default" href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}">View order</a>
-                    @else
-                        <a class="btn btn-default" href="{{ route('token-order.show', $confirmation->baseOrder->public_id) }}">View order</a>
-                    @endif
+                    <a class="btn btn-default" href="{{ route(($confirmation->baseOrder->isSteamOffer() ? 'steam' : 'token') . '-order.show', $confirmation->baseOrder->public_id) }}">View order</a>
                     @if(Auth::user()->isAdmin())
                         @if($confirmation->trashed())
                             {!! Form::open(['route' => ['confirmations.restore', $confirmation], 'method' => 'PUT']) !!}

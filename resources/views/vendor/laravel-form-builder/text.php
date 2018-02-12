@@ -23,10 +23,11 @@
         <div class="input-group-addon"><?= $options['post-addon'] ?></div>
     <?php endif; ?>
 
-    <?php include 'help_block.php' ?>
-
     <?php if (isset($options['pre-addon']) || isset($options['post-addon'])): ?>
     </div>
+
+    <?php include 'help_block.php' ?>
+
     <?php endif; ?>
 <?php endif; ?>
 

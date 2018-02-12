@@ -8,6 +8,9 @@
             </div>
         @endif
 
+        <h1>Application settings</h1>
+        <br>
+
         {!! form_start($form) !!}
 
         {!! form_rest($form) !!}

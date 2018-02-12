@@ -20,41 +20,36 @@
         <tbody>
         @foreach($orders as $order)
             <tr {{ isset($highlight) && $order->user->steamid == $highlight ? 'class=info' : '' }}>
-            @if($order->isSteamOffer())
-                    <td scope="row"><a href="{{ route('steam-order.show', $order->public_id) }}">#{{ $order->public_id }}</a></td>
-                    @if($isAdmin)
-                        <td>
-                            <a href="http://steamcommunity.com/profiles/{{ $order->user->steamid }}">{{ $order->user->username }}</a>
-                            <a href="?highlight={{ $order->user->steamid }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                        </td>
-                        <td>{{ $order->orderable_type }}</td>
-                    @endif
-                    <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
-                    <td>{{ $order->extra_tokens }} tokens</td>
-                    <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
+                <!-- Order Public ID -->
+                <td scope="row"><a href="{{ route(($order->isSteamOffer() ? 'steam' : 'token') . '-order.show', $order->public_id) }}"><code>#{{ $order->public_id }}</code></a></td>
+
+                <!-- Username and Order Type -->
+                @if($isAdmin)
                     <td>
-                        <a class="btn btn-default" href="{{ route('steam-order.show', $order->public_id) }}">View order details</a>
-                        @if(!$order->orderable->tradeoffer_id)
-                            @if($isAdmin)
-                                <a class="btn btn-primary" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Offer</a>
-                            @endif
-                        @endif
+                        <a href="http://steamcommunity.com/profiles/{{ $order->user->steamid }}">{{ $order->user->username }}</a>
+                        <a href="?highlight={{ $order->user->steamid }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
-            @else
-                    <td scope="row"><a href="{{ route('token-order.show', $order->public_id) }}">#{{ $order->public_id }}</a></td>
-                    @if($isAdmin)
-                        <td>
-                            <a href="http://steamcommunity.com/profiles/{{ $order->user->steamid }}">{{ $order->user->username }}</a>
-                            <a href="?highlight={{ $order->user->steamid }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                        </td>
-                        <td>{{ $order->orderable_type }}</td>
+                    <td>{{ $order->orderable_type }}</td>
+                @endif
+
+                <!-- Duration -->
+                <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
+
+                <!-- Extra tokens -->
+                <td>{{ $order->extra_tokens ?? '0' }} tokens</td>
+
+                <!-- State -->
+                <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
+
+                <!-- Actions -->
+                <td>
+                    <a class="btn btn-default" href="{{ route(($order->isSteamOffer() ? 'steam' : 'token') . '-order.show', $order->public_id) }}">View order details</a>
+                    @if($order->isSteamOffer() && !$order->orderable->tradeoffer_id && $isAdmin)
+                        <a class="btn btn-primary" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Offer</a>
                     @endif
-                    <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
-                    <td>{{ $order->extra_tokens }} tokens</td>
-                    <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
-                    <td><a class="btn btn-default" href="{{ route('token-order.show', $order->public_id) }}">View order details</a></td>
-            @endif
-                    </tr>
+                </td>
+
+            </tr>
         @endforeach
 
         </tbody>
