@@ -42,7 +42,7 @@ class EmailDuskScreenshots extends Command
         $directory = base_path('tests/Browser/screenshots/');
 
         $files = File::allFiles($directory);
-        if(count($files) > 0) {
+        if (count($files) > 0) {
             \Mail::to('hugo_jeller@hotmail.com')->send(new DuskScreenshotMail($files));
         }
     }
