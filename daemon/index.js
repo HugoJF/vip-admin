@@ -353,7 +353,7 @@ app.post('/sendTradeOffer', (req, res) => {
     var data = JSON.parse(encoded_data);
 
     log('EncodedItems: ' + data.encoded_items);
-    var itemsParsed = JSON.parse(data.encoded_items);
+    var itemsParsed = data.encoded_items;
     var offer = manager.createOffer(data.tradelink);
 
     offer.setMessage(data.message);
