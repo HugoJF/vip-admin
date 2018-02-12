@@ -70,7 +70,7 @@ class SteamOrderController extends Controller
             $itemCount++;
         }
 
-        if($itemCount > 20) {
+        if ($itemCount > 20) {
             flash()->warning('Your order has more than 20 items, <strong>please try again with fewer items</strong> (this is enforced to avoid errors from Steam\'s API)');
 
             return redirect()->route('steam-order.create');
@@ -241,7 +241,7 @@ class SteamOrderController extends Controller
 
         $clean_encoded_items = json_decode($steamOrder->encoded_items);
 
-        foreach($clean_encoded_items as $a) {
+        foreach ($clean_encoded_items as $a) {
             unset($a->pos);
             unset($a->icon_url);
             unset($a->icon_url_large);
