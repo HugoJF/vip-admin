@@ -349,6 +349,7 @@ app.post('/sendTradeOffer', (req, res) => {
     var encoded_data = req.body.items;
 
     log('EncodedData: ' + encoded_data);
+    log('EncodedItems: ' + data.encoded_items);
 
     var data = JSON.parse(encoded_data);
 
