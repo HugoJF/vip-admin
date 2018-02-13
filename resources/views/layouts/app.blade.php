@@ -266,6 +266,10 @@
                                     <a href="{{ route('laravel-logs') }}">Logs</a>
                                 </li>
                                 <li class="list-group-item">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                    <a href="{{ route('servers.index') }}">Server list</a>
+                                </li>
+                                <li class="list-group-item">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                     <a href="{{ route('sync-server') }}">Sync Server</a>
                                 </li>
