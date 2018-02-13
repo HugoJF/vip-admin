@@ -124,7 +124,7 @@
                         <ul class="list-group">
                             <li class="list-group-item {{ Route::is('home') ? 'active' : ''}}">
                                 <span class="glyphicon glyphicon-home"></span>
-                                <a href="{{ route('home') }}">Home</a>
+                                <a id="home" href="{{ route('home') }}">Home</a>
                             </li>
                             <li class="list-group-item">
                                 <span class="glyphicon glyphicon-question-sign"></span>
@@ -147,17 +147,17 @@
                         <ul class="list-group">
                             <li class="list-group-item {{ Route::is('steam-order.create') ? 'active' : ''}}">
                                 <span class="glyphicon glyphicon-usd"></span>
-                                <a href="{{ route('steam-order.create') }}">Buy VIP with Skins</a>
+                                <a id="buy-with-skins" href="{{ route('steam-order.create') }}">Buy VIP with Skins</a>
                             </li>
 
                             <li class="list-group-item {{ Route::is('token-order.create') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-gift"></span>
-                                <a href="{{ route('token-order.create') }}">Buy VIP with Tokens</a>
+                                <a id="buy-with-tokens" href="{{ route('token-order.create') }}">Buy VIP with Tokens</a>
                             </li>
 
                             <li class="list-group-item">
                                 <span class="glyphicon glyphicon-credit-card"></span>
-                                <a href="#">Buy VIP with MercadoPago</a>
+                                <a id="buy-with-mp" href="#">Buy VIP with MercadoPago</a>
                             </li>
                         </ul>
                     </div>
@@ -178,22 +178,22 @@
                                 @if(\App\Classes\Daemon::isOnline() && !\App\Classes\Daemon::isLoggedIn())
                                     <li class="list-group-item {{ Route::is('daemon-login') ? 'active' : ''}}">
                                         <span class="glyphicon glyphicon-play"></span>
-                                        <a href="{{ route('daemon-login') }}">Login</a>
+                                        <a id="daemon-login" href="{{ route('daemon-login') }}">Login</a>
                                     </li>
                                 @endif
                                 <li class="list-group-item {{ Route::is('daemon-logs') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-console"></span>
-                                    <a href="{{ route('daemon-logs') }}">Logs</a>
+                                    <a id="daemon-logs" href="{{ route('daemon-logs') }}">Logs</a>
                                 </li>
 
                                 <li class="list-group-item {{ Route::is('daemon-stdout') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-console"></span>
-                                    <a href="{{ route('daemon-stdout') }}">Stdout</a>
+                                    <a id="daemon-stdout" href="{{ route('daemon-stdout') }}">Stdout</a>
                                 </li>
 
                                 <li class="list-group-item {{ Route::is('daemon-stderr') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-console"></span>
-                                    <a href="{{ route('daemon-stderr') }}">Stderr</a>
+                                    <a id="daemon-stderr" href="{{ route('daemon-stderr') }}">Stderr</a>
                                 </li>
 
                                 <li class="list-group-item {{ Route::is('daemon-kill') ? 'active' : '' }}">
@@ -217,22 +217,22 @@
                         <ul class="list-group">
                             <li class="list-group-item {{ Route::is('orders') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-usd"></span>
-                                <a href="{{ route('orders') }}">Orders</a>
+                                <a id="orders" href="{{ route('orders') }}">Orders</a>
                                 <span class="badge">{{ Auth::user()->orders()->count() }}</span>
                             </li>
                             <li class="list-group-item {{ Route::is('confirmations') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-ok"></span>
-                                <a href="{{ route('confirmations') }}">Confirmations</a>
+                                <a id="confirmations" href="{{ route('confirmations') }}">Confirmations</a>
                                 <span class="badge">{{ Auth::user()->confirmations()->count() }}</span>
                             </li>
                             <li class="list-group-item {{ Route::is('tokens.index') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-th-list"></span>
-                                <a href="{{ route('tokens.index') }}" >Tokens</a>
+                                <a id="tokens" href="{{ route('tokens.index') }}" >Tokens</a>
                                 <span class="badge" title="Generated tokens / Allowed tokens">{{ Auth::user()->tokens()->count() }} / {{ Auth::user()->allowedTokens() }}</span>
                             </li>
                             <li class="list-group-item {{ Route::is('settings') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-cog"></span>
-                                <a href="{{ route('settings') }}">Settings</a>
+                                <a id="settings" href="{{ route('settings') }}">Settings</a>
                             </li>
                         </ul>
                     </div>
@@ -251,23 +251,23 @@
                             <ul class="list-group">
                                 <li class="list-group-item  {{ Route::is('tokens.create') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-plus"></span>
-                                    <a href="{{ route('tokens.create') }}">Generate token</a>
+                                    <a id="generate-tokens" href="{{ route('tokens.create') }}">Generate tokens</a>
                                 </li>
                                 <li class="list-group-item  {{ Route::is('admins-simple-preview') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-align-justify"></span>
-                                    <a href="{{ route('admins-simple-preview') }}">admins_simple.ini</a>
+                                    <a id="admins-simple-preview" href="{{ route('admins-simple-preview') }}">admins_simple.ini</a>
                                 </li>
                                 <li class="list-group-item {{ Route::is('users.index') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-th-list"></span>
-                                    <a href="{{ route('users.index') }}">Users</a>
+                                    <a id="users" href="{{ route('users.index') }}">Users</a>
                                 </li>
                                 <li class="list-group-item {{ Route::is('laravel-logs') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-console"></span>
-                                    <a href="{{ route('laravel-logs') }}">Logs</a>
+                                    <a id="laravel-logs" href="{{ route('laravel-logs') }}">Logs</a>
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-list-alt"></span>
-                                    <a href="{{ route('servers.index') }}">Server list</a>
+                                    <a id="server-list" href="{{ route('servers.index') }}">Server list</a>
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-refresh"></span>
@@ -275,11 +275,11 @@
                                 </li>
                                 <li class="list-group-item  {{ Route::is('opskins-update-form') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-check"></span>
-                                    <a href="{{ route('opskins-update-form') }}">OPSkins updater</a>
+                                    <a id="opskins-updater" href="{{ route('opskins-update-form') }}">OPSkins updater</a>
                                 </li>
                                 <li class="list-group-item {{ Route::is('laravel-settings-ui') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-cog"></span>
-                                    <a href="{{ route('laravel-settings-ui') }}">Application Settings</a>
+                                    <a id="app-settings" href="{{ route('laravel-settings-ui') }}">Application Settings</a>
                                 </li>
                             </ul>
                         </div>

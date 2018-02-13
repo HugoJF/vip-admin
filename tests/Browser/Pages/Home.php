@@ -6,56 +6,59 @@ use Laravel\Dusk\Browser;
 
 class Home extends Page
 {
-    /**
-     * Get the URL for the page.
-     *
-     * @return string
-     */
-    public function url()
-    {
-        return '/';
-    }
+	/**
+	 * Get the URL for the page.
+	 *
+	 * @return string
+	 */
+	public function url()
+	{
+		return '/';
+	}
 
-    /**
-     * Assert that the browser is on the page.
-     *
-     * @param Browser $browser
-     *
-     * @return void
-     */
-    public function assert(Browser $browser)
-    {
-        $browser->assertPathIs($this->url())
-                ->assertSee('Bem vindo');
-    }
+	/**
+	 * Assert that the browser is on the page.
+	 *
+	 * @param Browser $browser
+	 *
+	 * @return void
+	 */
+	public function assert(Browser $browser)
+	{
+		$browser->assertPathIs($this->url())
+				->assertSee('Bem vindo');
+	}
 
-    /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
-     */
-    public function elements()
-    {
-        return [
-            '@home'            	=> '#collapseZero > ul > li:nth-child(1) > a',
+	/**
+	 * Get the element shortcuts for the page.
+	 *
+	 * @return array
+	 */
+	public function elements()
+	{
+		return [
+			'@home'			   => '#home',
 
-            '@buy-with-skins'  	=> '#collapseOne > ul > li:nth-child(1) > a',
-            '@buy-with-tokens' 	=> '#collapseOne > ul > li:nth-child(2) > a',
+			'@buy-with-skins'  => '#buy-with-skins',
+			'@buy-with-tokens' => '#buy-with-tokens',
+			'@buy-with-mp'     => '#buy-with-mp',
 
-            '@logs'            	=> '#collapseTwo > ul > li:nth-child(1) > a',
-            '@stdout'          	=> '#collapseTwo > ul > li:nth-child(2) > a',
-            '@stderr'          	=> '#collapseTwo > ul > li:nth-child(3) > a',
+			'@logs'            => '#daemon-logs',
+			'@stdout'          => '#daemon-stdout',
+			'@stderr'          => '#daemon-stderr',
 
-            '@orders'          	=> '#collapseThree > ul > li:nth-child(1) > a',
-            '@confirmations'   	=> '#collapseThree > ul > li:nth-child(2) > a',
-            '@tokens'          	=> '#collapseThree > ul > li:nth-child(3) > a',
-            '@settings'        	=> '#collapseThree > ul > li:nth-child(4) > a',
+			'@orders'          => '#orders',
+			'@confirmations'   => '#confirmations',
+			'@tokens'          => '#tokens',
+			'@settings'        => '#settings',
 
-            '@generate-tokens'  => '#collapseFour > ul > li:nth-child(1) > a',
-            '@users'           	=> '#collapseFour > ul > li:nth-child(3) > a',
-            '@laravel-logs'   	 => '#collapseFour > ul > li:nth-child(4) > a',
-            '@opskins-updater' 	=> '#collapseFour > ul > li:nth-child(6) > a',
-            '@app-settings'    	=> '#collapseFour > ul > li:nth-child(7) > a',
-        ];
-    }
+			'@generate-tokens' => '#generate-tokens',
+			'@admins-simple'   => '#admins-simple-preview',
+			'@users'           => '#users',
+			'@laravel-logs'    => '#laravel-logs',
+			'@server-list'     => '#server-list',
+			'@opskins-updater' => '#opskins-updater',
+			'@app-settings'    => '#app-settings',
+		];
+	}
 }
