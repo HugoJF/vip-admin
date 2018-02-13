@@ -17,19 +17,19 @@ class ServerForm extends Form
                 ],
             ])
             ->add('ip', 'text', [
-                'label' => 'IP Address',
+                'label'      => 'IP Address',
                 'help_block' => [
                     'text' => 'IP Address of the server',
                 ],
             ])
             ->add('port', 'number', [
-                'label' => 'Server Port',
+                'label'      => 'Server Port',
                 'help_block' => [
                     'text' => 'Port number used to connect to the server',
                 ],
             ])
             ->add('password', 'text', [
-                'label' => 'RCON Password',
+                'label'      => 'RCON Password',
                 'help_block' => [
                     'text' => 'RCON Password',
                 ],
