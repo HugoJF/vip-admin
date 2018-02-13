@@ -19,13 +19,42 @@ class ServersCOntroller extends Controller
 		]);
 	}
 
-	public function delete(Server $server) {
+	public function delete(Server $server)
+	{
 		$deleted = $server->delete();
 
-		if($deleted) {
+		if ($deleted) {
 			flash()->success('Server deleted!');
 		} else {
 			flash()->error('Could not delete server!');
+		}
+
+		return redirect()->route('servers.index');
+	}
+
+	public function edit(Server $server)
+	{
+		$form = $this->form('App\Forms\ServerForm', [
+			'method' => 'PATCH',
+			'route'  => ['servers.update', $server],
+			'model'  => $server,
+		]);
+
+		return view('servers.form', [
+			'form' => $form,
+		]);
+	}
+
+	public function update(Request $request, Server $server)
+	{
+		$server->fill($request->all());
+
+		$saved = $server->save();
+
+		if ($saved) {
+			flash()->success('Server edited to database successfully!');
+		} else {
+			flash()->error('Could not edit server!');
 		}
 
 		return redirect()->route('servers.index');
@@ -38,7 +67,7 @@ class ServersCOntroller extends Controller
 			'route'  => 'servers.store',
 		]);
 
-		return view('servers.create', [
+		return view('servers.form', [
 			'form' => $form,
 		]);
 	}
@@ -47,14 +76,11 @@ class ServersCOntroller extends Controller
 	{
 		$server = Server::make();
 
-		$server->name = $request->input('server-name');
-		$server->ip = $request->input('server-ip');
-		$server->port = $request->input('server-port');
-		$server->password = $request->input('server-password');
+		$server->fill($request->all());
 
 		$saved = $server->save();
 
-		if($saved) {
+		if ($saved) {
 			flash()->success('Server added to database successfully!');
 		} else {
 			flash()->error('Could not save server to database!');

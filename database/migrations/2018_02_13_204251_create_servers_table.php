@@ -21,6 +21,8 @@ class CreateServersTable extends Migration
             $table->string('port');
             $table->string('password');
 
+            $table->dateTime('synced_at')->nullable();
+
             $table->timestamps();
         });
     }

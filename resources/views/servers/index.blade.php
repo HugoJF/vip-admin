@@ -13,6 +13,7 @@
             <th>Server Port</th>
             <th>Server Password</th>
             <th>Date Updated</th>
+            <th>Date Synced</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -24,7 +25,9 @@
                 <td>{{ $server->port }}</td>
                 <td>{{ $server->password }}</td>
                 <td>{{ $server->updated_at->diffForHumans() }}</td>
+                <td>{{ $server->synced_at ? $server->synced_at->diffForHumans() : 'Never' }}</td>
                 <td>
+                    <a href="{{ route('servers.edit', $server) }}" class="btn btn-primary">Edit</a>
                     {{ Form::open(['route' => ['servers.delete', $server], 'method' => 'DELETE']) }}
                         <button class="btn btn-danger">Delete</button>
                     {{ Form::close() }}

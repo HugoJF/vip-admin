@@ -78,10 +78,12 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('tokens/create', 'TokenController@create')->name('tokens.create')->middleware('can:create,App\Token');
             Route::post('tokens/create', 'TokenController@create')->name('tokens.create')->middleware('can:create,App\Token');
 
+            Route::get('servers/{server}/edit', 'ServersController@edit')->name('servers.edit')->middleware('can:edit,server');
             Route::get('servers/create', 'ServersController@create')->name('servers.create')->middleware('can:create,App\Server');
-            Route::post('servers', 'ServersController@store')->name('servers.store')->middleware('can:create,App\Server');
             Route::get('servers', 'ServersController@index')->name('servers.index');
-            Route::delete('servers/{server}', 'ServersController@delete')->name('servers.delete')->middleware('can:delete,App\Server');
+            Route::post('servers', 'ServersController@store')->name('servers.store')->middleware('can:create,App\Server');
+            Route::patch('servers/{server}', 'ServersController@update')->name('servers.update')->middleware('can:update,server');
+            Route::delete('servers/{server}', 'ServersController@delete')->name('servers.delete')->middleware('can:delete,server');
         });
 
         Route::get('tokens/{token}', 'TokenController@show')->name('tokens.show')->middleware('can:view,token');
