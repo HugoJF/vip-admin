@@ -6,86 +6,86 @@ use App\Server;
 use Illuminate\Http\Request;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 
-class ServersCOntroller extends Controller
+class ServersController extends Controller
 {
-	use FormBuilderTrait;
+    use FormBuilderTrait;
 
-	public function index()
-	{
-		$servers = Server::all();
+    public function index()
+    {
+        $servers = Server::all();
 
-		return view('servers.index', [
-			'servers' => $servers,
-		]);
-	}
+        return view('servers.index', [
+            'servers' => $servers,
+        ]);
+    }
 
-	public function delete(Server $server)
-	{
-		$deleted = $server->delete();
+    public function delete(Server $server)
+    {
+        $deleted = $server->delete();
 
-		if ($deleted) {
-			flash()->success('Server deleted!');
-		} else {
-			flash()->error('Could not delete server!');
-		}
+        if ($deleted) {
+            flash()->success('Server deleted!');
+        } else {
+            flash()->error('Could not delete server!');
+        }
 
-		return redirect()->route('servers.index');
-	}
+        return redirect()->route('servers.index');
+    }
 
-	public function edit(Server $server)
-	{
-		$form = $this->form('App\Forms\ServerForm', [
-			'method' => 'PATCH',
-			'route'  => ['servers.update', $server],
-			'model'  => $server,
-		]);
+    public function edit(Server $server)
+    {
+        $form = $this->form('App\Forms\ServerForm', [
+            'method' => 'PATCH',
+            'route'  => ['servers.update', $server],
+            'model'  => $server,
+        ]);
 
-		return view('servers.form', [
-			'form' => $form,
-		]);
-	}
+        return view('servers.form', [
+            'form' => $form,
+        ]);
+    }
 
-	public function update(Request $request, Server $server)
-	{
-		$server->fill($request->all());
+    public function update(Request $request, Server $server)
+    {
+        $server->fill($request->all());
 
-		$saved = $server->save();
+        $saved = $server->save();
 
-		if ($saved) {
-			flash()->success('Server edited to database successfully!');
-		} else {
-			flash()->error('Could not edit server!');
-		}
+        if ($saved) {
+            flash()->success('Server edited to database successfully!');
+        } else {
+            flash()->error('Could not edit server!');
+        }
 
-		return redirect()->route('servers.index');
-	}
+        return redirect()->route('servers.index');
+    }
 
-	public function create()
-	{
-		$form = $this->form('App\Forms\ServerForm', [
-			'method' => 'POST',
-			'route'  => 'servers.store',
-		]);
+    public function create()
+    {
+        $form = $this->form('App\Forms\ServerForm', [
+            'method' => 'POST',
+            'route'  => 'servers.store',
+        ]);
 
-		return view('servers.form', [
-			'form' => $form,
-		]);
-	}
+        return view('servers.form', [
+            'form' => $form,
+        ]);
+    }
 
-	public function store(Request $request)
-	{
-		$server = Server::make();
+    public function store(Request $request)
+    {
+        $server = Server::make();
 
-		$server->fill($request->all());
+        $server->fill($request->all());
 
-		$saved = $server->save();
+        $saved = $server->save();
 
-		if ($saved) {
-			flash()->success('Server added to database successfully!');
-		} else {
-			flash()->error('Could not save server to database!');
-		}
+        if ($saved) {
+            flash()->success('Server added to database successfully!');
+        } else {
+            flash()->error('Could not save server to database!');
+        }
 
-		return redirect()->route('servers.index');
-	}
+        return redirect()->route('servers.index');
+    }
 }

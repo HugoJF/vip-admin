@@ -80,6 +80,7 @@ class Confirmation extends Model
     public static function syncServer()
     {
         \Log::info('Syncing server');
+
         try {
             Daemon::consoleLog('Generating_new_admins_simple');
 
@@ -117,6 +118,7 @@ class Confirmation extends Model
             flash()->error('Error syncing server: '.$e->getMessage());
 
             \Log::info('Error syncing');
+
             return redirect()->route('home');
         }
 
