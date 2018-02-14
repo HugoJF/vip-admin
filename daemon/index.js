@@ -111,6 +111,7 @@ client.on('webSession', function(sessionID, cookies) {
 
         logged = true;
         console.log("Got API key: " + manager.apiKey);
+        console.log('Got cookies: ' + cookies);
     });
 });
 
@@ -348,11 +349,11 @@ app.post('/sendTradeOffer', (req, res) => {
     // var encoded_data = req.query.data;
     var encoded_data = req.body.items;
 
-    log('EncodedData: ' + encoded_data);
+    // log('EncodedData: ' + encoded_data);
 
     var data = JSON.parse(encoded_data);
 
-    log('EncodedItems: ' + data.encoded_items);
+    // log('EncodedItems: ' + data.encoded_items);
     var itemsParsed = data.encoded_items;
     var offer = manager.createOffer(data.tradelink);
 
@@ -381,8 +382,18 @@ app.post('/sendTradeOffer', (req, res) => {
             console.log('Sent Trade Offer!');
             res.send(response(offer));
         } else {
-            console.error(err);
-            res.send(errorResponse(err));
+            console.log('Error trying to send trade offer, refreshing session and retring again...')
+            client.webLogOn();
+            offer.send(function(err2, status2) {
+                if (!err2) {
+                    console.log('Trade Offer sent!');
+                    res.send(response(offer2));
+                } else {
+                    console.log('Failed to send trade offer even refreshing session!')
+                    console.error(err2);
+                    res.send(errorResponse(err2));
+                }
+            });
         }
     });
 });
