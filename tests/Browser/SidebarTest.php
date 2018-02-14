@@ -81,7 +81,7 @@ class SidebarTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
                     ->scrollToViewNativeAndClick('@orders')
-                    ->assertRouteIs('orders');
+                    ->assertRouteIs('orders.index');
         });
     }
 
@@ -90,7 +90,7 @@ class SidebarTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
                     ->scrollToViewNativeAndClick('@confirmations')
-                    ->assertRouteIs('confirmations');
+                    ->assertRouteIs('confirmations.index');
         });
     }
 
