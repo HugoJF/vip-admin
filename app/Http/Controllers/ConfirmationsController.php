@@ -29,7 +29,7 @@ class ConfirmationsController extends Controller
 
         // Check if order is validated and ready to generate a confirmation
 
-        if(!$order->canGenerateConfirmation(true)) {
+        if (!$order->canGenerateConfirmation(true)) {
             return redirect()->route('orders.view', $order);
         }
 

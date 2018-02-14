@@ -260,12 +260,12 @@ class SteamOrderController extends Controller
             'marketable',
             'market_marketable_restriction',
             'is_currency',
-            'fraudwarnings'
+            'fraudwarnings',
         ];
 
         // Clears unnecessary information from the POST request to avoid max POST payload
         foreach ($clean_encoded_items as $a) {
-            foreach($unset_list as $un) {
+            foreach ($unset_list as $un) {
                 unset($a->$un);
             }
         }

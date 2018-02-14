@@ -92,7 +92,7 @@ class TokenOrderController extends Controller
 
         event(new TokenUsed($token));
 
-        if($saved) {
+        if ($saved) {
             flash()->success("Token {$token->token} created!");
         } else {
             flash()->error('Could not store token in database!');

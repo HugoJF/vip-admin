@@ -31,7 +31,7 @@ class Token extends Model
     public function status()
     {
         return [
-            'text' => $this->statusText(),
+            'text'  => $this->statusText(),
             'class' => $this->statusClass(),
         ];
     }

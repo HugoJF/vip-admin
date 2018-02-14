@@ -61,7 +61,7 @@ class TokenController extends Controller
         if ($expiration == -1) {
             $expiration = intval($request->input('custom-expiration'));
 
-            if($expiration == -1) {
+            if ($expiration == -1) {
                 $expiration = 24 * 365;
             }
         }
@@ -105,7 +105,6 @@ class TokenController extends Controller
         $token->save();
 
         flash()->success("Extra token generated: {$token->token}");
-
 
         return redirect()->back();
     }
