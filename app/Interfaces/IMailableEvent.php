@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Hugo
- * Date: 2/9/2018
- * Time: 4:14 PM.
- */
 
-namespace App\Events;
+namespace App\Interfaces;
 
 interface IMailableEvent
 {

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Interfaces\IMailableEvent;
 use App\Token;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
