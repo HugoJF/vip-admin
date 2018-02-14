@@ -59,6 +59,7 @@ var client = new SteamUser();
 var community = new SteamCommunity();
 var manager = new TradeOfferManager({
     'steam': client,
+    'community': community,
     'domain': 'localhost',
     'language': 'en'
 });
@@ -102,6 +103,7 @@ client.on('disconnected', function (eresult, msg) {
 
 client.on('webSession', function(sessionID, cookies) {
     console.log("Got web session");
+    community.setCookies(cookies);
     manager.setCookies(cookies, function(err) {
         if (err) {
             console.log(err);
@@ -116,21 +118,12 @@ client.on('webSession', function(sessionID, cookies) {
 });
 
 
-client.on("sessionExpired", function(err) {
-    log('Client triggered sessionExpired, trying to reloing');
-
-    if(Date.now() - lastLoginAttempt > 30000) {
-        lastLoginAttempt = Date.now();
-        console.log(" > Session Expired, relogging.");
-        client.webLogOn();
-    } else {
-        console.log(" Session Expired, waiting a while before attempting to relogin.");
-    }
-});
-
 community.on("sessionExpired", function(err) {
     log('Community triggered sessionExpired, trying to reloing');
 
+    community.loggedIn(function (err, loggedIn, familyView) {
+        log('community.loggedIn: ' + loggedIn);
+    });
     if(Date.now() - lastLoginAttempt > 30000) {
         lastLoginAttempt = Date.now();
         console.log(" > Session Expired, relogging.");
