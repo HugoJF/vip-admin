@@ -169,7 +169,7 @@
             <tbody>
             <tr>
                 <td>Duration</td>
-                <td><span class="label label-success">{{ $duration }} days</span></td>
+                <td><span class="label label-success">{{ $order->duration }} days</span></td>
             </tr>
             <tr>
                 <td>Total Value</td>

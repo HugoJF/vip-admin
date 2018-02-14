@@ -197,14 +197,10 @@ class SteamOrderController extends Controller
         // Calculates total price of order and fills list of items in order
         $totalPrice = Daemon::calculateTotalPrice($full_item_list);
 
-        // Computes the amount of days the order will result
-        $days = Daemon::calculateOfferDuration($totalPrice);
-
         // Return Steam Order
         return view('steam-orders.show', [
             'steamOrder' => $steamOrder,
             'order'      => $order,
-            'duration'   => $days,
             'totalValue' => $totalPrice,
             'items'      => $full_item_list,
         ]);

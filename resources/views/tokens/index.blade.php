@@ -24,10 +24,10 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($tokens as $token)
+        @foreach($tokens as $key=>$token)
             <tr {{ isset($token->tokenOrder->baseOrder->user->steamid) && $token->tokenOrder->baseOrder->user->steamid == $highlight || isset($token->user) && $token->user->steamid == $highlight ? 'class=info' : ($token->trashed() ? 'class=danger' : '') }}>
                     <!-- Token -->
-                    <td scope="row"><a href="{{ route('tokens.show', $token) }}"><code>{{ $token->token}}</code></a></td>
+                    <td data-order="{{ $key }}" scope="row"><a href="{{ route('tokens.show', $token) }}"><code>{{ $token->token}}</code></a></td>
 
                     <!-- Duration -->
                     <td>{{ $token->duration }} days</td>
@@ -101,7 +101,9 @@
 <script>
 
     $(document).ready(function(){
-        $('#datatables').DataTable();
+        $('#datatables').DataTable({
+            "iDisplayLength": 50
+        });
     });
 
 </script>

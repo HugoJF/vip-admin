@@ -18,9 +18,9 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($servers as $server)
+        @foreach($servers as $key=>$server)
             <tr>
-                <td>{{ $server->name }}</td>
+                <td data-order="{{ $key }}">{{ $server->name }}</td>
                 <td>{{ $server->ip }}</td>
                 <td>{{ $server->port }}</td>
                 <td>{{ $server->password }}</td>
@@ -43,7 +43,9 @@
 <script>
 
     $(document).ready(function(){
-        $('#datatables').DataTable();
+        $('#datatables').DataTable({
+            "iDisplayLength": 50
+        });
     });
 
 </script>

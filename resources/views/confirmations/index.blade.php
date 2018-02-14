@@ -20,10 +20,10 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($confirmations as $confirmation)
+        @foreach($confirmations as $key=>$confirmation)
             <tr {{ isset($highlight) && $confirmation->user->steamid == $highlight ? 'class=info' : $confirmation->trashed() ? 'class=danger' : '' }}>
                 <!-- Confirmation Public ID -->
-                <td><a href="{{ route('orders.show', $confirmation->baseOrder) }}"><code>#{{ $confirmation->public_id }}</code></a></td>
+                <td data-order="{{ $key }}"><a href="{{ route('orders.show', $confirmation->baseOrder) }}"><code>#{{ $confirmation->public_id }}</code></a></td>
 
                 <!-- Order Public ID -->
                 <td scope="row"><a href="{{ route('orders.show', $confirmation->baseOrder) }}"><code>#{{ $confirmation->baseOrder->public_id }}</code></a></td>
@@ -70,7 +70,9 @@
 <script>
 
     $(document).ready(function(){
-        $('#datatables').DataTable();
+        $('#datatables').DataTable({
+            "iDisplayLength": 50
+        });
     });
 
 </script>

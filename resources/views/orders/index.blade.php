@@ -20,10 +20,10 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($orders as $order)
+        @foreach($orders as $key=>$order)
             <tr {{ isset($highlight) && $order->user->steamid == $highlight ? 'class=info' : ($order->trashed() ? 'class=danger' : '') }}>
                 <!-- Order Public ID -->
-                <td scope="row"><a href="{{ route('orders.show', $order) }}"><code>#{{ $order->public_id }}</code></a></td>
+                <td data-order="{{ $key }}"><a href="{{ route('orders.show', $order) }}"><code>#{{ $order->public_id }}</code></a></td>
 
                 <!-- Username and Order Type -->
                 @if($isAdmin)
@@ -70,7 +70,9 @@
 <script>
 
     $(document).ready(function(){
-        $('#datatables').DataTable();
+        $('#datatables').DataTable({
+            "iDisplayLength": 50
+        });
     });
 
 </script>

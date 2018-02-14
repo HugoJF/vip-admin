@@ -20,9 +20,9 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($users as $user)
+        @foreach($users as $key=>$user)
             <tr class="{{ $user->trashed() ? 'danger' : ''}}">
-                <td>{{ $user->name }}</td>
+                <td data-order="{{ $key }}">{{ $user->name }}</td>
                 <td><a href="http://steamcommunity.com/profiles/{{ $user->steamid }}">{{ $user->username }}</a></td>
                 <td>{{ $user->orders()->count() }} orders</td>
                 <td>{{ $user->confirmations()->count() }} confirmations</td>
@@ -56,7 +56,9 @@
 <script>
 
     $(document).ready(function(){
-        $('#datatables').DataTable();
+        $('#datatables').DataTable({
+            "iDisplayLength": 50
+        });
     });
 
 </script>
