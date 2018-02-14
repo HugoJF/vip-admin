@@ -6,6 +6,7 @@ use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
+use Laracasts\Flash\Flash;
 use League\Flysystem\Exception;
 
 class OrdersController extends Controller
@@ -82,8 +83,10 @@ class OrdersController extends Controller
         return redirect()->route('orders.index');
     }
 
-    public function show(Order $order)
+    public function show(Request $request, Order $order)
     {
+        $request->session()->reflash();
+
         if ($order->type('Steam')) {
             return redirect()->route('steam-order.show', $order);
         } elseif ($order->type('Token')) {

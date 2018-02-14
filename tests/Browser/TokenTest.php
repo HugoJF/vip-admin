@@ -39,8 +39,13 @@ class TokenTest extends DuskTestCase
 
     public function testAdminCanCreateCustomToken()
     {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new TokensCreate())
+        $adminUser = factory(User::class)->create([
+            'steamid' => '76561198033283983',
+        ]);
+
+        $this->browse(function (Browser $browser) use ($adminUser) {
+            $browser->loginAs($adminUser)
+                    ->visit(new TokensCreate())
                     ->value('@custom-duration', 33)
                     ->value('@custom-expiration', 33)
                     ->value('@note', 'This is my test custom note!')

@@ -24,7 +24,7 @@ class SteamOrderTest extends DuskTestCase
                     ->scrollToViewAndClick('@item2-label')
                     ->scrollToViewAndClick('@send')
                     ->assertSee('Order created successfully!')
-                    ->assertSee('Trade Offer not sent')
+                    ->assertSee('TradeOfferNotSent')
                     ->click('#send-trade-link')
                     ->assertSee('Trade offer sent')
                     ->assertSee('Active');
