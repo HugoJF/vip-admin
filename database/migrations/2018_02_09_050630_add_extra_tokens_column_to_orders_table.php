@@ -22,7 +22,7 @@ class AddExtraTokensColumnToOrdersTable extends Migration
 
         \Log::info('Started extra_tokens column migration!');
 
-        Order::all()->each(function ($item, $key) use ($durationPerToken) {
+        Order::withTrashed()->get()->each(function ($item, $key) use ($durationPerToken) {
             $item->extra_tokens = floor($item->duration / $durationPerToken);
             $saved = $item->save();
 

@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="{{ $name }}" class="control-label required">{{ $options['label'] }}</label>
-    <div class='input-group date' id='datetimepicker'>
+    <div class='input-group date' id='datetimepicker-{{ $name }}'>
         <span class="input-group-addon">
             <span class="glyphicon glyphicon-time"></span>
         </span>
@@ -19,9 +19,12 @@
 @push('scripts')
 <script type="text/javascript">
     $(function () {
-        $('#datetimepicker').datetimepicker({
+        $('#datetimepicker-{{ $name }}').datetimepicker({
             format: 'YYYY-MM-DD HH:mm:ss',
             sideBySide: true,
+            toolbarPlacement: 'bottom',
+            stepping: 5,
+            showTodayButton: true,
             showClose: true,
             widgetPositioning: {
                 horizontal: 'left',

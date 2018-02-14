@@ -6,6 +6,8 @@
     {!! Form::open(['route' => 'tokens.storeExtra', 'method' => 'POST', ]) !!}
     <p><button id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Generate extra tokens</button></p>
     {!! Form::close() !!}
+    <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Show trashed confirmations</a></p>
+
 
     <table class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
@@ -23,7 +25,7 @@
         </thead>
         <tbody>
         @foreach($tokens as $token)
-            <tr {{ isset($token->tokenOrder->baseOrder->user->steamid) && $token->tokenOrder->baseOrder->user->steamid == $highlight || isset($token->user) && $token->user->steamid == $highlight ? 'class=info' : '' }}>
+            <tr {{ isset($token->tokenOrder->baseOrder->user->steamid) && $token->tokenOrder->baseOrder->user->steamid == $highlight || isset($token->user) && $token->user->steamid == $highlight ? 'class=info' : ($token->trashed() ? 'class=danger' : '') }}>
                     <!-- Token -->
                     <td scope="row"><a href="{{ route('tokens.show', $token->token) }}"><code>{{ $token->token}}</code></a></td>
 
@@ -69,11 +71,25 @@
                     <td><span class="label label-{{ $token->statusClass() }}">{{ $token->status() }}</span></td>
 
                     <!-- Actions -->
-                    @if($token->tokenOrder && $token->tokenOrder->baseOrder)
-                        <td><a class="btn btn-default" href="{{ route('token-order.show', $token->tokenOrder->baseOrder->public_id) }}">View order details</a></td>
-                    @else
-                        <td><a class="btn btn-default disabled">No actions available</a></td>
-                    @endif
+                    <td>
+                        @if($token->tokenOrder && $token->tokenOrder->baseOrder)
+                            <a class="btn btn-xs btn-default" href="{{ route('token-order.show', $token->tokenOrder->baseOrder->public_id) }}">View order details</a>
+                        @else
+                            <a class="btn btn-xs btn-primary" href="{{ route('tokens.edit', $token) }}">Edit</a>
+                            <a class="btn btn-xs btn-default disabled">No actions available</a>
+                        @endif
+                        @if(Auth::user()->isAdmin())
+                            @if($token->trashed())
+                                {!! Form::open(['route' => ['tokens.restore', $token], 'method' => 'PATCH', 'style' => 'display: inline;']) !!}
+                                <button class="btn btn-xs btn-primary">Restore</button>
+                                {!! Form::close() !!}
+                            @else
+                                {!! Form::open(['route' => ['tokens.delete', $token], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
+                                <button class="btn btn-xs btn-danger">Delete</button>
+                                {!! Form::close() !!}
+                            @endif
+                        @endif
+                    </td>
                 </tr>
         @endforeach
 

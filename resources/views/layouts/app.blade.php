@@ -27,10 +27,6 @@
     @yield('head')
 
     <style>
-        body {
-            margin-top:30px;
-        }
-
         #accordion .glyphicon {
             margin-right: 10px;
         }
@@ -215,14 +211,14 @@
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse in">
                         <ul class="list-group">
-                            <li class="list-group-item {{ Route::is('orders') ? 'active' : '' }}">
+                            <li class="list-group-item {{ Route::is('orders.index') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-usd"></span>
-                                <a id="orders" href="{{ route('orders') }}">Orders</a>
+                                <a id="orders" href="{{ route('orders.index') }}">Orders</a>
                                 <span class="badge">{{ Auth::user()->orders()->count() }}</span>
                             </li>
-                            <li class="list-group-item {{ Route::is('confirmations') ? 'active' : '' }}">
+                            <li class="list-group-item {{ Route::is('confirmations.index') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-ok"></span>
-                                <a id="confirmations" href="{{ route('confirmations') }}">Confirmations</a>
+                                <a id="confirmations" href="{{ route('confirmations.index') }}">Confirmations</a>
                                 <span class="badge">{{ Auth::user()->confirmations()->count() }}</span>
                             </li>
                             <li class="list-group-item {{ Route::is('tokens.index') ? 'active' : '' }}">
@@ -261,13 +257,13 @@
                                     <span class="glyphicon glyphicon-th-list"></span>
                                     <a id="users" href="{{ route('users.index') }}">Users</a>
                                 </li>
-                                <li class="list-group-item {{ Route::is('laravel-logs') ? 'active' : '' }}">
-                                    <span class="glyphicon glyphicon-console"></span>
-                                    <a id="laravel-logs" href="{{ route('laravel-logs') }}">Logs</a>
-                                </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                     <a id="server-list" href="{{ route('servers.index') }}">Server list</a>
+                                </li>
+                                <li class="list-group-item {{ Route::is('laravel-logs') ? 'active' : '' }}">
+                                    <span class="glyphicon glyphicon-console"></span>
+                                    <a id="laravel-logs" href="{{ route('laravel-logs') }}">Logs</a>
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-refresh"></span>

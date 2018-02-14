@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Confirmation;
+use App\Token;
+use App\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,14 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('confirmation', function ($value) {
             return Confirmation::withTrashed()->where('public_id', $value)->first();
+        });
+
+        Route::bind('user', function ($value) {
+            return User::withTrashed()->where('id', $value)->first();
+        });
+
+        Route::bind('token', function ($value) {
+            return Token::withTrashed()->where('token', $value)->first();
         });
     }
 

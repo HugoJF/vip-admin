@@ -8,59 +8,96 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        $users = User::all();
+	public function index(Request $request)
+	{
+		$showBanned = (bool) $request->has('banned');
+		if($showBanned) {
+			$users = User::withTrashed()->get();
+		} else {
+			$users = User::all();
+		}
 
-        return view('users.index', [
-            'users' => $users,
-        ]);
-    }
+		return view('users.index', [
+			'users' => $users,
+		]);
+	}
 
-    public function settings()
-    {
-        return view('user_settings', [
-            'user' => Auth::user(),
-        ]);
-    }
+	public function settings()
+	{
+		return view('user_settings', [
+			'user' => Auth::user(),
+		]);
+	}
 
-    public function settingsUpdate(Request $request)
-    {
-        $user = Auth::user();
+	public function ban(User $user)
+	{
+		if($user->isAdmin()) {
+			flash()->error('Admins cannot be banned!');
 
-        $user->fill($request->all());
-        $user->email = $request->input('email');
+			return redirect()->back();
+		}
 
-        $saved = $user->save();
+		$deleted = $user->delete();
 
-        if ($saved) {
-            flash()->success('Updated settings successfully.');
-        } else {
-            flash()->error('Error updating settings!');
-        }
+		if ($deleted) {
+			flash()->success("User {$user->username} was banned!");
+		} else {
+			flash()->error("Could not ban user {$user->username}!");
+		}
 
-        return redirect()->route('settings');
-    }
+		return redirect()->back();
+	}
 
-    public function accept()
-    {
-        $user = Auth::user();
+	public function unban(User $user)
+	{
+		$restored = $user->restore();
 
-        $user->accepted = true;
+		if($restored) {
+			flash()->success("User {$user->username} was unbanned!");
+		} else {
+			flash()->error("Could not unban user {$user->username}!");
+		}
 
-        $saved = $user->save();
+		return redirect()->back();
+	}
 
-        if ($saved) {
-            flash()->success('User settings saved with success.');
-        } else {
-            flash()->error('Could not save user settings!');
-        }
+	public function settingsUpdate(Request $request)
+	{
+		$user = Auth::user();
 
-        return redirect()->route('home');
-    }
+		$user->fill($request->all());
+		$user->email = $request->input('email');
 
-    public function home()
-    {
-        return view('home');
-    }
+		$saved = $user->save();
+
+		if ($saved) {
+			flash()->success('Updated settings successfully.');
+		} else {
+			flash()->error('Error updating settings!');
+		}
+
+		return redirect()->route('settings');
+	}
+
+	public function accept()
+	{
+		$user = Auth::user();
+
+		$user->accepted = true;
+
+		$saved = $user->save();
+
+		if ($saved) {
+			flash()->success('User settings saved with success.');
+		} else {
+			flash()->error('Could not save user settings!');
+		}
+
+		return redirect()->route('home');
+	}
+
+	public function home()
+	{
+		return view('home');
+	}
 }

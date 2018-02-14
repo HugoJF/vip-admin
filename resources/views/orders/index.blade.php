@@ -3,6 +3,8 @@
 @section('content')
     <h1>Current Orders</h1>
 
+    <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Show trashed orders</a></p>
+
     <table class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
         <tr>
@@ -19,7 +21,7 @@
         </thead>
         <tbody>
         @foreach($orders as $order)
-            <tr {{ isset($highlight) && $order->user->steamid == $highlight ? 'class=info' : '' }}>
+            <tr {{ isset($highlight) && $order->user->steamid == $highlight ? 'class=info' : ($order->trashed() ? 'class=danger' : '') }}>
                 <!-- Order Public ID -->
                 <td scope="row"><a href="{{ route(($order->isSteamOffer() ? 'steam' : 'token') . '-order.show', $order->public_id) }}"><code>#{{ $order->public_id }}</code></a></td>
 
@@ -43,9 +45,17 @@
 
                 <!-- Actions -->
                 <td>
-                    <a class="btn btn-default" href="{{ route(($order->isSteamOffer() ? 'steam' : 'token') . '-order.show', $order->public_id) }}">View order details</a>
+                    @if($order->orderable->stateText() != 'Confirmed')
+                        <a class="btn btn-xs btn-primary" href="{{ route('orders.edit', $order) }}">Edit</a>
+                    @endif
+                    <a class="btn btn-xs btn-default" href="{{ route(($order->isSteamOffer() ? 'steam' : 'token') . '-order.show', $order->public_id) }}">Order details</a>
                     @if($order->isSteamOffer() && !$order->orderable->tradeoffer_id && $isAdmin)
-                        <a class="btn btn-primary" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Offer</a>
+                        <a class="btn btn-xs btn-default" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Offer</a>
+                    @endif
+                    @if($order->orderable->stateText() != 'Confirmed' && !$order->trashed())
+                        {!! Form::open(['route' => ['orders.delete', $order], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
+                            <button class="btn btn-xs btn-danger btn-form-fix" type="submit">Delete</button>
+                        {!! Form::close() !!}
                     @endif
                 </td>
 

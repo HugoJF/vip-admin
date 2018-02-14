@@ -7,10 +7,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Confirmation extends Model
 {
-    use \Illuminate\Database\Eloquent\SoftDeletes;
+    use SoftDeletes;
 
     protected $dates = [
         'start_period',
@@ -21,7 +22,7 @@ class Confirmation extends Model
 
     public function baseOrder()
     {
-        return $this->belongsTo('App\Order', 'order_id');
+        return $this->belongsTo('App\Order', 'order_id')->withTrashed();
     }
 
     public function user()

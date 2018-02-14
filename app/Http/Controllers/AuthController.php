@@ -55,6 +55,10 @@ class AuthController extends Controller
             if (!is_null($info)) {
                 $user = $this->findOrNewUser($info);
 
+                if($user === null) {
+                    return 'You are banned from using VIP-Admin permanently!';
+                }
+
                 Auth::login($user, true);
 
                 if (isset($user->tradelink)) {
@@ -77,11 +81,17 @@ class AuthController extends Controller
      */
     protected function findOrNewUser($info)
     {
-        $user = User::where('steamid', $info->steamID64)->first();
+        $user = User::withTrashed()->where('steamid', $info->steamID64)->first();
 
         if (!is_null($user)) {
-            return $user;
+            if($user->trashed()) {
+                return null;
+            } else {
+                return $user;
+            }
         }
+
+
 
         return User::create([
             'username' => $info->personaname,

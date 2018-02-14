@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Token extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'tokens';
 
     protected $guarded = ['duration', 'expiration', 'token'];
@@ -31,7 +34,7 @@ class Token extends Model
             return 'Used';
         }
 
-        $expiration_date = $this->created_at->addHours($this->expiration);
+        $expiration_date = $this->updated_at->addHours($this->expiration);
 
         if ($expiration_date->isPast()) {
             return 'Expired';
