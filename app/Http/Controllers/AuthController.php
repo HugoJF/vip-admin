@@ -55,7 +55,7 @@ class AuthController extends Controller
             if (!is_null($info)) {
                 $user = $this->findOrNewUser($info);
 
-                if($user === null) {
+                if ($user === null) {
                     return 'You are banned from using VIP-Admin permanently!';
                 }
 
@@ -84,14 +84,12 @@ class AuthController extends Controller
         $user = User::withTrashed()->where('steamid', $info->steamID64)->first();
 
         if (!is_null($user)) {
-            if($user->trashed()) {
-                return null;
+            if ($user->trashed()) {
+                return;
             } else {
                 return $user;
             }
         }
-
-
 
         return User::create([
             'username' => $info->personaname,

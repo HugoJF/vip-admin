@@ -5,9 +5,9 @@ namespace App;
 use App\Classes\Daemon;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Confirmation extends Model
 {
