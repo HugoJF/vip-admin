@@ -30,7 +30,7 @@ class TokenTest extends DuskTestCase
                     ->assertSee('4 hours')
                     ->assertSee('This is my test note!')
                     ->click('@generate')
-                    ->assertSee('Viewing token')
+                    ->assertSee('Token generation confirmation details')
                     ->assertSee('7 days')
                     ->assertSee('4 hours')
                     ->assertSee('This is my test note!');

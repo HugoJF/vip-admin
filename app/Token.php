@@ -59,7 +59,7 @@ class Token extends Model
             'Used'    => 'info',
         ];
 
-        $s = $this->status();
+        $s = $this->statusText();
 
         if (array_has($status, $s)) {
             return $status[$s];
