@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\IMailableEvent;
 use App\Events\OrderCreated;
+use App\Interfaces\IMailableEvent;
 use App\Mail\MailableEventMail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
