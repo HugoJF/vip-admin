@@ -5,7 +5,7 @@
 
     <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Show trashed confirmations</a></p>
 
-    <table class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
+    <table id="datatables" class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
         <tr>
             <th>Confirmation Public ID</th>
@@ -65,3 +65,13 @@
         </tbody>
     </table>
 @endsection
+
+@push('scripts')
+<script>
+
+    $(document).ready(function(){
+        $('#datatables').DataTable();
+    });
+
+</script>
+@endpush

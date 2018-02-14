@@ -5,7 +5,7 @@
 
     <p><a href="?banned=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Show banned users</a></p>
 
-    <table class="table table-striped table-bordered">
+    <table id="datatables" class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>Name</th>
@@ -51,3 +51,13 @@
         </tbody>
     </table>
 @endsection
+
+@push('scripts')
+<script>
+
+    $(document).ready(function(){
+        $('#datatables').DataTable();
+    });
+
+</script>
+@endpush

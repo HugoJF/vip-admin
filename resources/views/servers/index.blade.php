@@ -5,7 +5,7 @@
 
     <p><a href="{{ route('servers.create') }}" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Add new server</a></p>
 
-    <table class="table table-bordered table-striped">
+    <table id="datatables" class="table table-bordered table-striped">
         <thead>
         <tr>
             <th>Server name</th>
@@ -38,3 +38,13 @@
         </tbody>
     </table>
 @endsection
+
+@push('scripts')
+<script>
+
+    $(document).ready(function(){
+        $('#datatables').DataTable();
+    });
+
+</script>
+@endpush
