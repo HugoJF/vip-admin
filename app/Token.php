@@ -30,6 +30,14 @@ class Token extends Model
 
     public function status()
     {
+        return [
+            'text' => $this->statusText(),
+            'class' => $this->statusClass(),
+        ];
+    }
+
+    private function statusText()
+    {
         if ($this->tokenOrder()->exists()) {
             return 'Used';
         }
@@ -43,7 +51,7 @@ class Token extends Model
         }
     }
 
-    public function statusClass()
+    private function statusClass()
     {
         $status = [
             'Expired' => 'danger',

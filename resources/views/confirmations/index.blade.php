@@ -23,10 +23,10 @@
         @foreach($confirmations as $confirmation)
             <tr {{ isset($highlight) && $confirmation->user->steamid == $highlight ? 'class=info' : $confirmation->trashed() ? 'class=danger' : '' }}>
                 <!-- Confirmation Public ID -->
-                <td><a href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}"><code>#{{ $confirmation->public_id }}</code></a></td>
+                <td><a href="{{ route('orders.show', $confirmation->baseOrder) }}"><code>#{{ $confirmation->public_id }}</code></a></td>
 
                 <!-- Order Public ID -->
-                <td scope="row"><a href="{{ route('steam-order.show', $confirmation->baseOrder->public_id) }}"><code>#{{ $confirmation->baseOrder->public_id }}</code></a></td>
+                <td scope="row"><a href="{{ route('orders.show', $confirmation->baseOrder) }}"><code>#{{ $confirmation->baseOrder->public_id }}</code></a></td>
 
                 <!-- Username -->
                 @if($isAdmin)
@@ -42,11 +42,11 @@
                 <td>{{ $confirmation->end_period }}</td>
 
                 <!-- State -->
-                <td><span class="label label-{{ $confirmation->stateClass() }}"> {{ $confirmation->stateText() }}</span></td>
+                <td><span class="label label-{{ $confirmation->status()['class'] }}"> {{ $confirmation->status()['text'] }}</span></td>
 
                 <!-- Actions -->
                 <td>
-                    <a class="btn btn-xs btn-default" href="{{ route(($confirmation->baseOrder->isSteamOffer() ? 'steam' : 'token') . '-order.show', $confirmation->baseOrder->public_id) }}">View order</a>
+                    <a class="btn btn-xs btn-default" href="{{ route('orders.show', $confirmation->baseOrder) }}">View order</a>
                     <a class="btn btn-xs btn-primary" href="{{ route('confirmations.edit', $confirmation) }}">Edit</a>
                     @if(Auth::user()->isAdmin())
                         @if($confirmation->trashed())
@@ -62,7 +62,6 @@
                 </td>
             </tr>
         @endforeach
-
         </tbody>
     </table>
 @endsection

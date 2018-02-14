@@ -27,7 +27,7 @@
         @foreach($tokens as $token)
             <tr {{ isset($token->tokenOrder->baseOrder->user->steamid) && $token->tokenOrder->baseOrder->user->steamid == $highlight || isset($token->user) && $token->user->steamid == $highlight ? 'class=info' : ($token->trashed() ? 'class=danger' : '') }}>
                     <!-- Token -->
-                    <td scope="row"><a href="{{ route('tokens.show', $token->token) }}"><code>{{ $token->token}}</code></a></td>
+                    <td scope="row"><a href="{{ route('tokens.show', $token) }}"><code>{{ $token->token}}</code></a></td>
 
                     <!-- Duration -->
                     <td>{{ $token->duration }} days</td>
@@ -36,9 +36,9 @@
                     <td>{{ $token->expiration }} hours</td>
 
                     <!-- Expiration remaining -->
-                    @if($token->status() == 'Used')
+                    @if($token->status()['text'] == 'Used')
                         <td>Already used</td>
-                    @elseif($token->status() == 'Expired')
+                    @elseif($token->status()['text'] == 'Expired')
                         <td>Expired {{ $token->created_at->addHours($token->expiration)->diffForHumans() }}</td>
                     @else
                         <td>{{ $token->created_at->addHours($token->expiration)->diffForHumans() }}</td>

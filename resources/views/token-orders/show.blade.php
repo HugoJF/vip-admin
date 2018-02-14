@@ -112,7 +112,7 @@
     <h1>Order #{{ $order->public_id }}</h1>
 
     <div class="row bs-wizard" style="border-bottom:0;">
-        <div class="col-xs-offset-2 col-xs-2 bs-wizard-step {{ $tokenOrder->currentStep() >= 1 ? ($tokenOrder->currentStep() > 1 ? 'complete' : 'active') : 'disabled' }}">
+        <div class="col-xs-offset-2 col-xs-2 bs-wizard-step {{ $tokenOrder->step() >= 1 ? ($tokenOrder->step() > 1 ? 'complete' : 'active') : 'disabled' }}">
             <div class="text-center bs-wizard-stepnum">Step 1</div>
             <div class="progress">
                 <div class="progress-bar"></div>
@@ -122,7 +122,7 @@
             <div class="bs-wizard-info text-center">Create Token Order</div>
         </div>
 
-        <div class="col-xs-2 bs-wizard-step {{ $tokenOrder->currentStep() >= 2 ? ($tokenOrder->currentStep() > 2 ? 'complete' : 'active') : 'disabled' }}"><!-- complete -->
+        <div class="col-xs-2 bs-wizard-step {{ $tokenOrder->step() >= 2 ? ($tokenOrder->step() > 2 ? 'complete' : 'active') : 'disabled' }}"><!-- complete -->
             <div class="text-center bs-wizard-stepnum">Step 2</div>
             <div class="progress">
                 <div class="progress-bar"></div>
@@ -132,7 +132,7 @@
             <div class="bs-wizard-info text-center">Submit a valid token</div>
         </div>
 
-        <div class="col-xs-2 bs-wizard-step {{ $tokenOrder->currentStep() >= 3 ? ($tokenOrder->currentStep() > 3 ? 'complete' : 'active') : 'disabled' }}"><!-- complete -->
+        <div class="col-xs-2 bs-wizard-step {{ $tokenOrder->step() >= 3 ? ($tokenOrder->step() > 3 ? 'complete' : 'active') : 'disabled' }}"><!-- complete -->
             <div class="text-center bs-wizard-stepnum">Step 3</div>
             <div class="progress">
                 <div class="progress-bar"></div>
@@ -142,7 +142,7 @@
             <div class="bs-wizard-info text-center">Generate the confirmation</div>
         </div>
 
-        <div class="col-xs-2 bs-wizard-step {{ $tokenOrder->currentStep() >= 4 ? ($tokenOrder->currentStep() > 4 ? 'complete' : 'active') : 'disabled' }}"><!-- active -->
+        <div class="col-xs-2 bs-wizard-step {{ $tokenOrder->step() >= 4 ? ($tokenOrder->step() > 4 ? 'complete' : 'active') : 'disabled' }}"><!-- active -->
             <div class="text-center bs-wizard-stepnum">Step 4</div>
             <div class="progress">
                 <div class="progress-bar"></div>
@@ -168,7 +168,7 @@
             </tr>
             <tr>
                 <td>Current state</td>
-                <td><span class="label label-{{ $tokenOrder->stateClass() }}">{{ $tokenOrder->stateText() }}</span></td>
+                <td><span class="label label-{{ $tokenOrder->status()['class'] }}">{{ $tokenOrder->status()['text'] }}</span></td>
             </tr>
             <tr>
                 <td>Last update</td>
@@ -192,7 +192,7 @@
         </table>
 
         @if(!$order->confirmation)
-                <a class="btn btn-success btn-lg btn-block" href="{{ route('create-confirmation', $order->public_id) }}">Create confirmation</a>
+                <a class="btn btn-success btn-lg btn-block" href="{{ route('create-confirmation', $order) }}">Create confirmation</a>
         @endif
     </div>
 

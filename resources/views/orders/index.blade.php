@@ -23,7 +23,7 @@
         @foreach($orders as $order)
             <tr {{ isset($highlight) && $order->user->steamid == $highlight ? 'class=info' : ($order->trashed() ? 'class=danger' : '') }}>
                 <!-- Order Public ID -->
-                <td scope="row"><a href="{{ route(($order->isSteamOffer() ? 'steam' : 'token') . '-order.show', $order->public_id) }}"><code>#{{ $order->public_id }}</code></a></td>
+                <td scope="row"><a href="{{ route('orders.show', $order) }}"><code>#{{ $order->public_id }}</code></a></td>
 
                 <!-- Username and Order Type -->
                 @if($isAdmin)
@@ -41,18 +41,18 @@
                 <td>{{ $order->extra_tokens ?? '0' }} tokens</td>
 
                 <!-- State -->
-                <td><span class="label label-{{ $order->orderable->stateClass() }}">{{ $order->orderable->stateText() }}</span></td>
+                <td><span class="label label-{{ $order->status()['class'] }}">{{ $order->status()['text'] }}</span></td>
 
                 <!-- Actions -->
                 <td>
-                    @if($order->orderable->stateText() != 'Confirmed')
+                    @if($order->orderable->status()['text'] != 'Confirmed')
                         <a class="btn btn-xs btn-primary" href="{{ route('orders.edit', $order) }}">Edit</a>
                     @endif
-                    <a class="btn btn-xs btn-default" href="{{ route(($order->isSteamOffer() ? 'steam' : 'token') . '-order.show', $order->public_id) }}">Order details</a>
-                    @if($order->isSteamOffer() && !$order->orderable->tradeoffer_id && $isAdmin)
-                        <a class="btn btn-xs btn-default" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Offer</a>
+                    <a class="btn btn-xs btn-default" href="{{ route('orders.show', $order) }}">Order details</a>
+                    @if($order->type('Steam') && !$order->orderable->tradeoffer_id && $isAdmin)
+                        <a class="btn btn-xs btn-default" href="{{ route('steam-order.send-tradeoffer', $order) }}">Send Trade Offer</a>
                     @endif
-                    @if($order->orderable->stateText() != 'Confirmed' && !$order->trashed())
+                    @if($order->orderable->status()['text'] != 'Confirmed' && !$order->trashed())
                         {!! Form::open(['route' => ['orders.delete', $order], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
                             <button class="btn btn-xs btn-danger btn-form-fix" type="submit">Delete</button>
                         {!! Form::close() !!}

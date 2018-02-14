@@ -8,96 +8,97 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
-    {
-        $showBanned = (bool) $request->has('banned');
-        if ($showBanned) {
-            $users = User::withTrashed()->get();
-        } else {
-            $users = User::all();
-        }
+	public function index(Request $request)
+	{
+		$showBanned = (bool)$request->has('banned');
 
-        return view('users.index', [
-            'users' => $users,
-        ]);
-    }
+		$users = User::query();
 
-    public function settings()
-    {
-        return view('user_settings', [
-            'user' => Auth::user(),
-        ]);
-    }
+		if ($showBanned) {
+			$users->withTrashed();
+		}
 
-    public function ban(User $user)
-    {
-        if ($user->isAdmin()) {
-            flash()->error('Admins cannot be banned!');
+		return view('users.index', [
+			'users' => $users->get(),
+		]);
+	}
 
-            return redirect()->back();
-        }
+	public function settings()
+	{
+		return view('user_settings', [
+			'user' => Auth::user(),
+		]);
+	}
 
-        $deleted = $user->delete();
+	public function ban(User $user)
+	{
+		if ($user->isAdmin()) {
+			flash()->error('Admins cannot be banned!');
 
-        if ($deleted) {
-            flash()->success("User {$user->username} was banned!");
-        } else {
-            flash()->error("Could not ban user {$user->username}!");
-        }
+			return redirect()->back();
+		}
 
-        return redirect()->back();
-    }
+		$deleted = $user->delete();
 
-    public function unban(User $user)
-    {
-        $restored = $user->restore();
+		if ($deleted) {
+			flash()->success("User {$user->username} was banned!");
+		} else {
+			flash()->error("Could not ban user {$user->username}!");
+		}
 
-        if ($restored) {
-            flash()->success("User {$user->username} was unbanned!");
-        } else {
-            flash()->error("Could not unban user {$user->username}!");
-        }
+		return redirect()->back();
+	}
 
-        return redirect()->back();
-    }
+	public function unban(User $user)
+	{
+		$restored = $user->restore();
 
-    public function settingsUpdate(Request $request)
-    {
-        $user = Auth::user();
+		if ($restored) {
+			flash()->success("User {$user->username} was unbanned!");
+		} else {
+			flash()->error("Could not unban user {$user->username}!");
+		}
 
-        $user->fill($request->all());
-        $user->email = $request->input('email');
+		return redirect()->back();
+	}
 
-        $saved = $user->save();
+	public function settingsUpdate(Request $request)
+	{
+		$user = Auth::user();
 
-        if ($saved) {
-            flash()->success('Updated settings successfully.');
-        } else {
-            flash()->error('Error updating settings!');
-        }
+		$user->fill($request->all());
+		$user->email = $request->input('email');
 
-        return redirect()->route('settings');
-    }
+		$saved = $user->save();
 
-    public function accept()
-    {
-        $user = Auth::user();
+		if ($saved) {
+			flash()->success('Updated settings successfully.');
+		} else {
+			flash()->error('Error updating settings!');
+		}
 
-        $user->accepted = true;
+		return redirect()->route('settings');
+	}
 
-        $saved = $user->save();
+	public function accept()
+	{
+		$user = Auth::user();
 
-        if ($saved) {
-            flash()->success('User settings saved with success.');
-        } else {
-            flash()->error('Could not save user settings!');
-        }
+		$user->accepted = true;
 
-        return redirect()->route('home');
-    }
+		$saved = $user->save();
 
-    public function home()
-    {
-        return view('home');
-    }
+		if ($saved) {
+			flash()->success('User settings saved with success.');
+		} else {
+			flash()->error('Could not save user settings!');
+		}
+
+		return redirect()->route('home');
+	}
+
+	public function home()
+	{
+		return view('home');
+	}
 }

@@ -40,6 +40,7 @@ Route::get('confirmations/{confirmation}/edit', 'ConfirmationsController@edit')-
 Route::patch('confirmations/{confirmation}', 'ConfirmationsController@update')->middleware(['auth', 'admin'])->name('confirmations.update');
 
 Route::get('orders', 'OrdersController@index')->middleware('auth', 'accepted')->name('orders.index');
+Route::get('orders/{order}', 'OrdersController@show')->middleware('auth', 'accepted')->name('orders.show');
 Route::get('orders/{order}/edit', 'OrdersController@edit')->middleware('auth', 'accepted', 'admin')->name('orders.edit');
 Route::delete('orders/{order}', 'OrdersController@delete')->middleware('auth', 'accepted', 'admin')->name('orders.delete');
 Route::patch('orders/{order}', 'OrdersController@update')->middleware('auth', 'accepted', 'admin')->name('orders.update');

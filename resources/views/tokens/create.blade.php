@@ -18,11 +18,12 @@
                         <option value="1">1 day</option>
                         <option value="2">2 days</option>
                         <option value="3">3 days</option>
-                        <option value="7">7 days</option>
+                        <option selected value="7">7 days</option>
                         <option value="14">14 days</option>
                         <option value="30">30 days</option>
                         <option value="60">60 days</option>
                         <option value="90">90 days</option>
+                        <option value="180">180 days</option>
                     </select>
                 </div>
             </div>
@@ -48,7 +49,7 @@
                         <option value="2">2 hours</option>
                         <option value="4">4 hours</option>
                         <option value="12">12 hours</option>
-                        <option value="24">1 day</option>
+                        <option selected value="24">1 day</option>
                         <option value="48">2 days</option>
                         <option value="168">7 days</option>
                         <option value="-1">Infinite</option>

@@ -52,7 +52,7 @@ class User extends Authenticatable
         $allowedTokens = 0;
 
         foreach ($orders as $order) {
-            if ($order->isSteamOffer()) {
+            if ($order->type('Steam')) {
                 if ($order->orderable->accepted()) {
                     $allowedTokens += $order->extra_tokens;
                 }

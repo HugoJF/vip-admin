@@ -88,10 +88,16 @@ class TokenOrderController extends Controller
         $order->orderable()->associate($tokenOrder);
         $order->user()->associate(Auth::user());
 
-        $order->save();
+        $saved = $order->save();
 
         event(new TokenUsed($token));
 
-        return redirect()->route('token-order.show', $order->public_id);
+        if($saved) {
+            flash()->success("Token {$token->token} created!");
+        } else {
+            flash()->error('Could not store token in database!');
+        }
+
+        return redirect()->route('token-order.show', $order);
     }
 }

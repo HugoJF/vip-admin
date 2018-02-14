@@ -17,34 +17,23 @@ class ConfirmationsController extends Controller
 
     public function generate(Order $order)
     {
-        // Check if Order with given public ID exists
-        /* This should not be needed with Explicit Route Binding
-        if (!$order) {
-            flash()->error('Could not find order');
-
-            return redirect()->route('home');
-        }*/
-
         // Retrieve confirmation count for given order
         $confirmationCount = $order->confirmation()->count();
 
         // Check if confirmation exists first
-        if ($confirmationCount != 0) {
-            flash()->error('We already have a confirmation for this order is our database, please contact support!');
+        if ($confirmationCount == 1) {
+            flash()->error('We already have a confirmation for this order is our database!');
 
-            return redirect()->route('home');
+            return redirect()->route('orders.show', $order);
         }
 
-        /* New confirmations should take into consideration existing ones
-        // Check if user already has a valid confirmation
-        if (Auth::user()->confirmations()->valid()->get()->first()) {
-            flash()->error('You already have a valid confirmation, please wait for it to expire before generating another one!');
-
-            return redirect()->back();
-        }*/
-
         // Check if order is validated and ready to generate a confirmation
-        if ($order->isSteamOffer()) {
+
+        if(!$order->canGenerateConfirmation(true)) {
+            return redirect()->route('orders.view', $order);
+        }
+
+        /*if ($order->isSteamOffer()) {
             // Check if steam order is accepted
             $steamOrder = $order->orderable()->first();
             if (!$steamOrder || !$steamOrder->accepted()) {
@@ -60,7 +49,7 @@ class ConfirmationsController extends Controller
 
                 return redirect()->route('home');
             }
-        }
+        }*/
 
         // Get last confirmation generated for the User
         $latestConfirmation = Auth::user()->confirmations()->notExpired()->orderBy('end_period', 'asc')->first();
@@ -86,16 +75,13 @@ class ConfirmationsController extends Controller
         // Check if we confirmation was set to database and trigger event
         if ($confirmed) {
             event(new ConfirmationGenerated($confirmation));
+            flash()->success('Confirmation created with success!');
         } else {
             flash()->error('Error saving confirmation to database!');
         }
 
         // Redirect to updated order
-        if ($order->isSteamOffer()) {
-            return redirect()->route('steam-order.show', $order->public_id);
-        } else {
-            return redirect()->route('token-order.show', $order->public_id);
-        }
+        return redirect()->route('orders.show', $order);
     }
 
     public function view(Request $request)

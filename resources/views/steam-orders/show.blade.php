@@ -122,7 +122,7 @@
             <div class="bs-wizard-info text-center">Select your items to trade</div>
         </div>
 
-        <div class="col-xs-2 bs-wizard-step {{ $steamOrder->currentStep() >= 2 ? ($steamOrder->currentStep() > 2 ? 'complete' : 'active') : 'disabled' }}"><!-- complete -->
+        <div class="col-xs-2 bs-wizard-step {{ $steamOrder->step() >= 2 ? ($steamOrder->step() > 2 ? 'complete' : 'active') : 'disabled' }}"><!-- complete -->
             <div class="text-center bs-wizard-stepnum">Step 2</div>
             <div class="progress">
                 <div class="progress-bar"></div>
@@ -132,7 +132,7 @@
             <div class="bs-wizard-info text-center">Send the trade offer</div>
         </div>
 
-        <div class="col-xs-2 bs-wizard-step {{ $steamOrder->currentStep() >= 3 ? ($steamOrder->currentStep() > 3 ? 'complete' : 'active') : 'disabled' }}"><!-- complete -->
+        <div class="col-xs-2 bs-wizard-step {{ $steamOrder->step() >= 3 ? ($steamOrder->step() > 3 ? 'complete' : 'active') : 'disabled' }}"><!-- complete -->
             <div class="text-center bs-wizard-stepnum">Step 3</div>
             <div class="progress">
                 <div class="progress-bar"></div>
@@ -142,7 +142,7 @@
             <div class="bs-wizard-info text-center">Accept the trade offer</div>
         </div>
 
-        <div class="col-xs-2 bs-wizard-step {{ $steamOrder->currentStep() >= 4 ? ($steamOrder->currentStep() > 4 ? 'complete' : 'active') : 'disabled' }}"><!-- active -->
+        <div class="col-xs-2 bs-wizard-step {{ $steamOrder->step() >= 4 ? ($steamOrder->step() > 4 ? 'complete' : 'active') : 'disabled' }}"><!-- active -->
             <div class="text-center bs-wizard-stepnum">Step 4</div>
             <div class="progress">
                 <div class="progress-bar"></div>
@@ -151,7 +151,7 @@
 
             <div class="bs-wizard-info text-center">Generate the confirmation</div>
         </div>
-        <div class="col-xs-2 bs-wizard-step {{ $steamOrder->currentStep() >= 5 ? ($steamOrder->currentStep() > 5 ? 'complete' : 'active') : 'disabled' }}"><!-- active -->
+        <div class="col-xs-2 bs-wizard-step {{ $steamOrder->step() >= 5 ? ($steamOrder->step() > 5 ? 'complete' : 'active') : 'disabled' }}"><!-- active -->
             <div class="text-center bs-wizard-stepnum">Step 4</div>
             <div class="progress">
                 <div class="progress-bar"></div>
@@ -181,7 +181,7 @@
             </tr>
             <tr>
                 <td>Current state</td>
-                <td><span class="label label-{{ $steamOrder->stateClass() }}">{{ $steamOrder->stateText() }}</span></td>
+                <td><span class="label label-{{ $steamOrder->status()['class'] }}">{{ $steamOrder->status()['text'] }}</span></td>
             </tr>
             <tr>
                 <td>Last update</td>
@@ -206,11 +206,11 @@
 
         @if(!$order->confirmation)
             <h3>Actions</h3>
-            @if($steamOrder->notSent())
+            @if($steamOrder->status()['text'] == 'TradeOfferNotSent')
                 <a id="send-trade-link" class="btn btn-success btn-lg btn-block" href="{{ route('steam-order.send-tradeoffer', $order->public_id) }}">Send Trade Link</a>
-            @elseif($steamOrder->active())
+            @elseif($steamOrder->status()['text'] == 'Active')
                 <a class="btn btn-success btn-lg btn-block" target="_blank" href="https://steamcommunity.com/tradeoffer/{{ $steamOrder->tradeoffer_id }}">Open Trade Offer</a>
-            @elseif($steamOrder->accepted())
+            @elseif($steamOrder->status()['text'] == 'Accepted')
                 <a class="btn btn-success btn-lg btn-block" href="{{ route('create-confirmation', $order->public_id) }}">Create confirmation</a>
             @endif
         @endif

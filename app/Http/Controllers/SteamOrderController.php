@@ -55,12 +55,14 @@ class SteamOrderController extends Controller
 
         // Check if response was successful
         if ($inventory === false) {
+            // No need to set message, if its false, DaemonController already set a message
             return redirect()->route('home');
         }
 
         // Gets the items selected to create Steam Offer
-        $items = $request->get('items');
+        $items = $request->input('items');
 
+        // Keeping track of how many items were added
         $itemCount = 0;
 
         // Decode the information in each value of array
@@ -70,6 +72,7 @@ class SteamOrderController extends Controller
             $itemCount++;
         }
 
+        // Limit Orders with more than 20 items
         if ($itemCount > 20) {
             flash()->warning('Your order has more than 20 items, <strong>please try again with fewer items</strong> (this is enforced to avoid errors from Steam\'s API)');
 
@@ -147,7 +150,7 @@ class SteamOrderController extends Controller
         if ($steamOrderSaved && $orderSaved) {
             flash()->success('Order created successfully!');
 
-            return redirect()->route('steam-order.show', $order->public_id);
+            return redirect()->route('orders.show', $order);
         } else {
             flash()->error('Error saving orders to database!');
 
@@ -183,7 +186,7 @@ class SteamOrderController extends Controller
 
         // Checks if we found Steam order details
         if (!$steamOrder) {
-            flash()->error('Could not find details of order #'.$order->public_id);
+            flash()->error("Could not find details of order #{$order->public_id}!");
 
             return redirect()->route('home');
         }
@@ -210,14 +213,14 @@ class SteamOrderController extends Controller
     public function sendTradeOffer(Order $order)
     {
         // Check if given order exists
-        if (!$order) {
+        /*if (!$order) {
             flash()->error('Could not find order!');
 
             return redirect()->route('home');
-        }
+        }*/
 
         // Retrieve what Steam Order is related to that order
-        $steamOrder = $order->orderable()->get()->first();
+        $steamOrder = $order->orderable()->first();
 
         // Checks if we found Steam order details
         if (!$steamOrder) {
@@ -241,23 +244,30 @@ class SteamOrderController extends Controller
 
         $clean_encoded_items = json_decode($steamOrder->encoded_items);
 
+        $unset_list = [
+            'pos',
+            'icon_url',
+            'icon_url_large',
+            'tags',
+            'market_actions',
+            'actions',
+            'descriptions',
+            'tradable',
+            'market_tradable_restiction',
+            'background_color',
+            'name_color',
+            'commodity',
+            'marketable',
+            'market_marketable_restriction',
+            'is_currency',
+            'fraudwarnings'
+        ];
+
+        // Clears unnecessary information from the POST request to avoid max POST payload
         foreach ($clean_encoded_items as $a) {
-            unset($a->pos);
-            unset($a->icon_url);
-            unset($a->icon_url_large);
-            unset($a->tags);
-            unset($a->market_actions);
-            unset($a->actions);
-            unset($a->descriptions);
-            unset($a->tradable);
-            unset($a->market_tradable_restriction);
-            unset($a->background_color);
-            unset($a->name_color);
-            unset($a->commodity);
-            unset($a->marketable);
-            unset($a->market_marketable_restriction);
-            unset($a->is_currency);
-            unset($a->fraudwarnings);
+            foreach($unset_list as $un) {
+                unset($a->$un);
+            }
         }
 
         // Call SendTradeOffer
@@ -290,7 +300,7 @@ class SteamOrderController extends Controller
         if ($steamOrderSaved) {
             flash()->success('Trade offer sent! Please notice you have '.\Setting::get('expiration-time-min', 60).' minutes to accept it before this order expires!');
 
-            return redirect()->route('steam-order.show', $order->public_id);
+            return redirect()->route('orders.show', $order);
         } else {
             flash()->error('Error saving order details to database!');
 

@@ -34,7 +34,7 @@
         </tr>
         <tr>
             <td>Status</td>
-            <td><span class="label label-{{ $token->statusClass() }}">{{ $token->status() }}</span></td>
+            <td><span class="label label-{{ $token->status()['class'] }}">{{ $token->status()['text'] }}</span></td>
         </tr>
         </tbody>
     </table>
