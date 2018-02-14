@@ -112,7 +112,7 @@
     <h1>Order #{{ $order->public_id }}</h1>
 
     <div class="row bs-wizard" style="border-bottom:0;">
-        <div class="col-xs-offset-1 col-xs-2 bs-wizard-step {{ $steamOrder->currentStep() >= 1 ? ($steamOrder->currentStep() > 1 ? 'complete' : 'active') : 'disabled' }}">
+        <div class="col-xs-offset-1 col-xs-2 bs-wizard-step {{ $steamOrder->step() >= 1 ? ($steamOrder->step() > 1 ? 'complete' : 'active') : 'disabled' }}">
             <div class="text-center bs-wizard-stepnum">Step 1</div>
             <div class="progress">
                 <div class="progress-bar"></div>

@@ -68,7 +68,7 @@
                     @endif
 
                     <!-- Status -->
-                    <td><span class="label label-{{ $token->status['class'] }}">{{ $token->status()['text'] }}</span></td>
+                    <td><span class="label label-{{ $token->status()['class'] }}">{{ $token->status()['text'] }}</span></td>
 
                     <!-- Actions -->
                     <td>
