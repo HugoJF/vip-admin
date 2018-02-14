@@ -21,6 +21,7 @@
     <!-- Custom styles for this template -->
     <link href="{{ asset('/css/dashboard.css') }}" rel="stylesheet">
 
+    <link href="{{ asset('/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
 
@@ -307,6 +308,8 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="{{ asset('/js/ie10-viewport-bug-workaround.js') }}"></script>
 <script src="{{ asset('/js/summernote.js') }}"></script>
+<script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('/js/dataTables.bootstrap.min.js') }}"></script>
 @stack('scripts')
 </body>
 </html>
