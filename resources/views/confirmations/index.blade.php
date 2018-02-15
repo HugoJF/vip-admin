@@ -45,7 +45,7 @@
                 <td><span class="label label-{{ $confirmation->status()['class'] }}"> {{ $confirmation->status()['text'] }}</span></td>
 
                 <!-- Actions -->
-                <td>
+                <td style="white-space: nowrap;">
                     <a class="btn btn-xs btn-default" href="{{ route('orders.show', $confirmation->baseOrder) }}">View order</a>
                     <a class="btn btn-xs btn-primary" href="{{ route('confirmations.edit', $confirmation) }}">Edit</a>
                     @if(Auth::user()->isAdmin())

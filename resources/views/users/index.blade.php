@@ -2,7 +2,6 @@
 
 @section('content')
     <h1>Current users</h1>
-
     <p><a href="?banned=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Show banned users</a></p>
 
     <table id="datatables" class="table table-striped table-bordered">
@@ -34,7 +33,7 @@
                 @endif
                 <td><a href="{{ $user->tradelink }}">Trade link</a></td>
                 <td>{{ $user->created_at->diffForHumans() }}</td>
-                <td>
+                <td style="white-space: nowrap;">
                     @if($user->trashed())
                         {!! Form::open(['route' => ['users.unban', $user], 'method' => 'PATCH']) !!}
                         <button id="ban" class="btn btn-primary" type="submit">Unban</button>

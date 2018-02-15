@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\OPSkinsCache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OPSkinsController extends Controller
 {
@@ -15,6 +16,14 @@ class OPSkinsController extends Controller
 
     public function updateFromData(Request $request)
     {
+    	$validator = Validator::make($request->all(), [
+			'data' => 'required|file',
+		]);
+
+    	if($validator->fails()) {
+    		return redirect()->back()->withInput()->withErrors($validator);
+		}
+
         ini_set('memory_limit', '1024M');
 
         \Log::info('Setting new memory limit.');

@@ -71,12 +71,11 @@
                     <td><span class="label label-{{ $token->status()['class'] }}">{{ $token->status()['text'] }}</span></td>
 
                     <!-- Actions -->
-                    <td>
+                    <td style="white-space: nowrap;">
                         @if($token->tokenOrder && $token->tokenOrder->baseOrder)
                             <a class="btn btn-xs btn-default" href="{{ route('token-order.show', $token->tokenOrder->baseOrder->public_id) }}">View order details</a>
                         @else
                             <a class="btn btn-xs btn-primary" href="{{ route('tokens.edit', $token) }}">Edit</a>
-                            <a class="btn btn-xs btn-default disabled">No actions available</a>
                         @endif
                         @if(Auth::user()->isAdmin())
                             @if($token->trashed())

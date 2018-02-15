@@ -44,7 +44,7 @@
                 <td><span class="label label-{{ $order->status()['class'] }}">{{ $order->status()['text'] }}</span></td>
 
                 <!-- Actions -->
-                <td>
+                <td style="white-space: nowrap;">
                     @if($order->orderable->status()['text'] != 'Confirmed')
                         <a class="btn btn-xs btn-primary" href="{{ route('orders.edit', $order) }}">Edit</a>
                     @endif

@@ -4,7 +4,7 @@
     {!! Form::open(['route' => 'daemon-login-post', 'method' => 'POST']) !!}
 
     <div class="form-group">
-        {!! Form::label('code', 'Code') !!}
+        {!! Form::label('code', 'Code', ['class' => 'control-label']) !!}
         {!! Form::text('code', null, ['class' => 'form-control']) !!}
     </div>
 

@@ -287,7 +287,16 @@
 
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            @if($errors->any())
+                @foreach($errors->all() as $error)
+                    @php
+                        flash()->error($error)->important();
+                    @endphp
+                @endforeach
+            @endif
+            
             @include('flash::message')
+            
             @yield('content')
         </div>
         </footer>
