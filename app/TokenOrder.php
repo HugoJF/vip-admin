@@ -39,7 +39,7 @@ class TokenOrder extends Model implements IOrder
         $should = $this->token()->exists();
 
         if (!$should && $flashError) {
-            flash()->error('Your order must have a valid token associated with to generate a confirmation!');
+            flash()->error(__('messages.model-token-orders-cannot-generate-confirmation'));
         }
 
         return $should;

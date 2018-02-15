@@ -18,7 +18,7 @@ class CheckDaemonLogged
     public function handle($request, Closure $next)
     {
         if (Daemon::isLoggedIn() !== true) {
-            flash()->error('Our daemon server is not logged to Steam servers.');
+            flash()->error(__('messages.middleware-daemon-not-logged'));
 
             return redirect('/');
         }

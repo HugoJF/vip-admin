@@ -18,7 +18,7 @@ class AcceptedTerms
     public function handle($request, Closure $next)
     {
         if (Auth::user()->accepted != true) {
-            flash()->error('You must accept our terms before using our platform');
+            flash()->error(__('messages.middleware-must-accept'));
 
             return redirect()->route('home');
         }

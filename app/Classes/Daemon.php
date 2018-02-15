@@ -57,7 +57,7 @@ class Daemon
                 return static::$responses[$path];
             }
 
-            throw new \Exception('Could not find mocked response for '.$path);
+            throw new \Exception(__('messages.daemon-no-mock-response', ['path' => $path]));
         }
 
         $result = Curl::to(config('app.daemon_address').'/'.$path);
@@ -78,10 +78,9 @@ class Daemon
 
         if (!isset($response->error) || !isset($response->response) || $response->error == true || !isset($response->response)) {
             if (isset($response->message)) {
-                flash()->error('Could not contact Steam servers: '.$response->message);
+                flash()->error(__('messages.daemon-no-steam-contact', ['message' => $response->message]));
             } else {
-                flash()->error('Could not contact Steam servers: Unknown error message');
-                flash()->error('This could be caused by a <strong>high number of items </strong>added to the trade! <strong>If you have more than 20 items</strong>, please try again with different items!');
+                flash()->error(__('messages.daemon-no-steam-contact-unknown'));
             }
 
             return false;

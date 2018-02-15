@@ -11,29 +11,29 @@ use Illuminate\Queue\SerializesModels;
 
 class ConfirmationGenerated
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+	use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $confirmation;
+	public $confirmation;
 
-    /**
-     * Create a new event instance.
-     *
-     * @param Confirmation $confirmation
-     *
-     * @return void|mixed
-     */
-    public function __construct(Confirmation $confirmation)
-    {
-        $this->confirmation = $confirmation;
-    }
+	/**
+	 * Create a new event instance.
+	 *
+	 * @param Confirmation $confirmation
+	 *
+	 * @return void|mixed
+	 */
+	public function __construct(Confirmation $confirmation)
+	{
+		$this->confirmation = $confirmation;
+	}
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
-    }
+	/**
+	 * Get the channels the event should broadcast on.
+	 *
+	 * @return Channel|array
+	 */
+	public function broadcastOn()
+	{
+		return new PrivateChannel('channel-name');
+	}
 }

@@ -12,101 +12,89 @@ use Illuminate\Support\Facades\Validator;
 
 class TokenOrderController extends Controller
 {
-    public function view(Order $order)
-    {
-        if (!$order) {
-            flash()->error('Could not find any Token Orders.');
+	public function view(Order $order)
+	{
+		$order->load(['orderable', 'user']);
 
-            return redirect('home');
-        }
+		return view('token-orders.show', [
+			'order'      => $order,
+			'tokenOrder' => $order->orderable,
+		]);
+	}
 
-        if (Auth::user()->cant('view', $order)) {
-            flash()->error('You cannot view this order!');
+	public function create(Request $request)
+	{
+		if (!$request->has('token')) {
+			return view('token-orders.create');
+		}
 
-            return redirect()->route('home');
-        }
+		$token = Token::where([
+			'token'          => $request->input('token'),
+			'token_order_id' => null,
+		])->first();
 
-        $order->load(['orderable', 'user']);
+		if (!$token) {
+			flash()->error(__('messages.controller-token-store-not-valid'));
 
-        return view('token-orders.show', [
-            'order'      => $order,
-            'tokenOrder' => $order->orderable,
-        ]);
-    }
+			return redirect()->route('tokens.create');
+		}
 
-    public function create(Request $request)
-    {
-        if (!$request->has('token')) {
-            return view('token-orders.create');
-        }
+		return view('token-orders.create_confirmation', [
+			'token' => $token,
+		]);
+	}
 
-        $token = Token::where([
-            'token'          => $request->input('token'),
-            'token_order_id' => null,
-        ])->first();
+	public function store(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'token' => 'required|string',
+		]);
 
-        if (!$token) {
-            flash()->error('Given token is not valid!');
+		if ($validator->fails()) {
+			return redirect()->route('token-orders.create')->withInput()->withErrors($validator);
+		}
 
-            return redirect()->route('tokens.create');
-        }
+		$tokenString = $request->input('token');
 
-        return view('token-orders.create_confirmation', [
-            'token' => $token,
-        ]);
-    }
+		if (!isset($tokenString)) {
+			flash()->error(__('messages.controller-token-store-not-specified'));
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'token' => 'required|string',
-        ]);
+			return redirect()->route('tokens-orders.create');
+		}
 
-        if ($validator->fails()) {
-            return redirect()->route('token-orders.create')->withInput()->withErrors($validator);
-        }
+		$token = Token::where([
+			'token'          => $tokenString,
+			'token_order_id' => null,
+		])->first();
 
-        $tokenString = $request->input('token');
+		if (!$token) {
+			flash()->error(__('messages.controller-token-store-not-valid'));
 
-        if (!isset($tokenString)) {
-            flash()->error('No token specified!');
+			return redirect()->route('token-orders.create');
+		}
+		$tokenOrder = TokenOrder::create();
 
-            return redirect()->route('tokens-orders.create');
-        }
+		$token->tokenOrder()->associate($tokenOrder);
+		$token->save();
 
-        $token = Token::where([
-            'token'          => $tokenString,
-            'token_order_id' => null,
-        ])->first();
+		$order = Order::make();
 
-        if (!$token) {
-            flash()->error('Given token is not valid!');
+		$order->duration = $token->duration;
+		$order->extra_tokens = floor($token->duration / \Setting::get('order-duration-per-extra-token', 30));
+		$order->public_id = $rand = substr(md5(microtime()), 0, \Setting::get('public-id-size', 60));
+		$order->orderable()->associate($tokenOrder);
+		$order->user()->associate(Auth::user());
 
-            return redirect()->route('token-orders.create');
-        }
-        $tokenOrder = TokenOrder::create();
+		$saved = $order->save();
 
-        $token->tokenOrder()->associate($tokenOrder);
-        $token->save();
+		event(new TokenUsed($token));
 
-        $order = Order::make();
+		if ($saved) {
+			flash()->success(__('messages.controller-token-store-creation-success', ['id' => $token->token]));
+		} else {
+			flash()->error(__('messages.controller-token-store-creation-error', ['id' => $token->token]));
+		}
 
-        $order->duration = $token->duration;
-        $order->extra_tokens = floor($token->duration / \Setting::get('order-duration-per-extra-token', 30));
-        $order->public_id = $rand = substr(md5(microtime()), 0, \Setting::get('public-id-size', 60));
-        $order->orderable()->associate($tokenOrder);
-        $order->user()->associate(Auth::user());
-
-        $saved = $order->save();
-
-        event(new TokenUsed($token));
-
-        if ($saved) {
-            flash()->success("Token {$token->token} created!");
-        } else {
-            flash()->error('Could not store token in database!');
-        }
-
-        return redirect()->route('token-orders.show', $order);
-    }
+		return redirect()->route('token-orders.show', $order);
+	}
 }

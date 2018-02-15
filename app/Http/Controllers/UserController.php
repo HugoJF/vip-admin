@@ -8,97 +8,97 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
-    {
-        $showBanned = (bool) $request->has('banned');
+	public function index(Request $request)
+	{
+		$showBanned = (bool)$request->has('banned');
 
-        $users = User::query();
+		$users = User::query();
 
-        if ($showBanned) {
-            $users->withTrashed();
-        }
+		if ($showBanned) {
+			$users->withTrashed();
+		}
 
-        return view('users.index', [
-            'users' => $users->get(),
-        ]);
-    }
+		return view('users.index', [
+			'users' => $users->get(),
+		]);
+	}
 
-    public function settings()
-    {
-        return view('user_settings', [
-            'user' => Auth::user(),
-        ]);
-    }
+	public function settings()
+	{
+		return view('user_settings', [
+			'user' => Auth::user(),
+		]);
+	}
 
-    public function ban(User $user)
-    {
-        if ($user->isAdmin()) {
-            flash()->error('Admins cannot be banned!');
+	public function ban(User $user)
+	{
+		if ($user->isAdmin()) {
+			flash()->error(__('messages.controller-user-admins-cannot-be-banned'));
 
-            return redirect()->back();
-        }
+			return redirect()->back();
+		}
 
-        $deleted = $user->delete();
+		$deleted = $user->delete();
 
-        if ($deleted) {
-            flash()->success("User {$user->username} was banned!");
-        } else {
-            flash()->error("Could not ban user {$user->username}!");
-        }
+		if ($deleted) {
+			flash()->success(__('messages.controller-user-banned-success', ['user' => $user->username]));
+		} else {
+			flash()->error(__('messages.controller-user-banned-error', ['user' => $user->username]));
+		}
 
-        return redirect()->back();
-    }
+		return redirect()->back();
+	}
 
-    public function unban(User $user)
-    {
-        $restored = $user->restore();
+	public function unban(User $user)
+	{
+		$restored = $user->restore();
 
-        if ($restored) {
-            flash()->success("User {$user->username} was unbanned!");
-        } else {
-            flash()->error("Could not unban user {$user->username}!");
-        }
+		if ($restored) {
+			flash()->success(__('messages.controller-user-unbanned-success', ['user' => $user->username]));
+		} else {
+			flash()->error(__('messages.controller-user-unbanned-error', ['user' => $user->username]));
+		}
 
-        return redirect()->back();
-    }
+		return redirect()->back();
+	}
 
-    public function settingsUpdate(Request $request)
-    {
-        $user = Auth::user();
+	public function settingsUpdate(Request $request)
+	{
+		$user = Auth::user();
 
-        $user->fill($request->all());
-        $user->email = $request->input('email');
+		$user->fill($request->all());
+		$user->email = $request->input('email');
 
-        $saved = $user->save();
+		$saved = $user->save();
 
-        if ($saved) {
-            flash()->success('Updated settings successfully.');
-        } else {
-            flash()->error('Error updating settings!');
-        }
+		if ($saved) {
+			flash()->success(__('messages.controller-user-settings-update-success'));
+		} else {
+			flash()->error(__('messages.controller-user-settings-update-error'));
+		}
 
-        return redirect()->route('users.settings');
-    }
+		return redirect()->route('users.settings');
+	}
 
-    public function accept()
-    {
-        $user = Auth::user();
+	public function accept()
+	{
+		$user = Auth::user();
 
-        $user->accepted = true;
+		$user->accepted = true;
 
-        $saved = $user->save();
+		$saved = $user->save();
 
-        if ($saved) {
-            flash()->success('User settings saved with success.');
-        } else {
-            flash()->error('Could not save user settings!');
-        }
+		if ($saved) {
+			flash()->success(__('messages.controller-user-settings-update-success'));
+		} else {
+			flash()->error(__('messages.controller-user-settings-update-error'));
+		}
 
-        return redirect()->route('home');
-    }
+		return redirect()->route('home');
+	}
 
-    public function home()
-    {
-        return view('home');
-    }
+	public function home()
+	{
+		return view('home');
+	}
 }

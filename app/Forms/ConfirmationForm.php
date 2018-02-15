@@ -10,17 +10,17 @@ class ConfirmationForm extends Form
     {
         $this
             ->add('start_period', 'datetimepicker', [
-                'label'      => 'Starting period',
+                'label'      => __('messages.form-confirmation-starting-period'),
                 'rules'      => ['required'],
                 'help_block' => [
-                    'text' => 'When the confirmation starts to be valid.',
+                    'text' => __('messages.form-confirmation-starting-period-help'),
                 ],
             ])
             ->add('end_period', 'datetimepicker', [
-                'label'      => 'Ending period',
+                'label'      => __('messages.form-confirmation-ending-period'),
                 'rules'      => ['required'],
                 'help_block' => [
-                    'text' => 'When the confirmation stops to be valid.',
+                    'text' => __('messages.form-confirmation-ending-period-help'),
                 ],
             ]);
     }

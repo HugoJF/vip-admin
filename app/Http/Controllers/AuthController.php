@@ -56,7 +56,7 @@ class AuthController extends Controller
                 $user = $this->findOrNewUser($info);
 
                 if ($user === null) {
-                    return 'You are banned from using VIP-Admin permanently!';
+                    return __('messages.controller-auth-banned');
                 }
 
                 Auth::login($user, true);

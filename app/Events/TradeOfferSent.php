@@ -12,66 +12,66 @@ use Illuminate\Queue\SerializesModels;
 
 class TradeOfferSent implements IMailableEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+	use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
+	public $order;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct(Order $order)
-    {
-        $this->order = $order;
-    }
+	/**
+	 * Create a new event instance.
+	 *
+	 * @return void
+	 */
+	public function __construct(Order $order)
+	{
+		$this->order = $order;
+	}
 
-    public function user()
-    {
-        return $this->order->user;
-    }
+	public function user()
+	{
+		return $this->order->user;
+	}
 
-    public function subject()
-    {
-        return 'Trade Offer for '.$this->order->public_id.' sent!';
-    }
+	public function subject()
+	{
+		return __('messages.email-tradeoffer-sent-subject', ['id' => $this->order->public_id]);
+	}
 
-    public function preHeader()
-    {
-        return 'Trade Offer for '.$this->order->public_id.' sent!';
-    }
+	public function preHeader()
+	{
+		return __('messages.email-tradeoffer-sent-preheader', ['id' => $this->order->public_id]);
+	}
 
-    public function preLinkMessages()
-    {
-        return [
-            'We just sent a Trade Offer for your Order #'.$this->order->public_id.' just registered!',
-        ];
-    }
+	public function preLinkMessages()
+	{
+		return [
+			__('messages.email-tradeoffer-sent-prelink', ['id' => $this->order->public_id]),
+		];
+	}
 
-    public function postLinkMessages()
-    {
-        return [
-            'Click the link to see the details in VIP-Admin',
-        ];
-    }
+	public function postLinkMessages()
+	{
+		return [
+			__('messages.email-tradeoffer-sent-postlink'),
+		];
+	}
 
-    public function link()
-    {
-        return 'Order details';
-    }
+	public function link()
+	{
+		return __('messages.email-tradeoffer-sent-link');
+	}
 
-    public function url()
-    {
-        return route('steam-orders.show', $this->order);
-    }
+	public function url()
+	{
+		return route('steam-orders.show', $this->order);
+	}
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
-    }
+	/**
+	 * Get the channels the event should broadcast on.
+	 *
+	 * @return Channel|array
+	 */
+	public function broadcastOn()
+	{
+		return new PrivateChannel('channel-name');
+	}
 }

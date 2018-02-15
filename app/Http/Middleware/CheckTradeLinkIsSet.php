@@ -19,7 +19,7 @@ class CheckTradeLinkIsSet
     {
         $user = Auth::user();
         if (!$user->tradelink || $user->tradelink == '') {
-            flash()->error('You must give us your trade link to continue!');
+            flash()->error(__('messages.middleware-tradelink-missing'));
 
             return redirect('/settings');
         }

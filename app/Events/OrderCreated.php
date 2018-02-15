@@ -12,70 +12,66 @@ use Illuminate\Queue\SerializesModels;
 
 class OrderCreated implements IMailableEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+	use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
+	public $order;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct(Order $order)
-    {
-        $this->order = $order;
-    }
+	/**
+	 * Create a new event instance.
+	 *
+	 * @return void
+	 */
+	public function __construct(Order $order)
+	{
+		$this->order = $order;
+	}
 
-    public function user()
-    {
-        return $this->order->user;
-    }
+	public function user()
+	{
+		return $this->order->user;
+	}
 
-    public function subject()
-    {
-        return 'New Order created!';
-    }
+	public function subject()
+	{
+		return __('messages.email-new-order-created-subject');
+	}
 
-    public function preHeader()
-    {
-        return 'You just created an order with ID: #'.$this->order->public_id;
-    }
+	public function preHeader()
+	{
+		return __('messages.email-new-order-created-preheader', ['id' => $this->order->public_id]);
+	}
 
-    public function preLinkMessages()
-    {
-        return [
-            'You just created an order with ID: #'.$this->order->public_id,
-        ];
-    }
+	public function preLinkMessages()
+	{
+		return [
+			__('messages.email-new-order-created-prelink', ['id' => $this->order->public_id]),
+		];
+	}
 
-    public function postLinkMessages()
-    {
-        return [
-            'Click the link to see the details in VIP-Admin',
-        ];
-    }
+	public function postLinkMessages()
+	{
+		return [
+			__('messages.email-new-order-created-postlink'),
+		];
+	}
 
-    public function link()
-    {
-        return 'Order details';
-    }
+	public function link()
+	{
+		return __('messages.email-new-order-created-link');
+	}
 
-    public function url()
-    {
-        if ($this->order->isSteamOffer()) {
-            return route('steam-orders.show', $this->order);
-        } else {
-            return route('token-orders.show', $this->order);
-        }
-    }
+	public function url()
+	{
+		return route('orders.show', $this->order);
+	}
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
-    }
+	/**
+	 * Get the channels the event should broadcast on.
+	 *
+	 * @return Channel|array
+	 */
+	public function broadcastOn()
+	{
+		return new PrivateChannel('channel-name');
+	}
 }

@@ -44,7 +44,7 @@ class Server extends Model
 				$confirmation->baseOrder->server_uploaded = true;
 				$saved = $confirmation->baseOrder->save();
 				if (!$saved) {
-					flash()->error('Error saving confirmation details.');
+					flash()->error(__('model-server-uploaded-updating-error'));
 
 					return redirect()->route('home');
 				}
@@ -69,7 +69,7 @@ class Server extends Model
 				Daemon::updateSourceMod($this);
 			}
 		} catch (\Exception $e) {
-			flash()->error('Error syncing server: ' . $e->getMessage());
+			flash()->error(__('messages.model-server-sync-error', ['message' => $e->getMessage()]));
 
 			\Log::info('Error syncing');
 

@@ -25,9 +25,9 @@ class ServersController extends Controller
         $deleted = $server->delete();
 
         if ($deleted) {
-            flash()->success('Server deleted!');
+            flash()->success(__('messages.controller-server-delete-success'));
         } else {
-            flash()->error('Could not delete server!');
+            flash()->error(__('messages.controller-server-delete-error'));
         }
 
         return redirect()->route('servers.index');
@@ -68,9 +68,9 @@ class ServersController extends Controller
         $saved = $server->save();
 
         if ($saved) {
-            flash()->success('Server edited to database successfully!');
+            flash()->success(__('messages.controller-server-update-success'));
         } else {
-            flash()->error('Could not edit server!');
+            flash()->error(__('messages.controller-server-update-error'));
         }
 
         return redirect()->route('servers.index');
@@ -112,9 +112,9 @@ class ServersController extends Controller
         $saved = $server->save();
 
         if ($saved) {
-            flash()->success('Server added to database successfully!');
+            flash()->success(__('messages.controller-server-creation-success'));
         } else {
-            flash()->error('Could not save server to database!');
+            flash()->error(__('messages.controller-server-creation-error'));
         }
 
         return redirect()->route('servers.index');
@@ -122,10 +122,8 @@ class ServersController extends Controller
 
     public function sync(Server $server)
     {
-        $server->sync();
+		$server->sync();
 
-        flash()->success('Server synchronization triggered');
-
-        return redirect()->route('servers.index');
+		return redirect()->route('servers.index');
     }
 }

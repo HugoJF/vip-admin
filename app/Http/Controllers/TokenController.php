@@ -10,227 +10,221 @@ use Kris\LaravelFormBuilder\FormBuilderTrait;
 
 class TokenController extends Controller
 {
-    use FormBuilderTrait;
+	use FormBuilderTrait;
 
-    public function index(Request $request)
-    {
-        if (Auth::user()->isAdmin()) {
-            $tokens = Token::query();
+	public function index(Request $request)
+	{
+		if (Auth::user()->isAdmin()) {
+			$tokens = Token::query();
 
-            if ($request->has('trashed')) {
-                $tokens->withTrashed();
-            }
-        } else {
-            $tokens = Auth::user()->tokens();
-        }
+			if ($request->has('trashed')) {
+				$tokens->withTrashed();
+			}
+		} else {
+			$tokens = Auth::user()->tokens();
+		}
 
-        $tokens->with('tokenOrder', 'tokenOrder.baseOrder', 'tokenOrder.baseOrder.user');
+		$tokens->with('tokenOrder', 'tokenOrder.baseOrder', 'tokenOrder.baseOrder.user');
 
-        return view('tokens.index', [
-            'tokens'    => $tokens->get(),
-            'highlight' => $request->get('highlight'),
-        ]);
-    }
+		return view('tokens.index', [
+			'tokens'    => $tokens->get(),
+			'highlight' => $request->get('highlight'),
+		]);
+	}
 
-    public function show(Token $token)
-    {
-        if ($token) {
-            $token->load(['tokenOrder', 'tokenOrder.baseOrder', 'tokenOrder.baseOrder.user']);
+	public function show(Token $token)
+	{
+		$token->load(['tokenOrder', 'tokenOrder.baseOrder', 'tokenOrder.baseOrder.user']);
 
-            return view('tokens.show', [
-                'token' => $token,
-            ]);
-        } else {
-            flash()->error('Could not find this token!');
+		return view('tokens.show', [
+			'token' => $token,
+		]);
+	}
 
-            return redirect()->back();
-        }
-    }
+	public function create(Request $request)
+	{
+		if (!$request->has('confirming') || $request->input('confirming') != true) {
+			return view('tokens.create');
+		}
 
-    public function create(Request $request)
-    {
-        if (!$request->has('confirming') || $request->input('confirming') != true) {
-            return view('tokens.create');
-        }
+		$validator = Validator::make($request->all(), [
+			'duration'          => 'required|numeric',
+			'expiration'        => 'required|numeric',
+			'custom-duration'   => 'required_if:duration,-1',
+			'custom-expiration' => 'required_if:expiration,-1',
+			'note'              => 'string|nullable',
+		]);
 
-        $validator = Validator::make($request->all(), [
-            'duration'          => 'required|numeric',
-            'expiration'        => 'required|numeric',
-            'custom-duration'   => 'required_if:duration,-1',
-            'custom-expiration' => 'required_if:expiration,-1',
-            'note'              => 'string|nullable',
-        ]);
+		if ($validator->fails()) {
+			return redirect()->back()->withInput()->withErrors($validator);
+		}
 
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
-        }
+		$duration = $request->input('duration');
+		if ($duration == -1) {
+			$duration = intval($request->input('custom-duration'));
+		}
 
-        $duration = $request->input('duration');
-        if ($duration == -1) {
-            $duration = intval($request->input('custom-duration'));
-        }
+		$expiration = $request->input('expiration');
+		if ($expiration == -1) {
+			$expiration = intval($request->input('custom-expiration'));
 
-        $expiration = $request->input('expiration');
-        if ($expiration == -1) {
-            $expiration = intval($request->input('custom-expiration'));
+			if ($expiration === 0) {
+				$expiration = 24 * 365;
+			}
+		}
 
-            if ($expiration === 0) {
-                $expiration = 24 * 365;
-            }
-        }
+		$expiration_date = \Carbon\Carbon::now()->addHours($expiration);
 
-        $expiration_date = \Carbon\Carbon::now()->addHours($expiration);
+		if ($request->has('note')) {
+			$note = $request->input('note');
+		} else {
+			$note = 'Empty';
+		}
 
-        if ($request->has('note')) {
-            $note = $request->input('note');
-        } else {
-            $note = 'Empty';
-        }
+		return view('tokens.create_confirmation', [
+			'duration'        => $duration,
+			'expiration'      => $expiration,
+			'expiration_date' => $expiration_date,
+			'note'            => $note,
+		]);
+	}
 
-        return view('tokens.create_confirmation', [
-            'duration'        => $duration,
-            'expiration'      => $expiration,
-            'expiration_date' => $expiration_date,
-            'note'            => $note,
-        ]);
-    }
+	public function storeExtra(Request $request)
+	{
+		$user = Auth::user();
 
-    public function storeExtra(Request $request)
-    {
-        $user = Auth::user();
+		$generatedTokens = $user->tokens()->count();
+		$allowedTokens = $user->allowedTokens();
 
-        $generatedTokens = $user->tokens()->count();
-        $allowedTokens = $user->allowedTokens();
+		if ($generatedTokens >= $allowedTokens) {
+			flash()->error(__('messages.controller-token-cannot-generate-extra'));
 
-        if ($generatedTokens >= $allowedTokens) {
-            flash()->error('You cannot generate more tokens!');
+			return redirect()->back();
+		}
+		$token = Token::make();
 
-            return redirect()->back();
-        }
-        $token = Token::make();
+		$token->token = substr(md5(microtime()), 0, \Setting::get('token-size', 15));
+		$token->user()->associate(Auth::user());
+		$token->duration = \Setting::get('extra-token-duration', 7);
+		$token->expiration = \Setting::get('extra-token-expiration', 24 * 7);
+		$token->note = __('messages.controller-token-extra-token-note', ['user' => $user->username]);
 
-        $token->token = substr(md5(microtime()), 0, \Setting::get('token-size', 15));
-        $token->user()->associate(Auth::user());
-        $token->duration = \Setting::get('extra-token-duration', 7);
-        $token->expiration = \Setting::get('extra-token-expiration', 24 * 7);
-        $token->note = "This extra token was generated by {$user->username}";
+		$token->save();
 
-        $token->save();
+		flash()->success(__('messages.controller-token-extra-token-generation-success', ['token' => $token->token]));
 
-        flash()->success("Extra token generated: {$token->token}");
+		return redirect()->back();
+	}
 
-        return redirect()->back();
-    }
+	public function store(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'duration'          => 'required|numeric',
+			'expiration'        => 'required|numeric',
+			'custom-duration'   => 'required_if:duration,-1',
+			'custom-expiration' => 'required_if:expiration,-1',
+			'note'              => 'string|nullable',
+		]);
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'duration'          => 'required|numeric',
-            'expiration'        => 'required|numeric',
-            'custom-duration'   => 'required_if:duration,-1',
-            'custom-expiration' => 'required_if:expiration,-1',
-            'note'              => 'string|nullable',
-        ]);
+		if ($validator->fails()) {
+			return redirect()->route('tokens.create')->withInput()->withErrors($validator);
+		}
 
-        if ($validator->fails()) {
-            return redirect()->route('tokens.create')->withInput()->withErrors($validator);
-        }
+		$token = Token::make();
 
-        $token = Token::make();
+		$token->token = substr(md5(microtime()), 0, \Setting::get('token-size', 15));
+		$token->user()->associate(Auth::user());
+		$token->duration = $request->input('duration');
+		$token->expiration = $request->input('expiration');
+		$token->note = $request->input('note');
 
-        $token->token = substr(md5(microtime()), 0, \Setting::get('token-size', 15));
-        $token->user()->associate(Auth::user());
-        $token->duration = $request->input('duration');
-        $token->expiration = $request->input('expiration');
-        $token->note = $request->input('note');
+		$token->save();
 
-        $token->save();
+		return redirect()->route('tokens.show', $token->token);
+	}
 
-        return redirect()->route('tokens.show', $token->token);
-    }
+	public function edit(Token $token)
+	{
+		if ($token->status() == 'Used') {
+			flash()->error(__('messages.controller-token-cannot-edit-used'));
 
-    public function edit(Token $token)
-    {
-        if ($token->status() == 'Used') {
-            flash()->error('You cannot edit an already used token');
+			return redirect()->back();
+		}
+		$form = $this->form('App\Forms\TokenForm', [
+			'method' => 'PATCH',
+			'route'  => ['tokens.update', $token],
+			'model'  => $token,
+		]);
 
-            return redirect()->back();
-        }
-        $form = $this->form('App\Forms\TokenForm', [
-            'method' => 'PATCH',
-            'route'  => ['tokens.update', $token],
-            'model'  => $token,
-        ]);
+		return view('tokens.form', [
+			'form' => $form,
+		]);
+	}
 
-        return view('tokens.form', [
-            'form' => $form,
-        ]);
-    }
+	public function update(Token $token, Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'duration'   => 'numeric',
+			'expiration' => 'numeric',
+			'note'       => 'string|nullable',
+		]);
 
-    public function update(Token $token, Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'duration'          => 'numeric',
-            'expiration'        => 'numeric',
-            'note'              => 'string|nullable',
-        ]);
+		if ($validator->fails()) {
+			return redirect()->back()->withInput()->withErrors($validator);
+		}
 
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
-        }
+		if ($request->has('token')) {
+			$token->token = $request->input('token');
+		}
 
-        if ($request->has('token')) {
-            $token->token = $request->input('token');
-        }
+		if ($request->has('duration')) {
+			$token->duration = $request->input('duration');
+		}
 
-        if ($request->has('duration')) {
-            $token->duration = $request->input('duration');
-        }
+		if ($request->has('expiration')) {
+			$token->expiration = $request->input('expiration');
+		}
 
-        if ($request->has('expiration')) {
-            $token->expiration = $request->input('expiration');
-        }
+		if ($request->has('note')) {
+			$token->note = $request->input('note');
+		}
 
-        if ($request->has('note')) {
-            $token->note = $request->input('note');
-        }
+		$token->touch();
 
-        $token->touch();
+		$saved = $token->save();
 
-        $saved = $token->save();
+		if ($saved) {
+			flash()->success(__('messages.controller-token-update-success', ['token' => $token->token]));
+		} else {
+			flash()->error(__('messages.controller-token-update-error', ['token' => $token->token]));
+		}
 
-        if ($saved) {
-            flash()->success("Token {$token->token} updated successfully");
-        } else {
-            flash()->error("Token {$token->token} could not be updated!");
-        }
+		return redirect()->route('tokens.index');
+	}
 
-        return redirect()->route('tokens.index');
-    }
+	public function delete(Token $token)
+	{
+		$deleted = $token->delete();
 
-    public function delete(Token $token)
-    {
-        $deleted = $token->delete();
+		if ($deleted) {
+			flash()->success(__('messages.controller-token-delete-success', ['id' => $token->public_id]));
+		} else {
+			flash()->error(__('messages.controller-token-delete-error', ['id' => $token->public_id]));
+		}
 
-        if ($deleted) {
-            flash()->success("Token {$token->public_id} deleted successfully!");
-        } else {
-            flash()->error("Error while trying to delete token {$token->public_id} from database!");
-        }
+		return redirect()->back();
+	}
 
-        return redirect()->back();
-    }
+	public function restore(Token $token)
+	{
+		$restored = $token->restore();
 
-    public function restore(Token $token)
-    {
-        $restored = $token->restore();
+		if ($restored) {
+			flash()->success(__('messages.controller-token-restore-success', ['id' => $token->public_id]));
+		} else {
+			flash()->error(__('messages.controller-token-restore-error', ['id' => $token->public_id]));
+		}
 
-        if ($restored) {
-            flash()->success("Confirmation {$token->public_id} restored successfully!");
-        } else {
-            flash()->error("Error while trying to restore confirmation {$token->public_id} from database!");
-        }
-
-        return redirect()->back();
-    }
+		return redirect()->back();
+	}
 }

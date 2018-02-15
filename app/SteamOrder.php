@@ -57,7 +57,7 @@ class SteamOrder extends Model implements IOrder
         $should = $this->accepted();
 
         if (!$should && $flashError) {
-            flash()->error('Your order must have a valid token associated with to generate a confirmation!');
+            flash()->error(__('messages.model-steam-orders-cannot-generate-confirmation'));
         }
 
         return $should;
