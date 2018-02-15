@@ -161,7 +161,7 @@
                 </div>
 
 
-                @if(Auth::user()->isAdmin())
+                @if(Auth::user() != null && Auth::user()->isAdmin())
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">

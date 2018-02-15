@@ -13,7 +13,7 @@ class TokenOrderCreate extends Page
      */
     public function url()
     {
-        return '/tokens-orders/create';
+        return '/token-orders/create';
     }
 
     /**

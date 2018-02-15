@@ -69,9 +69,10 @@ Route::group(['middleware' => ['auth', 'accepted']], function () {
 /*
  * OPSkins controller
  */
-Route::group(['middlerware' => ['auth', 'admin']], function () {
-    Route::get('opskins-updater', 'OPSkinsController@updateForm')->name('opskins-update-form');
-    Route::post('opskins-updater', 'OPSkinsController@updateFromData')->name('opskins-update-form-post');
+Route::group(['middleware' => ['auth', 'admin']], function () {
+	Route::get('opskins-updater', 'OPSkinsController@updateForm')->name('opskins-update-form');
+	Route::post('opskins-updater', 'OPSkinsController@updateFromData')->name('opskins-update-form-post');
+
 });
 
 /*

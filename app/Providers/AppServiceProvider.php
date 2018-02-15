@@ -55,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         // Debugbar registering
-        if ($this->app->environment() && $this->app->environment() !== 'production') {
+        if ($this->app->environment() && $this->app->environment() !== 'production' && env('HIDE_DEBUGBAR') != true) {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
             $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
         }
