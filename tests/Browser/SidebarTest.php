@@ -159,13 +159,13 @@ class SidebarTest extends DuskTestCase
 
     public function testOpskinsUpdater()
     {
-		$adminUser = factory(User::class)->create([
-			'steamid' => '76561198033283983',
-		]);
+        $adminUser = factory(User::class)->create([
+            'steamid' => '76561198033283983',
+        ]);
 
         $this->browse(function (Browser $browser) use ($adminUser) {
             $browser->loginAs($adminUser)
-					->visit(new Home())
+                    ->visit(new Home())
                     ->scrollToViewNativeAndClick('@opskins-updater')
                     ->assertRouteIs('opskins-update-form');
         });
