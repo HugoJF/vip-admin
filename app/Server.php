@@ -80,7 +80,6 @@ class Server extends Model
 		\Log::info('Done syncing');
 
 		$this->synced_at = Carbon::now();
-		$this->touch();
 		$this->save();
 
 		return true;
