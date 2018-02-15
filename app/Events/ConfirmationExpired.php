@@ -10,27 +10,27 @@ use Illuminate\Queue\SerializesModels;
 
 class ConfirmationExpired
 {
-	use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-	public $expiredConfirmations;
+    public $expiredConfirmations;
 
-	/**
-	 * Create a new event instance.
-	 *
-	 * @return void
-	 */
-	public function __construct($expiredConfirmations)
-	{
-		$this->expiredConfirmations = $expiredConfirmations;
-	}
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public function __construct($expiredConfirmations)
+    {
+        $this->expiredConfirmations = $expiredConfirmations;
+    }
 
-	/**
-	 * Get the channels the event should broadcast on.
-	 *
-	 * @return Channel|array
-	 */
-	public function broadcastOn()
-	{
-		return new PrivateChannel('channel-name');
-	}
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
+     */
+    public function broadcastOn()
+    {
+        return new PrivateChannel('channel-name');
+    }
 }

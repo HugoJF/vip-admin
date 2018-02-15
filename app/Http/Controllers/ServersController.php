@@ -122,8 +122,8 @@ class ServersController extends Controller
 
     public function sync(Server $server)
     {
-		$server->sync();
+        $server->sync();
 
-		return redirect()->route('servers.index');
+        return redirect()->route('servers.index');
     }
 }
