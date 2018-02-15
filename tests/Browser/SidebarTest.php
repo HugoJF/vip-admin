@@ -36,7 +36,7 @@ class SidebarTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
                     ->scrollToViewNativeAndClick('@buy-with-skins')
-                    ->assertRouteIs('steam-order.create');
+                    ->assertRouteIs('steam-orders.create');
         });
     }
 
@@ -45,7 +45,7 @@ class SidebarTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
                     ->scrollToViewNativeAndClick('@buy-with-tokens')
-                    ->assertRouteIs('token-order.create');
+                    ->assertRouteIs('token-orders.create');
         });
     }
 
@@ -108,7 +108,7 @@ class SidebarTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Home())
                     ->scrollToViewNativeAndClick('@settings')
-                    ->assertRouteIs('settings');
+                    ->assertRouteIs('users.settings');
         });
     }
 

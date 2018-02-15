@@ -73,7 +73,7 @@
                     <!-- Actions -->
                     <td style="white-space: nowrap;">
                         @if($token->tokenOrder && $token->tokenOrder->baseOrder)
-                            <a class="btn btn-xs btn-default" href="{{ route('token-order.show', $token->tokenOrder->baseOrder->public_id) }}">View order details</a>
+                            <a class="btn btn-xs btn-default" href="{{ route('token-orders.show', $token->tokenOrder->baseOrder->public_id) }}">View order details</a>
                         @else
                             <a class="btn btn-xs btn-primary" href="{{ route('tokens.edit', $token) }}">Edit</a>
                         @endif

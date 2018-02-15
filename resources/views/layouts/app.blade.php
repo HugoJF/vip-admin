@@ -92,7 +92,7 @@
                 @else
                     <li><a><span class="label label-danger">Daemon is disconnected from Steam servers</span></a></li>
                 @endif
-                <li><a href="{{ route('settings') }}">Settings</a></li>
+                <li><a href="{{ route('users.settings') }}">Settings</a></li>
 
                 <li><a href="{{ route('logout') }}">Logout</a></li>
             </ul>
@@ -142,14 +142,14 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                         <ul class="list-group">
-                            <li class="list-group-item {{ Route::is('steam-order.create') ? 'active' : ''}}">
+                            <li class="list-group-item {{ Route::is('steam-orders.create') ? 'active' : ''}}">
                                 <span class="glyphicon glyphicon-usd"></span>
-                                <a id="buy-with-skins" href="{{ route('steam-order.create') }}">Buy VIP with Skins</a>
+                                <a id="buy-with-skins" href="{{ route('steam-orders.create') }}">Buy VIP with Skins</a>
                             </li>
 
-                            <li class="list-group-item {{ Route::is('token-order.create') ? 'active' : '' }}">
+                            <li class="list-group-item {{ Route::is('token-orders.create') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-gift"></span>
-                                <a id="buy-with-tokens" href="{{ route('token-order.create') }}">Buy VIP with Tokens</a>
+                                <a id="buy-with-tokens" href="{{ route('token-orders.create') }}">Buy VIP with Tokens</a>
                             </li>
 
                             <li class="list-group-item">
@@ -227,9 +227,9 @@
                                 <a id="tokens" href="{{ route('tokens.index') }}" >Tokens</a>
                                 <span class="badge" title="Generated tokens / Allowed tokens">{{ Auth::user()->tokens()->count() }} / {{ Auth::user()->allowedTokens() }}</span>
                             </li>
-                            <li class="list-group-item {{ Route::is('settings') ? 'active' : '' }}">
+                            <li class="list-group-item {{ Route::is('users.settings') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-cog"></span>
-                                <a id="settings" href="{{ route('settings') }}">Settings</a>
+                                <a id="settings" href="{{ route('users.settings') }}">Settings</a>
                             </li>
                         </ul>
                     </div>
@@ -268,7 +268,7 @@
                                 </li>
                                 <li class="list-group-item">
                                     <span class="glyphicon glyphicon-refresh"></span>
-                                    <a href="{{ route('sync-server') }}">Sync Server</a>
+                                    <a href="{{ route('servers.sync') }}">Sync Server</a>
                                 </li>
                                 <li class="list-group-item  {{ Route::is('opskins-update-form') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-check"></span>

@@ -192,7 +192,7 @@
         </table>
 
         @if(!$order->confirmation)
-                <a class="btn btn-success btn-lg btn-block" href="{{ route('create-confirmation', $order) }}">Create confirmation</a>
+                <a class="btn btn-success btn-lg btn-block" href="{{ route('confirmations.store', $order) }}">Create confirmation</a>
         @endif
     </div>
 

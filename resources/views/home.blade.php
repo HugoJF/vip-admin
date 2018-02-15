@@ -8,7 +8,7 @@
 
         @if(!Auth::user()->accepted)
             {!! Setting::get('not-accepted-home') !!}
-            <a href="{{ route('accept') }}" class="btn btn-lg btn-primary btn-block">Estou ciente de todas as observações feitas acima</a>
+            <a href="{{ route('users.accept') }}" class="btn btn-lg btn-primary btn-block">Estou ciente de todas as observações feitas acima</a>
         @else
             {!! Setting::get('accepted-home') !!}
         @endif

@@ -50,7 +50,7 @@
                     @endif
                     <a class="btn btn-xs btn-default" href="{{ route('orders.show', $order) }}">Order details</a>
                     @if($order->type('Steam') && !$order->orderable->tradeoffer_id && $isAdmin)
-                        <a class="btn btn-xs btn-default" href="{{ route('steam-order.send-tradeoffer', $order) }}">Send Trade Offer</a>
+                        <a class="btn btn-xs btn-default" href="{{ route('steam-orders.send-tradeoffer', $order) }}">Send Trade Offer</a>
                     @endif
                     @if($order->orderable->status()['text'] != 'Confirmed' && !$order->trashed())
                         {!! Form::open(['route' => ['orders.delete', $order], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}

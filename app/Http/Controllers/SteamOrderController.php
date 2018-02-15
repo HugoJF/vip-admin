@@ -85,7 +85,7 @@ class SteamOrderController extends Controller
 		if ($itemCount > 20) {
 			flash()->warning('Your order has more than 20 items, <strong>please try again with fewer items</strong> (this is enforced to avoid errors from Steam\'s API)');
 
-			return redirect()->route('steam-order.create');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Fills the rest of the information Steam API gives us
@@ -103,7 +103,7 @@ class SteamOrderController extends Controller
 		if ($totalPrice > \Setting::get('max-order-price', 5000)) {
 			flash()->error('Your order is above the maximum allowed price of $' . \Setting::get('max-order-price', 5000) / 100 . '!');
 
-			return redirect()->route('steam-order.create');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Pre-calculate the duration before anything
@@ -118,21 +118,21 @@ class SteamOrderController extends Controller
 		if ($duration < \Setting::get('min-order-duration', 7)) {
 			flash('Current order is below the minimum allowed of ' . \Setting::get('min-order-duration', 7) . ' days.');
 
-			return redirect()->route('steam-order.create');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Check if order is above maximum duration
 		if ($duration > $maxDateMaxDuration) {
 			flash()->error('Your order is above the maximum allowed duration of ' . $maxDateMaxDuration . ' days!');
 
-			return redirect()->route('steam-order.create');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Check if order is above maximum duration
 		if ($duration > \Setting::get('max-order-duration', 120)) {
 			flash()->error('Your order is above the maximum allowed duration of ' . \Setting::get('max-order-duration', 120) . ' days!');
 
-			return redirect()->route('steam-order.create');
+			return redirect()->route('steam-orders.create');
 		}
 
 		// Prepare orders
@@ -282,7 +282,7 @@ class SteamOrderController extends Controller
 		if ($result === false) {
 			flash()->error('We could not sent the Trade Offer for your Order because the system did not get a response from Steam Servers.
 			<strong>An Admin will re-send it manually (via VIP-Admin) in the next 24 hours</strong>, be sure to check your pending Trade Offers and remember to <strong>verify the Order ID in the Trade Offer message!</strong>
-			If you save your email in the <strong><a href="' . route('settings') . '">Settings</a></strong> page, <strong>we can send an email once the Trade Offer is manually sent!</strong>');
+			If you save your email in the <strong><a href="' . route('users.settings') . '">Settings</a></strong> page, <strong>we can send an email once the Trade Offer is manually sent!</strong>');
 
 			return redirect()->back();
 		}

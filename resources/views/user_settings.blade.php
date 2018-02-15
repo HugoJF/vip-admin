@@ -4,7 +4,7 @@
     <h1>User settings</h1>
     <br>
 
-    {!! Form::model($user, ['route' => ['settings.update', $user]]) !!}
+    {!! Form::model($user, ['route' => ['users.settings.update', $user]]) !!}
 
     <div class="form-group">
         {!! Form::label('name', 'Name') !!}

@@ -33,7 +33,7 @@ class SteamOrderTest extends DuskTestCase
 
             Artisan::call('steamorders:refresh');
 
-            $browser->visitRoute('steam-order.show', Order::where('public_id', $orderid)->first())
+            $browser->visitRoute('steam-orders.show', Order::where('public_id', $orderid)->first())
                     ->assertSee('Accepted')
                     ->assertSee('Create confirmation');
         });

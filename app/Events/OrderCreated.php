@@ -63,9 +63,9 @@ class OrderCreated implements IMailableEvent
     public function url()
     {
         if ($this->order->isSteamOffer()) {
-            return route('steam-order.show', $this->order);
+            return route('steam-orders.show', $this->order);
         } else {
-            return route('token-order.show', $this->order);
+            return route('token-orders.show', $this->order);
         }
     }
 

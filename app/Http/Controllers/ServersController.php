@@ -49,10 +49,14 @@ class ServersController extends Controller
 	public function update(Request $request, Server $server)
 	{
 		$validator = Validator::make($request->all(), [
-			'name'     => 'string',
-			'ip'       => 'ip',
-			'port'     => 'number|size:5',
-			'password' => 'string',
+			'name'         => 'string',
+			'ip'           => 'ip',
+			'port'         => 'number',
+			'password'     => 'string',
+			'ftp_host'     => 'string',
+			'ftp_user'     => 'string',
+			'ftp_password' => 'string',
+			'ftp_root'     => 'string',
 		]);
 
 		if ($validator->fails()) {
@@ -87,10 +91,14 @@ class ServersController extends Controller
 	public function store(Request $request)
 	{
 		$validator = Validator::make($request->all(), [
-			'name'     => 'required|string',
-			'ip'       => 'required|ip',
-			'port'     => 'required|numeric|size:5',
-			'password' => 'required|string',
+			'name'         => 'required|string',
+			'ip'           => 'required|ip',
+			'port'         => 'required|numeric',
+			'password'     => 'required|string',
+			'ftp_host'     => 'required|string',
+			'ftp_user'     => 'required|string',
+			'ftp_password' => 'required|string',
+			'ftp_root'     => 'required|string',
 		]);
 
 		if ($validator->fails()) {

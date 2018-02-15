@@ -99,9 +99,9 @@ class OrdersController extends Controller
 		$request->session()->reflash();
 
 		if ($order->type('Steam')) {
-			return redirect()->route('steam-order.show', $order);
+			return redirect()->route('steam-orders.show', $order);
 		} elseif ($order->type('Token')) {
-			return redirect()->route('token-order.show', $order);
+			return redirect()->route('token-orders.show', $order);
 		} else {
 			throw new Exception('Could not figure out the correct type of this order!');
 		}

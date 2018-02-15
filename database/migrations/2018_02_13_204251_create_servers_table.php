@@ -21,6 +21,11 @@ class CreateServersTable extends Migration
             $table->string('port');
             $table->string('password');
 
+            $table->string('ftp_host');
+            $table->string('ftp_user');
+            $table->string('ftp_password');
+            $table->string('ftp_root');
+
             $table->dateTime('synced_at')->nullable();
 
             $table->timestamps();

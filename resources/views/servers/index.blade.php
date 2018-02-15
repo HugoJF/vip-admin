@@ -11,6 +11,10 @@
             <th>Server IP</th>
             <th>Server Port</th>
             <th>Server Password</th>
+            <th>FTP Host</th>
+            <th>FTP User</th>
+            <th>FTP Password</th>
+            <th>FTP Root</th>
             <th>Date Updated</th>
             <th>Date Synced</th>
             <th>Actions</th>
@@ -23,6 +27,10 @@
                 <td>{{ $server->ip }}</td>
                 <td>{{ $server->port }}</td>
                 <td>{{ $server->password }}</td>
+                <td>{{ $server->ftp_host }}</td>
+                <td>{{ $server->ftp_user }}</td>
+                <td>{{ $server->ftp_password }}</td>
+                <td>{{ $server->ftp_root }}</td>
                 <td>{{ $server->updated_at->diffForHumans() }}</td>
                 <td>{{ $server->synced_at ? $server->synced_at->diffForHumans() : 'Never' }}</td>
                 <td style="white-space: nowrap;">

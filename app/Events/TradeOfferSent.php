@@ -62,7 +62,7 @@ class TradeOfferSent implements IMailableEvent
 
     public function url()
     {
-        return route('steam-order.show', $this->order);
+        return route('steam-orders.show', $this->order);
     }
 
     /**

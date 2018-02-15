@@ -63,7 +63,7 @@ class TokenOrderController extends Controller
 		]);
 
 		if ($validator->fails()) {
-			return redirect()->route('token-order.create')->withInput()->withErrors($validator);
+			return redirect()->route('token-orders.create')->withInput()->withErrors($validator);
 		}
 
 		$tokenString = $request->input('token');
@@ -82,7 +82,7 @@ class TokenOrderController extends Controller
 		if (!$token) {
 			flash()->error('Given token is not valid!');
 
-			return redirect()->route('token-order.create');
+			return redirect()->route('token-orders.create');
 		}
 		$tokenOrder = TokenOrder::create();
 
@@ -107,6 +107,6 @@ class TokenOrderController extends Controller
 			flash()->error('Could not store token in database!');
 		}
 
-		return redirect()->route('token-order.show', $order);
+		return redirect()->route('token-orders.show', $order);
 	}
 }

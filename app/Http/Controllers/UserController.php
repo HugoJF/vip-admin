@@ -77,7 +77,7 @@ class UserController extends Controller
             flash()->error('Error updating settings!');
         }
 
-        return redirect()->route('settings');
+        return redirect()->route('users.settings');
     }
 
     public function accept()

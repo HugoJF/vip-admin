@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1>Daemon login form</h1>
     {!! Form::open(['route' => 'daemon-login-post', 'method' => 'POST']) !!}
 
     <div class="form-group">
