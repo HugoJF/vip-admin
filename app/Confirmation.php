@@ -2,12 +2,9 @@
 
 namespace App;
 
-use App\Classes\Daemon;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\View;
 
 class Confirmation extends Model
 {
@@ -85,7 +82,6 @@ class Confirmation extends Model
             return 'success';
         }
     }
-
 
     public function isValid()
     {

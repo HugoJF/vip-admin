@@ -90,9 +90,9 @@ class ConfirmationsController extends Controller
         $user = Auth::user();
 
         // If Admin show every Confirmation in database, if normal user, only the ones related to them
-		if ($user->isAdmin()) {
-			$confirmations = Confirmation::query();
-			if ($request->has('trashed')) {
+        if ($user->isAdmin()) {
+            $confirmations = Confirmation::query();
+            if ($request->has('trashed')) {
                 $confirmations->withTrashed();
             }
         } else {
@@ -100,7 +100,7 @@ class ConfirmationsController extends Controller
         }
 
         // Eager load relationships
-		$confirmations->with('user', 'baseOrder');
+        $confirmations->with('user', 'baseOrder');
 
         // Render table
         return view('confirmations.index', [

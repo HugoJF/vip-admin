@@ -12,13 +12,13 @@ class DaemonController extends Controller
 {
     public function loginPost(Request $request)
     {
-    	$validator = Validator::make($request->all(), [
-			'code' => 'required|size:5',
-		]);
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|size:5',
+        ]);
 
-    	if($validator->fails()) {
-    		return redirect()->back()->withInput()->withErrors($validator);
-		}
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
 
         $code = $request->input('code');
 

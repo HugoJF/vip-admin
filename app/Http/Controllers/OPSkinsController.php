@@ -16,13 +16,13 @@ class OPSkinsController extends Controller
 
     public function updateFromData(Request $request)
     {
-    	$validator = Validator::make($request->all(), [
-			'data' => 'required|file',
-		]);
+        $validator = Validator::make($request->all(), [
+            'data' => 'required|file',
+        ]);
 
-    	if($validator->fails()) {
-    		return redirect()->back()->withInput()->withErrors($validator);
-		}
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
 
         ini_set('memory_limit', '1024M');
 
