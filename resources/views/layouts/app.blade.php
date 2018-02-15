@@ -266,10 +266,6 @@
                                     <span class="glyphicon glyphicon-console"></span>
                                     <a id="laravel-logs" href="{{ route('laravel-logs') }}">Logs</a>
                                 </li>
-                                <li class="list-group-item">
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                    <a href="{{ route('servers.sync') }}">Sync Server</a>
-                                </li>
                                 <li class="list-group-item  {{ Route::is('opskins-update-form') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-check"></span>
                                     <a id="opskins-updater" href="{{ route('opskins-update-form') }}">OPSkins updater</a>

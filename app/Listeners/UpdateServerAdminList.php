@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Confirmation;
 use App\Events\Event;
+use App\Server;
 
 class UpdateServerAdminList
 {
@@ -24,6 +25,10 @@ class UpdateServerAdminList
      */
     public function handle()
     {
-        Confirmation::syncServer();
+    	$servers = Server::all();
+
+    	foreach ($servers as $server) {
+    		$server->sync();
+		}
     }
 }

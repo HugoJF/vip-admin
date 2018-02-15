@@ -51,7 +51,7 @@ class ServersController extends Controller
 		$validator = Validator::make($request->all(), [
 			'name'         => 'string',
 			'ip'           => 'ip',
-			'port'         => 'number',
+			'port'         => 'numeric',
 			'password'     => 'string',
 			'ftp_host'     => 'string',
 			'ftp_user'     => 'string',
@@ -116,6 +116,15 @@ class ServersController extends Controller
 		} else {
 			flash()->error('Could not save server to database!');
 		}
+
+		return redirect()->route('servers.index');
+	}
+
+	public function sync(Server $server)
+	{
+		$server->sync();
+
+		flash()->success('Server synchronization triggered');
 
 		return redirect()->route('servers.index');
 	}

@@ -34,9 +34,12 @@
                 <td>{{ $server->updated_at->diffForHumans() }}</td>
                 <td>{{ $server->synced_at ? $server->synced_at->diffForHumans() : 'Never' }}</td>
                 <td style="white-space: nowrap;">
-                    <a href="{{ route('servers.edit', $server) }}" class="btn btn-primary">Edit</a>
-                    {!! Form::open(['route' => ['servers.delete', $server], 'method' => 'DELETE']) !!}
-                        <button class="btn btn-danger">Delete</button>
+                    <a href="{{ route('servers.edit', $server) }}" class="btn btn-xs btn-primary">Edit</a>
+                    {!! Form::open(['route' => ['servers.delete', $server], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
+                        <button class="btn btn-xs btn-danger">Delete</button>
+                    {!! Form::close() !!}
+                    {!! Form::open(['route' => ['servers.sync', $server], 'method' => 'POST', 'style' => 'display: inline;']) !!}
+                    <button class="btn btn-xs btn-success">Sync</button>
                     {!! Form::close() !!}
                 </td>
             </tr>

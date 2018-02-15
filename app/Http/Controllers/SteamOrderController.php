@@ -214,8 +214,11 @@ class SteamOrderController extends Controller
 			'items'      => $full_item_list,
 		]);
 	}
+	public function sendTradeOfferManual(Order $order) {
+		return $this->sendTradeOffer($order, true);
+	}
 
-	public function sendTradeOffer(Order $order)
+	public function sendTradeOffer(Order $order, $manual = false)
 	{
 		// Check if given order exists
 		/*if (!$order) {
@@ -243,7 +246,7 @@ class SteamOrderController extends Controller
 
 		// Build trade offer message
 		$message = 'Order #' . $order->public_id . ' for ' . $order->duration . ' days.';
-		if (Auth::user()->isAdmin()) {
+		if ($manual) {
 			$message .= ' This TradeOffer was sent manually by an Admin!';
 		}
 

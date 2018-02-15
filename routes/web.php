@@ -117,6 +117,7 @@ Route::group(['middleware' => ['auth', 'accepted']], function () {
 Route::group(['middleware' => ['auth', 'accepted', 'admin']], function () {
 
 	Route::get('servers/{server}/edit', 'ServersController@edit')->name('servers.edit')->middleware('can:edit,server');
+	Route::post('servers/{server}/sync', 'ServersController@sync')->name('servers.sync');
 	Route::get('servers/create', 'ServersController@create')->name('servers.create')->middleware('can:create,App\Server');
 	Route::get('servers', 'ServersController@index')->name('servers.index');
 	Route::post('servers', 'ServersController@store')->name('servers.store')->middleware('can:create,App\Server');
@@ -134,6 +135,7 @@ Route::group(['middleware' => ['accepted', 'auth']], function () {
 		Route::get('steam-orders/create', 'SteamOrderController@create')->name('steam-orders.create')->middleware('can:create,App\Order');
 		Route::get('steam-orders/{order}', 'SteamOrderController@show')->name('steam-orders.show')->middleware('can:view,order');
 		Route::get('steam-orders/{order}/send-tradeoffer', 'SteamOrderController@sendTradeOffer')->name('steam-orders.send-tradeoffer')->middleware('can:view,order');
+		Route::get('steam-orders/{order}/send-tradeoffer-manual', 'SteamOrderController@sendTradeOfferManual')->name('steam-orders.send-tradeoffer-manual')->middleware('can:view,order');
 	});
 });
 
