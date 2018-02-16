@@ -35,7 +35,7 @@
             @endif
             
                 <!-- Duration -->
-                <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
+                <td>{{ $order->duration }} {{ strtolower(trans_choice('messages.time.days', $order->duration)) }}</td>
                 
                 <!-- Extra tokens -->
                 <td>{{ $order->extra_tokens ?? '0' }} {{ strtolower(trans_choice('messages.token', 5)) }}</td>
