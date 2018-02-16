@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Daemon login form</h1>
+    <h1>@lang('messages.daemon-login')</h1>
     {!! Form::open(['route' => 'daemon-login-post', 'method' => 'POST']) !!}
 
     <div class="form-group">
@@ -9,6 +9,6 @@
         {!! Form::text('code', null, ['class' => 'form-control']) !!}
     </div>
 
-    <button class="btn btn-success" type="submit">Login</button>
+    <button class="btn btn-success" type="submit">@lang('messages.login')</button>
     {!! Form::close() !!}
 @endsection

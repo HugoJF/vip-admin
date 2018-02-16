@@ -9,7 +9,7 @@
                 </div>
             @endif
 
-            <h1>Confirmation form</h1>
+            <h1>@lang('messages.confirmation-form')</h1>
             <br>
 
             {!! form_start($form) !!}
@@ -17,7 +17,7 @@
             {!! form_rest($form) !!}
 
             <div class="form-footer">
-                <button type="submit" class="btn-success btn">Save</button>
+                <button type="submit" class="btn-success btn">@lang('messages.save')</button>
             </div>
 
             {!! form_end($form) !!}

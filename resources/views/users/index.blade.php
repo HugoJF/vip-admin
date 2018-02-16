@@ -3,19 +3,19 @@
 @section('content')
     <h1>Current users</h1>
     <p><a href="?banned=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Show banned users</a></p>
-
+    
     <table id="datatables" class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Order Count</th>
-            <th>Confirmation Count</th>
-            <th>Extra tokens</th>
-            <th>Terms</th>
-            <th>Trade Link</th>
-            <th>Joined date</th>
-            <th>Actions</th>
+            <th>@lang('messages.name')</th>
+            <th>@lang('messages.username')</th>
+            <th>@lang('messages.order-count')</th>
+            <th>@lang('messages.confirmation-count')</th>
+            <th>@lang('messages.extra-tokens')</th>
+            <th>@lang('messages.terms')</th>
+            <th>@lang('messages.trade-link')</th>
+            <th>@lang('messages.joined-date')</th>
+            <th>@lang('messages.actions')</th>
         </tr>
         </thead>
         <tbody>
@@ -23,42 +23,42 @@
             <tr class="{{ $user->trashed() ? 'danger' : ''}}">
                 <td data-order="{{ $key }}">{{ $user->name }}</td>
                 <td><a href="http://steamcommunity.com/profiles/{{ $user->steamid }}">{{ $user->username }}</a></td>
-                <td>{{ $user->orders()->count() }} orders</td>
-                <td>{{ $user->confirmations()->count() }} confirmations</td>
-                <td><span class="label label-default" >{{ $user->tokens()->count() }} / {{ $user->allowedTokens() }}</span></td>
+                <td>{{ $user->orders()->count() }} {{ strtolower(trans_choice('messages.order', 2)) }}</td>
+                <td>{{ $user->confirmations()->count() }} {{ strtolower(trans_choice('messages.confirmation', 2)) }}</td>
+                <td><span class="label label-default">{{ $user->tokens()->count() }} / {{ $user->allowedTokens() }}</span></td>
                 @if($user->accepted)
-                    <td><span class="label label-success">Accepted</span></td>
+                    <td><span class="label label-success">@lang('messages.accepted')</span></td>
                 @else
-                    <td><span class="label label-danger">Not accepted</span></td>
+                    <td><span class="label label-danger">@lang('messages.not-accepted')</span></td>
                 @endif
-                <td><a href="{{ $user->tradelink }}">Trade link</a></td>
+                <td><a href="{{ $user->tradelink }}">@lang('messages.trade-link')</a></td>
                 <td>{{ $user->created_at->diffForHumans() }}</td>
                 <td style="white-space: nowrap;">
                     @if($user->trashed())
                         {!! Form::open(['route' => ['users.unban', $user], 'method' => 'PATCH']) !!}
-                        <button id="ban" class="btn btn-primary" type="submit">Unban</button>
+                        <button id="ban" class="btn btn-primary" type="submit">@lang('messages.unban')</button>
                         {!! Form::close() !!}
                     @else
                         {!! Form::open(['route' => ['users.ban', $user], 'method' => 'PATCH']) !!}
-                        <button id="ban" class="btn btn-danger" type="submit">Ban</button>
+                        <button id="ban" class="btn btn-danger" type="submit">@lang('messages.ban')</button>
                         {!! Form::close() !!}
                     @endif
                 </td>
             </tr>
         @endforeach
-
+        
         </tbody>
     </table>
 @endsection
 
 @push('scripts')
-<script>
+    <script>
 
-    $(document).ready(function(){
-        $('#datatables').DataTable({
-            "iDisplayLength": 50
+        $(document).ready(function () {
+            $('#datatables').DataTable({
+                "iDisplayLength": 50
+            });
         });
-    });
-
-</script>
+    
+    </script>
 @endpush

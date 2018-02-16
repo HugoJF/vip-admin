@@ -4,7 +4,7 @@
         <span class="input-group-addon">
             <span class="glyphicon glyphicon-time"></span>
         </span>
-        <input type='text' value="{{ $options['value'] }}" name="{{ $name }}" class="form-control" />
+        <input type='text' value="{{ $options['value'] }}" name="{{ $name }}" class="form-control"/>
         <span class="input-group-addon">
             <span class="glyphicon glyphicon-time"></span>
         </span>
@@ -12,24 +12,24 @@
     @if ($options['help_block']['text'] && !$options['is_child'])
         <{{ $options['help_block']['tag'] }} {!! $options['help_block']['helpBlockAttrs']  !!}>
         {{ $options['help_block']['text'] }}
-        </{{ $options['help_block']['tag'] }} >
-    @endif
+    </{{ $options['help_block']['tag'] }} >
+@endif
 
 </div>
 @push('scripts')
-<script type="text/javascript">
-    $(function () {
-        $('#datetimepicker-{{ $name }}').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
-            sideBySide: true,
-            toolbarPlacement: 'bottom',
-            stepping: 5,
-            showTodayButton: true,
-            showClose: true,
-            widgetPositioning: {
-                horizontal: 'left',
-            }
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker-{{ $name }}').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                sideBySide: true,
+                toolbarPlacement: 'bottom',
+                stepping: 5,
+                showTodayButton: true,
+                showClose: true,
+                widgetPositioning: {
+                    horizontal: 'left',
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush

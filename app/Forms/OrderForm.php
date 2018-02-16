@@ -10,7 +10,7 @@ class OrderForm extends Form
     {
         $this
             ->add('duration', 'number', [
-                'label'      => __('messages.form-order-duration'),
+                'label'      => __('messages.duration'),
                 'rules'      => ['required'],
                 'post-addon' => trans_choice('messages.time.days', 2),
                 'help_block' => [
@@ -18,9 +18,9 @@ class OrderForm extends Form
                 ],
             ])
             ->add('extra_tokens', 'number', [
-                'label'      => __('messages.form-order-extra-tokens'),
+                'label'      => __('messages.extra-tokens'),
                 'rules'      => ['required'],
-                'post-addon' => trans_choice('messages.tokens', 2),
+                'post-addon' => trans_choice('messages.token', 2),
                 'help_block' => [
                     'text' => __('messages.form-order-extra-tokens-help'),
                 ],

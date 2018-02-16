@@ -4,42 +4,42 @@
     {!! Form::open(['route' => 'token-orders.store', 'method' => 'POST']) !!}
 
     <input type="hidden" name="token" value="{{ $token->token }}">
-    <h2>Viewing token: <strong>{{ $token->token }}</strong></h2>
+    <h2>@lang('messages.viewing-token'): <strong>{{ $token->token }}</strong></h2>
 
     <table class="table table-hover">
         <tbody>
         <tr>
-            <td>Token</td>
+            <td>{{ trans_choice('messages.token', 2) }}</td>
             <td><span class="label label-success">{{ $token->token}}</span></td>
         </tr>
         <tr>
-            <td>Duration</td>
-            <td><span class="label label-success">{{ $token->duration }} days</span></td>
+            <td>@lang('messages.duration')</td>
+            <td><span class="label label-success">{{ $token->duration }} {{ strtolower(trans_choice('messages.time.days', $token->duration)) }}</span></td>
         </tr>
         <tr>
-            <td>Expiration</td>
-            <td><span class="label label-success">${{ $token->expiration }} hours</span></td>
+            <td>@lang('messages.expiration')</td>
+            <td><span class="label label-success">${{ $token->expiration }} {{ strtolower(trans_choice('messages.time.hours', $token->expiration)) }}</span></td>
         </tr>
         <tr>
-            <td>Expiration Date</td>
+            <td>@lang('messages.expiration-date')</td>
             <td><span class="label label-success">{{ \Carbon\Carbon::now()->addHours($token->expiration) }}</span></td>
         </tr>
         <tr>
-            <td>Expiration Remaining</td>
+            <td>@lang('messages.expiration-remaining')</td>
             <td><span class="label label-success">{{ \Carbon\Carbon::now()->addHours($token->expiration)->diffForHumans() }}</span></td>
         </tr>
         <tr>
-            <td>Note</td>
+            <td>@lang('messages.note')</td>
             <td><span class="label label-success">{{ $token->note }}</span></td>
         </tr>
         <tr>
-            <td>Status</td>
+            <td>@lang('messages.state')</td>
             <td><span class="label label-{{ $token->status()['class'] }}">{{ $token->status()['text'] }}</span></td>
         </tr>
         </tbody>
     </table>
 
-    <button class="btn btn-success btn-block" type="submit">Confirm token</button>
+    <button class="btn btn-success btn-block" type="submit">@lang('messages.confirm-token')</button>
 
     {!! Form::close() !!}
 

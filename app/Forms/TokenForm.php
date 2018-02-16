@@ -25,7 +25,7 @@ class TokenForm extends Form
                 ],
             ])
             ->add('expiration', 'number', [
-                'label'      => __('messages.form-token-expiration'),
+                'label'      => __('messages.expiration'),
                 'rules'      => ['required'],
                 'post-addon' => __('messages.time.hours'),
                 'help_block' => [
@@ -33,7 +33,7 @@ class TokenForm extends Form
                 ],
             ])
             ->add('note', 'textarea', [
-                'label'      => __('messages.form-token-note'),
+                'label'      => __('messages.note'),
                 'rules'      => ['required'],
                 'help_block' => [
                     'text' => __('messages.form-token-note-help'),

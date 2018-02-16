@@ -8,15 +8,15 @@
     <table id="datatables" class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
         <tr>
-            <th>Confirmation Public ID</th>
-            <th>Order Public ID</th>
+            <th>@lang('messages.confirmation-public-id ')</th>
+            <th>@lang('messages.order-public-id')</th>
             @if($isAdmin)
-                <th>Username</th>
+                <th>@lang('messages.username')</th>
             @endif
-            <th>Starting Period</th>
-            <th>Ending Period</th>
-            <th>State</th>
-            <th>Actions</th>
+            <th>@lang('messages.confirmation-starting-period')</th>
+            <th>@lang('messages.confirmation-ending-period')</th>
+            <th>@lang('messages.state')</th>
+            <th>@lang('messages.actions')</th>
         </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@
                 @if($isAdmin)
                     <td>
                         <a href="http://steamcommunity.com/profiles/{{ $confirmation->user->steamid }}">{{ $confirmation->user->username }}</a>
-                        <a href="?highlight={{ $confirmation->user->steamid }}" title="Highlight confirmations from {{ $confirmation->user->username }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="?highlight={{ $confirmation->user->steamid }}" title="@lang('messages.confirmation-highlight-from', ['user' => $confirmation->user->username])"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
                 @endif
                 <!-- Starting Period -->
@@ -46,16 +46,16 @@
 
                 <!-- Actions -->
                 <td style="white-space: nowrap;">
-                    <a class="btn btn-xs btn-default" href="{{ route('orders.show', $confirmation->baseOrder) }}">View order</a>
-                    <a class="btn btn-xs btn-primary" href="{{ route('confirmations.edit', $confirmation) }}">Edit</a>
+                    <a class="btn btn-xs btn-default" href="{{ route('orders.show', $confirmation->baseOrder) }}">@lang('messages.view-order')</a>
+                    <a class="btn btn-xs btn-primary" href="{{ route('confirmations.edit', $confirmation) }}">@lang('messages.edit')</a>
                     @if(Auth::user()->isAdmin())
                         @if($confirmation->trashed())
                             {!! Form::open(['route' => ['confirmations.restore', $confirmation], 'method' => 'PATCH', 'style' => 'display: inline;']) !!}
-                                 <button class="btn btn-xs btn-primary">Restore</button>
+                                 <button class="btn btn-xs btn-primary">@lang('messages.restore')</button>
                             {!! Form::close() !!}
                         @else
                             {!! Form::open(['route' => ['confirmations.delete', $confirmation], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
-                                <button class="btn btn-xs btn-danger">Delete</button>
+                                <button class="btn btn-xs btn-danger">@lang('messages.delete')</button>
                             {!! Form::close() !!}
                         @endif
                     @endif

@@ -8,7 +8,7 @@
         {!! Form::label('data', 'OPSkins data') !!}
         {!! Form::file('data', null, ['class' => 'form-control']) !!}
     </div>
-    <button class="btn btn-success" type="submit">Update OPSkins data</button>
+    <button class="btn btn-success" type="submit">@lang('messages.opskins-update-data')</button>
 
     {!! Form::close() !!}
 

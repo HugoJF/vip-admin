@@ -2,21 +2,21 @@
 
 @section('content')
     <h1>Current Orders</h1>
-
-    <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Show trashed orders</a></p>
-
+    
+    <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>@lang('messages.order-show-trashed')</a></p>
+    
     <table id="datatables" class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
         <tr>
-            <th>Order Public ID</th>
+            <th>@lang('messages.order-public-id')</th>
             @if($isAdmin)
-            <th>Username</th>
-            <th>Order Type</th>
+                <th>@lang('messages.username')</th>
+                <th>@lang('messages.order-type')</th>
             @endif
-            <th>Duration</th>
-            <th>Extra tokens</th>
-            <th>State</th>
-            <th>Actions</th>
+            <th>@lang('messages.duration')</th>
+            <th>@lang('messages.extra-tokens')</th>
+            <th>@lang('messages.state')</th>
+            <th>@lang('messages.actions')</th>
         </tr>
         </thead>
         <tbody>
@@ -24,7 +24,7 @@
             <tr {{ isset($highlight) && $order->user->steamid == $highlight ? 'class=info' : ($order->trashed() ? 'class=danger' : '') }}>
                 <!-- Order Public ID -->
                 <td data-order="{{ $key }}"><a href="{{ route('orders.show', $order) }}"><code>#{{ $order->public_id }}</code></a></td>
-
+                
                 <!-- Username and Order Type -->
                 @if($isAdmin)
                     <td>
@@ -32,48 +32,48 @@
                         <a href="?highlight={{ $order->user->steamid }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
                     <td>{{ $order->orderable_type }}</td>
-                @endif
-
+            @endif
+            
                 <!-- Duration -->
                 <td>{{ $order->duration }} {{ $order->duration == 1 ? 'day' : 'days' }}</td>
-
+                
                 <!-- Extra tokens -->
-                <td>{{ $order->extra_tokens ?? '0' }} tokens</td>
-
+                <td>{{ $order->extra_tokens ?? '0' }} {{ strtolower(trans_choice('messages.token', 5)) }}</td>
+                
                 <!-- State -->
                 <td><span class="label label-{{ $order->status()['class'] }}">{{ $order->status()['text'] }}</span></td>
-
+                
                 <!-- Actions -->
                 <td style="white-space: nowrap;">
                     @if($order->orderable->status()['text'] != 'Confirmed')
-                        <a class="btn btn-xs btn-primary" href="{{ route('orders.edit', $order) }}">Edit</a>
+                        <a class="btn btn-xs btn-primary" href="{{ route('orders.edit', $order) }}">@lang('messages.edit')</a>
                     @endif
-                    <a class="btn btn-xs btn-default" href="{{ route('orders.show', $order) }}">Order details</a>
+                    <a class="btn btn-xs btn-default" href="{{ route('orders.show', $order) }}">@lang('messages.order-details')</a>
                     @if($order->type('Steam') && !$order->orderable->tradeoffer_id && $isAdmin)
-                        <a class="btn btn-xs btn-default" href="{{ route('steam-orders.send-tradeoffer-manual', $order) }}">Send Trade Offer</a>
+                        <a class="btn btn-xs btn-default" href="{{ route('steam-orders.send-tradeoffer-manual', $order) }}">@lang('messages.send-tradeoffer')</a>
                     @endif
                     @if($order->orderable->status()['text'] != 'Confirmed' && !$order->trashed())
                         {!! Form::open(['route' => ['orders.delete', $order], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
-                            <button class="btn btn-xs btn-danger btn-form-fix" type="submit">Delete</button>
+                            <button class="btn btn-xs btn-danger btn-form-fix" type="submit">@lang('messages.delete')</button>
                         {!! Form::close() !!}
                     @endif
                 </td>
-
+            
             </tr>
         @endforeach
-
+        
         </tbody>
     </table>
 @endsection
 
 @push('scripts')
-<script>
+    <script>
 
-    $(document).ready(function(){
-        $('#datatables').DataTable({
-            "iDisplayLength": 50
+        $(document).ready(function () {
+            $('#datatables').DataTable({
+                "iDisplayLength": 50
+            });
         });
-    });
-
-</script>
+    
+    </script>
 @endpush

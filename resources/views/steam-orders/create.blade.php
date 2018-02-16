@@ -124,7 +124,7 @@ $control = 1;
 @endphp
 
 @section('content')
-    <h1>Select your items you want to trade</h1>
+    <h1>@lang('messages.steam-order-select-items')</h1>
 
     {!! Form::open(['route' => 'steam-orders.store', 'method' => 'POST']) !!}
         <div class="row">
@@ -152,7 +152,7 @@ $control = 1;
                                 <div class="funkyradio">
                                     <div class="funkyradio-success">
                                         <input type="checkbox" name="items[]" value="{{ $value }}" id="checkbox-{{ $control }}"/>
-                                        <label id="checkbox-label-{{ $control }}" for="checkbox-{{ $control }}">Use this item on trade</label>
+                                        <label id="checkbox-label-{{ $control }}" for="checkbox-{{ $control }}">@lang('messages.steam-order-use-in-trade')</label>
                                     </div>
                                 </div>
                             </div>
@@ -167,18 +167,18 @@ $control = 1;
                 @endif
             @endforeach
         </div>
-        <button id="submit-items" type="submit" class="btn btn-success btn-lg btn-block">Submit items to trade</button>
+        <button id="submit-items" type="submit" class="btn btn-success btn-lg btn-block">@lang('messages.steam-order-submit-items')</button>
     {!! Form::close() !!}
 @endsection
 
 @section('navbar')
     <li>
         <p style="padding: 0px 15px;" class="navbar-btn">
-            <a href="#submit-items" class="btn btn-success">Finish selection!</a>
+            <a href="#submit-items" class="btn btn-success">@lang('messages.steam-order-finish-selection')</a>
         </p>
     </li>
-    <li><a id="totalPrice"><span class="label label-primary"><u>Total Price: $ 0</u></span></a></li>
-    <li><a id="totalDays"><span class="label label-primary"><u>Total days: 0 days</u></span></a></li>
+    <li><a id="totalPrice"><span class="label label-primary"><u>@lang('messages.steam-order-total-value', ['value' => 0])</u></span></a></li>
+    <li><a id="totalDays"><span class="label label-primary"><u>@lang('messages.steam-order-total-days', ['days' => 0])</u></span></a></li>
 @endsection
 
 @push('scripts')
@@ -195,8 +195,8 @@ $control = 1;
                 var days = Math.floor(price / {{ Setting::get('cost-per-day') }} * 100 );
                 price = Math.floor(price * 100) / 100;
 
-                $('#totalPrice > span > u').text('Total Price: $ ' + price)
-                $('#totalDays > span > u').text('Total Days: ' + days + ' days');
+                $('#totalPrice > span > u').text('{{ trans('messages.steam-order-total-value', ['value' => 'placeholder']) }}'.replace('placeholder', price))
+                $('#totalDays > span > u').text('{{ trans('messages.steam-order-total-days', ['days' => 'placeholder']) }}'.replace('placeholder', days));
         }
 
         $(function() {

@@ -7,17 +7,17 @@
     <table id="datatables" class="table table-bordered table-striped">
         <thead>
         <tr>
-            <th>Server name</th>
-            <th>Server IP</th>
-            <th>Server Port</th>
-            <th>Server Password</th>
-            <th>FTP Host</th>
-            <th>FTP User</th>
-            <th>FTP Password</th>
-            <th>FTP Root</th>
-            <th>Date Updated</th>
-            <th>Date Synced</th>
-            <th>Actions</th>
+            <th>@lang('messages.server-name')</th>
+            <th>@lang('messages.server-ip')</th>
+            <th>@lang('messages.server-port')</th>
+            <th>@lang('messages.server-password')</th>
+            <th>@lang('messages.server-ftp-host')</th>
+            <th>@lang('messages.server-ftp-user')</th>
+            <th>@lang('messages.server-ftp-password')</th>
+            <th>@lang('messages.server-ftp-root')</th>
+            <th>@lang('messages.last-update')</th>
+            <th>@lang('messages.last-sync')</th>
+            <th>@lang('messages.actions')</th>
         </tr>
         </thead>
         <tbody>
@@ -32,14 +32,14 @@
                 <td>{{ $server->ftp_password }}</td>
                 <td>{{ $server->ftp_root }}</td>
                 <td>{{ $server->updated_at->diffForHumans() }}</td>
-                <td>{{ $server->synced_at ? $server->synced_at->diffForHumans() : 'Never' }}</td>
+                <td>{{ $server->synced_at ? $server->synced_at->diffForHumans() : trans('messages.never') }}</td>
                 <td style="white-space: nowrap;">
-                    <a href="{{ route('servers.edit', $server) }}" class="btn btn-xs btn-primary">Edit</a>
+                    <a href="{{ route('servers.edit', $server) }}" class="btn btn-xs btn-primary">@lang('messages.edit')</a>
                     {!! Form::open(['route' => ['servers.delete', $server], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
-                        <button class="btn btn-xs btn-danger">Delete</button>
+                        <button class="btn btn-xs btn-danger">@lang('messages.delete')</button>
                     {!! Form::close() !!}
                     {!! Form::open(['route' => ['servers.sync', $server], 'method' => 'POST', 'style' => 'display: inline;']) !!}
-                    <button class="btn btn-xs btn-success">Sync</button>
+                    <button class="btn btn-xs btn-success">@lang('messages.sync')</button>
                     {!! Form::close() !!}
                 </td>
             </tr>
