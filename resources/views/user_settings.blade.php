@@ -23,6 +23,12 @@
         {!! Form::email('email', null, ['class' => 'form-control']) !!}
         <p class="help-block">@lang('messages.user-settings-email-help')</p>
     </div>
+    
+    <div class="form-group">
+        {!! Form::label('lang', trans('messages.lang')) !!}
+        {!! Form::select('lang', ['en' => trans('messages.english'), 'pt_BR' => trans('messages.portuguese')], null, ['class' => 'form-control']) !!}
+        <p class="help-block">@lang('messages.user-settings-lang-help')</p>
+    </div>
 
     <button id="submit" class="btn btn-success" type="submit">@lang('messages.save')</button>
     {!! Form::close() !!}

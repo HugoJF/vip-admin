@@ -18,7 +18,7 @@ class LaravelSettingsForm extends Form
                 ],
             ])
             ->add('extra-token-expiration', 'number', [
-                'label'      => __('messages.form-app-extras-token-expiration'),
+                'label'      => __('messages.form-app-extra-tokens-expiration'),
                 'rules'      => ['required'],
                 'post-addon' => trans_choice('messages.time.hours', 2),
                 'help_block' => [
@@ -34,7 +34,7 @@ class LaravelSettingsForm extends Form
                 ],
             ])
             ->add('order-duration-per-extra-token', 'number', [
-                'label'      => __('form-app-duration-per-token'),
+                'label'      => __('messages.form-app-duration-per-token'),
                 'rules'      => ['required'],
                 'post-addon' => trans_choice('messages.time.days', 2),
                 'help_block' => [

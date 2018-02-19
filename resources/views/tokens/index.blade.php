@@ -5,11 +5,12 @@
     
     {!! Form::open(['route' => 'tokens.storeExtra', 'method' => 'POST', ]) !!}
     <p>
-        <button id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span>@lang('messages.generate-extra-tokens')</button>
+        <button id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> @lang('messages.generate-extra-tokens')</button>
     </p>
     {!! Form::close() !!}
-    <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>@lang('messages.confirmation-show-trashed')</a></p>
-    
+    @if(Auth::user()->isAdmin())
+        <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> @lang('messages.token-show-trashed')</a></p>
+    @endif
     
     <table id="datatables" class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>

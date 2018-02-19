@@ -2,9 +2,10 @@
 
 @section('content')
     <h1>Current Confirmations</h1>
-
-    <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Show trashed confirmations</a></p>
-
+    
+    @if(Auth::user()->isAdmin())
+        <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> @lang('messages.confirmation-show-trashed')</a></p>
+    @endif
     <table id="datatables" class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
         <tr>
@@ -24,26 +25,26 @@
             <tr {{ isset($highlight) && $confirmation->user->steamid == $highlight ? 'class=info' : $confirmation->trashed() ? 'class=danger' : '' }}>
                 <!-- Confirmation Public ID -->
                 <td data-order="{{ $key }}"><a href="{{ route('orders.show', $confirmation->baseOrder) }}"><code>#{{ $confirmation->public_id }}</code></a></td>
-
+                
                 <!-- Order Public ID -->
                 <td scope="row"><a href="{{ route('orders.show', $confirmation->baseOrder) }}"><code>#{{ $confirmation->baseOrder->public_id }}</code></a></td>
-
+                
                 <!-- Username -->
                 @if($isAdmin)
                     <td>
                         <a href="http://steamcommunity.com/profiles/{{ $confirmation->user->steamid }}">{{ $confirmation->user->username }}</a>
                         <a href="?highlight={{ $confirmation->user->steamid }}" title="@lang('messages.confirmation-highlight-from', ['user' => $confirmation->user->username])"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
-                @endif
-                <!-- Starting Period -->
+            @endif
+            <!-- Starting Period -->
                 <td>{{ $confirmation->start_period }}</td>
-
+                
                 <!-- Ending Period -->
                 <td>{{ $confirmation->end_period }}</td>
-
+                
                 <!-- State -->
                 <td><span class="label label-{{ $confirmation->status()['class'] }}"> {{ $confirmation->status()['text'] }}</span></td>
-
+                
                 <!-- Actions -->
                 <td style="white-space: nowrap;">
                     <a class="btn btn-xs btn-default" href="{{ route('orders.show', $confirmation->baseOrder) }}">@lang('messages.view-order')</a>
@@ -51,11 +52,11 @@
                     @if(Auth::user()->isAdmin())
                         @if($confirmation->trashed())
                             {!! Form::open(['route' => ['confirmations.restore', $confirmation], 'method' => 'PATCH', 'style' => 'display: inline;']) !!}
-                                 <button class="btn btn-xs btn-primary">@lang('messages.restore')</button>
+                            <button class="btn btn-xs btn-primary">@lang('messages.restore')</button>
                             {!! Form::close() !!}
                         @else
                             {!! Form::open(['route' => ['confirmations.delete', $confirmation], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
-                                <button class="btn btn-xs btn-danger">@lang('messages.delete')</button>
+                            <button class="btn btn-xs btn-danger">@lang('messages.delete')</button>
                             {!! Form::close() !!}
                         @endif
                     @endif
@@ -67,13 +68,13 @@
 @endsection
 
 @push('scripts')
-<script>
+    <script>
 
-    $(document).ready(function(){
-        $('#datatables').DataTable({
-            "iDisplayLength": 50
+        $(document).ready(function () {
+            $('#datatables').DataTable({
+                "iDisplayLength": 50
+            });
         });
-    });
-
-</script>
+    
+    </script>
 @endpush

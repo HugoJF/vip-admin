@@ -3,7 +3,9 @@
 @section('content')
     <h1>Current Orders</h1>
     
-    <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>@lang('messages.order-show-trashed')</a></p>
+    @if(Auth::user()->isAdmin())
+        <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>@lang('messages.order-show-trashed')</a></p>
+    @endif
     
     <table id="datatables" class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
@@ -34,7 +36,7 @@
                     <td>{{ $order->orderable_type }}</td>
             @endif
             
-                <!-- Duration -->
+            <!-- Duration -->
                 <td>{{ $order->duration }} {{ strtolower(trans_choice('messages.time.days', $order->duration)) }}</td>
                 
                 <!-- Extra tokens -->
@@ -54,7 +56,7 @@
                     @endif
                     @if($order->orderable->status()['text'] != 'Confirmed' && !$order->trashed())
                         {!! Form::open(['route' => ['orders.delete', $order], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
-                            <button class="btn btn-xs btn-danger btn-form-fix" type="submit">@lang('messages.delete')</button>
+                        <button class="btn btn-xs btn-danger btn-form-fix" type="submit">@lang('messages.delete')</button>
                         {!! Form::close() !!}
                     @endif
                 </td>

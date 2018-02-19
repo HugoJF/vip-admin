@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
 
             \App\Http\Middleware\ForceHttps::class,
             \App\Http\Middleware\NotBanned::class,
+			\App\Http\Middleware\SetsLocale::class,
         ],
 
         'api'    => [
