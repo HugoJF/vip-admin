@@ -60,7 +60,7 @@ class TokenOrderTest extends DuskTestCase
                     ->click('@confirm')
                     ->assertSee('Create confirmation')
                     ->click('div.container-fluid > div > div.col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main > div.col-sm-12.col-md-6 > a')
-                    ->assertSee('Confirmation ID')
+                    ->assertSee('Confirmation Public ID')
                     ->assertSee('Confirmed');
         });
     }

@@ -26,7 +26,7 @@ class TokensCreate extends Page
     public function assert(Browser $browser)
     {
         $browser->assertPathIs($this->url())
-                ->assertSee('Token generation form')
+                ->assertSee('Token form')
                 ->assertSee('Duration')
                 ->assertSee('Expiration')
                 ->assertSee('Generate');

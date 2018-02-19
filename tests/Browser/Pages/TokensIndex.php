@@ -27,9 +27,10 @@ class TokensIndex extends Page
     {
         $browser->assertPathIs($this->url())
                 ->assertSee('Current generated Tokens')
-                ->assertSee('Redeem user')
-                ->assertSee('Owner')
-                ->assertSee('Status');
+                ->assertSee('Token')
+				->assertSee('Duration')
+				->assertSee('Generate extra tokens')
+                ->assertSee('Expiration');
     }
 
     /**

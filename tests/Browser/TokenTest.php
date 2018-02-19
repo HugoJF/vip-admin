@@ -25,7 +25,7 @@ class TokenTest extends DuskTestCase
                     ->value('@note', 'This is my test note!')
                     ->click('@generate')
                     ->assertRouteIs('tokens.create')
-                    ->assertSee('Token generation confirmation details')
+                    ->assertSee('Token confirmation details')
                     ->assertSee('7 days')
                     ->assertSee('4 hours')
                     ->assertSee('This is my test note!')
@@ -67,8 +67,13 @@ class TokenTest extends DuskTestCase
     {
         $token = factory(Token::class)->create();
 
-        $this->browse(function (Browser $browser) use ($token) {
-            $browser->visit(new TokensIndex())
+		$adminUser = factory(User::class)->create([
+			'steamid' => '76561198033283983',
+		]);
+
+		$this->browse(function (Browser $browser) use ($token, $adminUser) {
+			$browser->loginAs($adminUser)
+					->visit(new TokensIndex())
                     ->assertSee('Current generated Tokens')
                     ->assertSee($token->token);
         });
