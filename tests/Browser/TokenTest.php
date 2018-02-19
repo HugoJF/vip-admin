@@ -67,13 +67,13 @@ class TokenTest extends DuskTestCase
     {
         $token = factory(Token::class)->create();
 
-		$adminUser = factory(User::class)->create([
-			'steamid' => '76561198033283983',
-		]);
+        $adminUser = factory(User::class)->create([
+            'steamid' => '76561198033283983',
+        ]);
 
-		$this->browse(function (Browser $browser) use ($token, $adminUser) {
-			$browser->loginAs($adminUser)
-					->visit(new TokensIndex())
+        $this->browse(function (Browser $browser) use ($token, $adminUser) {
+            $browser->loginAs($adminUser)
+                    ->visit(new TokensIndex())
                     ->assertSee('Current generated Tokens')
                     ->assertSee($token->token);
         });
