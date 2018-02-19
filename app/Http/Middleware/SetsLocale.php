@@ -11,20 +11,22 @@ class SetsLocale
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-    	if(Auth::check()) {
-    		$lang = Auth::user()->lang;
-    		$supported_lang = ['en', 'pt_BR'];
+        if (Auth::check()) {
+            $lang = Auth::user()->lang;
+            $supported_lang = ['en', 'pt_BR'];
 
-    		if(in_array($lang, $supported_lang)) {
-    			App::setLocale($lang);
-			}
-		}
+            if (in_array($lang, $supported_lang)) {
+                App::setLocale($lang);
+            }
+        }
+
         return $next($request);
     }
 }
