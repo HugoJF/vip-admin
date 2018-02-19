@@ -51,7 +51,7 @@ class TokenTest extends DuskTestCase
                     ->value('@note', 'This is my test custom note!')
                     ->click('@generate')
                     ->assertRouteIs('tokens.create')
-                    ->assertSee('Token generation confirmation details')
+                    ->assertSee('Token confirmation details')
                     ->assertSee('33 days')
                     ->assertSee('33 hours')
                     ->assertSee('This is my test custom note!')
