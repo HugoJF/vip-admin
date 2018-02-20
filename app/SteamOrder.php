@@ -207,7 +207,7 @@ class SteamOrder extends Model implements IOrder
                     break;
             }
         } else {
-            return 'info';
+            return 'warning';
         }
     }
 }
