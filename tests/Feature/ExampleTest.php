@@ -13,8 +13,6 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $response = $this->get('/')->assertSee('Bem vindos');
-
-        $response->assertStatus(200);
+        $response = $this->get('/');
     }
 }
