@@ -91,10 +91,13 @@ class AuthController extends Controller
             }
         }
 
-        return User::create([
+        $user = User::make([
             'username' => $info->personaname,
             'avatar'   => $info->avatarfull,
-            'steamid'  => $info->steamID64,
         ]);
+
+        $user->steamid = $info->steamID64;
+
+        return $user;
     }
 }
