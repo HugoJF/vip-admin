@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Events\IMailableEvent;
+use App\Interfaces\IMailableEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
