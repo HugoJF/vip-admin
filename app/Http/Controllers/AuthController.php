@@ -98,6 +98,8 @@ class AuthController extends Controller
 
         $user->steamid = $info->steamID64;
 
+        $user->save();
+
         return $user;
     }
 }
