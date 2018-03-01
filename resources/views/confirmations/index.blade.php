@@ -4,7 +4,11 @@
     <h1>Current Confirmations</h1>
     
     @if(Auth::user()->isAdmin())
-        <p><a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> @lang('messages.confirmation-show-trashed')</a></p>
+        <p>
+            <a href="?trashed=true" id="generate" type="submit" name="generate" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span> @lang('messages.confirmation-show-trashed')
+            </a>
+        </p>
     @endif
     <table id="datatables" class="table table-bordered {{ isset($highlight) ? '' : 'table-striped ' }}">
         <thead>
