@@ -47,6 +47,7 @@
 ////////////////////////////////
 
 "STEAM_1:1:107619130"		"99:z" // Teaguenho			| Forevis
+"STEAM_0:0:33074301"    "99:z" // Teaguenho     | Forevis
 "STEAM_1:1:36509127"		"99:z" // Eu				| Forevis
 "STEAM_0:0:53359806"		"50:a" // Lari				| Forevis
 
@@ -59,25 +60,7 @@
 "STEAM_1:0:24572716"		"50:a" // delboNi
 "STEAM_1:0:89523495"		"50:a" // land1n
 
-// SHARKS
-"STEAM_0:0:25115307"		"50:a" // exitt
-"STEAM_0:1:20413271"		"50:a" // ghtw
-"STEAM_0:1:21663009"		"50:a" // jntcsgo
-"STEAM_0:1:91300"			"50:a" // RNakano10
-"STEAM_0:1:29145638"		"50:a" // leo_druNky
-
-// CAPS
-"STEAM_1:1:243947646"	"50:a" // No0box2			| Janeiro e Fevereiro
-
 // VIPS MERCADO PAGO
-"STEAM_0:1:176486595"		"50:a" // HUAL.2			| R$ 10,00 - #3254351134
-"STEAM_1:1:25030091"		"50:a" // HuaL				| R$ 10,00 - #3254351134
-"STEAM_0:0:50794943"		"50:a" // NuneS				| R$ 4,00 - #3313430344
-"STEAM_0:1:58655438"		"50:a"  // AdM 				| R$ 4,00 - #3346841365
-"STEAM_0:1:149750887"		"50:a"	// PeeP				| R$ 4,00 - Ainda nao caiu
-
-// VIPS MERCADO PAGO
-"STEAM_0:0:234743042"		"50:a" // Infel1z			| Glock-18 | Water Elemental (Field-Tested)
 "STEAM_0:0:66095696"		"50:a" // Analise de Variancia | Chroma Case 3 Key + 2 chaves
 
 // VIP ADMIN GENERATED
