@@ -66,6 +66,7 @@
 
 // VIPS MERCADO PAGO
 "STEAM_0:0:66095696"		"50:a" // Analise de Variancia | Chroma Case 3 Key + 2 chaves
+"STEAM_0:1:68445875"    "50:a" // zvook
 
 // VIP ADMIN GENERATED
 @foreach($list as $item)
