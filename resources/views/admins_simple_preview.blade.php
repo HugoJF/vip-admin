@@ -50,9 +50,10 @@
 //
 ////////////////////////////////
 
-"STEAM_1:1:107619130"		"99:z" // Teaguenho			    | Forevis
-"STEAM_1:1:36509127"		"99:z" // Eu				    | Forevis
-"STEAM_0:0:53359806"		"50:a" // Lari				    | Forevis
+"STEAM_1:1:107619130"		"99:z" // Teaguenho			| Forevis
+"STEAM_0:0:33074301"    "99:z" // Teaguenho     | Forevis
+"STEAM_1:1:36509127"		"99:z" // Eu				| Forevis
+"STEAM_0:0:53359806"		"50:a" // Lari				| Forevis
 
 "STEAM_1:1:64297652"		"50:a" // Vitorlk74			    | Sub
 "STEAM_0:0:42974714"		"50:a" // Ximus				    | Forevis
@@ -64,7 +65,9 @@
 "STEAM_1:0:24572716"		"50:a" // delboNi
 "STEAM_1:0:89523495"		"50:a" // land1n
 
-// VIP ADMIN GENERATED
+"STEAM_0:0:66095696"		"50:a" // Analise de Variancia | Chroma Case 3 Key + 2 chaves
+"STEAM_0:1:68445875"    "50:a" // zvook
+
 @foreach($list as $item)
 "{{ $item['id'] }}"		"50:a" // #{{ $item['confirmation']->public_id }} - {{ $item['confirmation']->baseOrder->user->username }}
 @endforeach
