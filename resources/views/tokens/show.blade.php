@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
+    
     <h2>Viewing token: <strong>{{ $token->token }}</strong></h2>
-
+    
     <table class="table table-hover">
         <tbody>
         <tr>
@@ -33,6 +33,10 @@
         <tr>
             <td>Status</td>
             <td><span class="label label-{{ $token->status()['class'] }}">{{ $token->status()['text'] }}</span></td>
+        </tr>
+        <tr>
+            <td>Redeem Link</td>
+            <td><a href="{{ route('tokens.show', $token->token) }}">Redeem Link</a></td>
         </tr>
         </tbody>
     </table>
