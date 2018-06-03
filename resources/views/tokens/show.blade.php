@@ -34,11 +34,12 @@
             <td>Status</td>
             <td><span class="label label-{{ $token->status()['class'] }}">{{ $token->status()['text'] }}</span></td>
         </tr>
-        <tr>
-            <td>Redeem Link</td>
-            <td><a href="{{ route('tokens.show', $token->token) }}">Redeem Link</a></td>
-        </tr>
         </tbody>
     </table>
+    
+    <p>
+        <a class="btn btn-primary btn-block" href="{{ route('tokens.show', $token->token) }}">Redeem Link</a>
+        <a class="btn btn-success btn-lg btn-block clipboard-js" data-clipboard-text="{{ route('tokens.show', $token->token) }}">Copy Link</a>
+    </p>
 
 @endsection

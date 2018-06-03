@@ -30,7 +30,7 @@ class ConfirmationsController extends Controller
         // Check if order is validated and ready to generate a confirmation
 
         if (!$order->canGenerateConfirmation(true)) {
-            return redirect()->route('orders.view', $order);
+            return redirect()->route('orders.show', $order);
         }
 
         /*if ($order->isSteamOffer()) {

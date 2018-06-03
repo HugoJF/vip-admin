@@ -152,9 +152,9 @@
                                 <a id="buy-with-tokens" href="{{ route('token-orders.create') }}">@lang('messages.buy-vip-with-tokens')</a>
                             </li>
                             
-                            <li class="list-group-item">
+                            <li class="list-group-item {{ Route::is('mp-orders.create') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-credit-card"></span>
-                                <a id="buy-with-mp" href="#">@lang('messages.buy-vip-with-mp')</a>
+                                <a id="buy-with-mp" href="{{ route('mp-orders.create') }}">@lang('messages.buy-vip-with-mp')</a>
                             </li>
                         </ul>
                     </div>
@@ -315,6 +315,10 @@
 <script src="{{ asset('/js/summernote.js') }}"></script>
 <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/js/dataTables.bootstrap.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script>
+    var clipboard = new ClipboardJS('.clipboard-js');
+</script>
 <script>
     $('#flash-overlay-modal').modal();
     $('div.alert').not('.alert-important').delay(5000).fadeOut(350);
