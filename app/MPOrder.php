@@ -4,6 +4,7 @@ namespace App;
 
 use App\Interfaces\IOrder;
 use Illuminate\Database\Eloquent\Model;
+use Livepixel\MercadoPago\Facades\MP;
 
 class MPOrder extends Model implements IOrder
 {
@@ -50,7 +51,7 @@ class MPOrder extends Model implements IOrder
                 $this->mp_order_status = $order['response']['status'];
             }
 
-            if (empty($this->mp_payment_id) && count($order['response']['payments']) >= 0) {
+            if (empty($this->mp_payment_id) && count($order['response']['payments']) > 0) {
                 $this->mp_payment_id = $order['response']['payments'][0]['id'];
             }
 
@@ -76,9 +77,13 @@ class MPOrder extends Model implements IOrder
             case 'approved':
                 return 'Approved';
                 break;
+			case'':
             case 'pending':
                 return 'Waiting payment';
                 break;
+			case 'opened':
+				return 'Opened for payment';
+				break;
             default:
                 return $status;
                 break;
@@ -91,11 +96,13 @@ class MPOrder extends Model implements IOrder
             case 'approved':
                 return 'success';
                 break;
+			case '':
             case 'pending':
+			case 'opened':
                 return 'warning';
                 break;
             default:
-                return $status;
+                return 'danger';
                 break;
         }
     }

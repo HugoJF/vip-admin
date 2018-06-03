@@ -149,9 +149,7 @@ Route::group(['middleware' => ['auth']], function () {
  */
 
 Route::group(['middleware' => ['accepted', 'auth']], function () {
-    Route::get('mp-notifications', function () {
-        return true;
-    })->name('mp-notifications');
+    Route::get('mp-notifications', 'MPOrderController@notifications')->name('mp-notifications');
 
     Route::get('mp-back-url', 'MPOrderController@backUrl')->name('mp-back-url');
     Route::get('mp-orders/create', 'MPOrderController@create')->name('mp-orders.create')->middleware('can:create,App\Order');
