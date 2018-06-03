@@ -103,7 +103,7 @@ class TokenController extends Controller
         }
         $token = Token::make();
 
-        $token->token = 'extra_token_' . substr(md5(microtime()), 0, \Setting::get('token-size', 15));
+        $token->token = 'extra_token_'.substr(md5(microtime()), 0, \Setting::get('token-size', 15));
         $token->user()->associate(Auth::user());
         $token->duration = \Setting::get('extra-token-duration', 7);
         $token->expiration = \Setting::get('extra-token-expiration', 24 * 7);
@@ -132,7 +132,7 @@ class TokenController extends Controller
 
         $token = Token::make();
 
-        $token->token = 'token_' . substr(md5(microtime()), 0, \Setting::get('token-size', 15));
+        $token->token = 'token_'.substr(md5(microtime()), 0, \Setting::get('token-size', 15));
         $token->user()->associate(Auth::user());
         $token->duration = $request->input('duration');
         $token->expiration = $request->input('expiration');
