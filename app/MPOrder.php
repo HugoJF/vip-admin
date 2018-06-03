@@ -77,13 +77,13 @@ class MPOrder extends Model implements IOrder
             case 'approved':
                 return 'Approved';
                 break;
-			case'':
+            case'':
             case 'pending':
                 return 'Waiting payment';
                 break;
-			case 'opened':
-				return 'Opened for payment';
-				break;
+            case 'opened':
+                return 'Opened for payment';
+                break;
             default:
                 return $status;
                 break;
@@ -96,9 +96,9 @@ class MPOrder extends Model implements IOrder
             case 'approved':
                 return 'success';
                 break;
-			case '':
+            case '':
             case 'pending':
-			case 'opened':
+            case 'opened':
                 return 'warning';
                 break;
             default:
