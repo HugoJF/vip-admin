@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\MPOrder;
 use App\Order;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rules\In;
