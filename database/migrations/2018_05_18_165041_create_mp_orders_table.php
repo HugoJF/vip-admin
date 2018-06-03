@@ -16,8 +16,6 @@ class CreateMpOrdersTable extends Migration
         Schema::create('mp_orders', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('public_id');
-
             $table->integer('amount')->unsigned()->nullable();
 
             $table->string('mp_preference_id');
