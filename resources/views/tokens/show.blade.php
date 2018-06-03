@@ -38,7 +38,7 @@
     </table>
     
     <p>
-        <a class="btn btn-primary btn-block" href="{{ route('tokens.show', $token->token) }}">Redeem Link</a>
+        <a class="btn btn-primary btn-block" href="{{ route('token-orders.create', ['token' => $token->token]) }}">Redeem Link</a>
         <a class="btn btn-success btn-lg btn-block clipboard-js" data-clipboard-text="{{ route('tokens.show', $token->token) }}">Copy Link</a>
     </p>
 

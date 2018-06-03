@@ -52,7 +52,7 @@
     </div>
     
     
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-12">
         <h3>Details</h3>
         <table class="table table-hover">
             <tbody>
