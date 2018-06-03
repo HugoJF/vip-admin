@@ -64,7 +64,7 @@ class ConfirmationsController extends Controller
         // Start creating Confirmation entry
         $confirmation = Confirmation::make();
 
-        $confirmation->public_id = substr(md5(microtime()), 0, \Setting::get('public-id-size'));
+        $confirmation->public_id = 'confirmation' . substr(md5(microtime()), 0, \Setting::get('public-id-size'));
         $confirmation->baseOrder()->associate($order);
         $confirmation->user()->associate(Auth::user());
         $confirmation->start_period = $basePeriod;
