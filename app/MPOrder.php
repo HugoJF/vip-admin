@@ -4,6 +4,7 @@ namespace App;
 
 use App\Interfaces\IOrder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Livepixel\MercadoPago\Facades\MP;
 
 class MPOrder extends Model implements IOrder
@@ -58,6 +59,7 @@ class MPOrder extends Model implements IOrder
             $this->touch();
 
             $this->save();
+            Log::info('Order rechecked to: ' . $this->mp_order_status);
         }
     }
 

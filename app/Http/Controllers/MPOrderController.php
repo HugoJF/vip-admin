@@ -89,6 +89,10 @@ class MPOrderController extends Controller
 	{
 		$order->load(['orderable', 'user']);
 
+		$mpOrder = $order->orderable;
+
+		$mpOrder->recheck();
+
 		return view('mp-orders.show', [
 			'order'   => $order,
 			'mpOrder' => $order->orderable,
