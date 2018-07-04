@@ -48,13 +48,13 @@ class MPOrder extends Model implements IOrder
                 $this->mp_preference_id = $order['response']['preference_id'];
             }
 
-			if (empty($this->mp_payment_id) && count($order['response']['payments']) > 0) {
-				$this->mp_payment_id = $order['response']['payments'][0]['id'];
-			}
+            if (empty($this->mp_payment_id) && count($order['response']['payments']) > 0) {
+                $this->mp_payment_id = $order['response']['payments'][0]['id'];
+            }
 
-			$this->mp_order_status = $order['response']['status'];
+            $this->mp_order_status = $order['response']['status'];
 
-			$this->touch();
+            $this->touch();
 
             $this->save();
             Log::info('Order rechecked to: '.$this->mp_order_status);
