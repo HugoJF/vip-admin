@@ -149,6 +149,7 @@ Route::group(['middleware' => ['auth']], function () {
  */
 
 Route::post('mp-notifications', 'MPOrderController@notifications')->name('mp-notifications');
+Route::get('mp-notifications', 'MPOrderController@notifications')->name('mp-notifications');
 
 Route::group(['middleware' => ['accepted', 'auth']], function () {
     Route::post('mp-notifications', 'MPOrderController@notifications')->name('mp-notifications');
