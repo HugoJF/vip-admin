@@ -39,7 +39,7 @@
         </tbody>
     </table>
 
-    <button class="btn btn-success btn-block" type="submit">@lang('messages.confirm-token')</button>
+    <button id="#confirm" class="btn btn-success btn-block" type="submit">@lang('messages.confirm-token')</button>
 
     {!! Form::close() !!}
 
