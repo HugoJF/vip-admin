@@ -152,7 +152,7 @@ Route::post('mp-notifications', 'MPOrderController@notifications')->name('mp-not
 Route::get('mp-notifications', 'MPOrderController@notifications')->name('mp-notifications');
 
 Route::group(['middleware' => ['accepted', 'auth']], function () {
-	Route::get('mp-orders/{order}/recheck', 'MPOrderController@recheck')->name('mp-orders.recheck');
+    Route::get('mp-orders/{order}/recheck', 'MPOrderController@recheck')->name('mp-orders.recheck');
     Route::get('mp-back-url', 'MPOrderController@backUrl')->name('mp-back-url');
     Route::get('mp-orders/create', 'MPOrderController@create')->name('mp-orders.create')->middleware('can:create,App\Order');
     Route::post('mp-orders/store', 'MPOrderController@store')->name('mp-orders.store')->middleware('can:create,App\Order');
