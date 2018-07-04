@@ -131,6 +131,7 @@ class MPOrderController extends Controller
         switch ($topic) {
             case 'merchant_order':
                 $this->merchantOrderNotification($id);
+                break;
             case 'payment':
                 $this->paymentNotification($id);
         }
