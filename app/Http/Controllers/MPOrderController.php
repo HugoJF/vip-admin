@@ -135,7 +135,7 @@ class MPOrderController extends Controller
                 $this->paymentNotification($id);
         }
 
-        return response()->json('', 200);
+        return response()->json('201', 201);
     }
 
     private function merchantOrderNotification($orderId)
