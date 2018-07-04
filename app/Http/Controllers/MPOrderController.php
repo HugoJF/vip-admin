@@ -130,10 +130,12 @@ class MPOrderController extends Controller
 
         switch ($topic) {
             case 'merchant_order':
-                return $this->merchantOrderNotification($id);
+                $this->merchantOrderNotification($id);
             case 'payment':
-                return $this->paymentNotification($id);
+                $this->paymentNotification($id);
         }
+
+        return response()->json(['success' => 'success'], 200);
     }
 
     private function merchantOrderNotification($orderId)
