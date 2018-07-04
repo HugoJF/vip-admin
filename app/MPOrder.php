@@ -59,7 +59,7 @@ class MPOrder extends Model implements IOrder
             $this->touch();
 
             $this->save();
-            Log::info('Order rechecked to: ' . $this->mp_order_status);
+            Log::info('Order rechecked to: '.$this->mp_order_status);
         }
     }
 
