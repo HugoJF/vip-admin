@@ -137,6 +137,9 @@
             <h3>@lang('messages.actions')</h3>
             <a class="btn btn-success btn-lg btn-block" href="{{ route('confirmations.store', $order) }}">@lang('messages.confirmation-create')</a>
         @endif
+        @if(Auth::user()->isAdmin())
+            <a class="btn btn-primary btn-block" href="{{ route('mp-orders.recheck', $order) }}"> @lang('messages.recheck')</a>
+        @endif
     </div>
 
 @endsection
