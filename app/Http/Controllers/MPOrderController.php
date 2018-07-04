@@ -176,7 +176,7 @@ class MPOrderController extends Controller
     {
         $payment = MP::get_payment($paymentId);
 
-        if ($payment['status'] != 200) {
+		if ($payment['status'] != 200) {
             Log::error('Merchant Order API failed with status: '.$payment['status']);
 
             return 'false';
@@ -194,12 +194,6 @@ class MPOrderController extends Controller
 
             return 'false';
         }
-
-        $mpOrder = $mpOrder->first();
-
-        $mpOrder->mp_payment_id = $payment['response']['collection']['id'];
-        $mpOrder->mp_payment_status = $payment['response']['collection']['status'];
-        $mpOrder->save();
 
         $mpOrder->recheck();
 

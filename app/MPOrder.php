@@ -74,8 +74,8 @@ class MPOrder extends Model implements IOrder
     public function statusText($status)
     {
         switch ($status) {
-            case 'approved':
-                return 'Approved';
+            case 'Closed':
+                return 'Paid';
                 break;
             case'':
             case 'pending':
@@ -93,7 +93,7 @@ class MPOrder extends Model implements IOrder
     public function statusClass($status)
     {
         switch ($status) {
-            case 'approved':
+            case 'closed':
                 return 'success';
                 break;
             case '':
@@ -107,19 +107,19 @@ class MPOrder extends Model implements IOrder
         }
     }
 
-    public function pending()
+    public function opened()
     {
-        return $this->mp_order_status == 'pending';
+        return $this->mp_order_status == 'opened';
     }
 
-    public function approved()
+    public function closed()
     {
-        return $this->mp_order_status == 'approved';
+        return $this->mp_order_status == 'closed';
     }
 
     public function canGenerateConfirmation($flashError = false)
     {
-        $can = $this->approved();
+        $can = $this->closed();
 
         if (!$can && $flashError) {
             flash()->error(__('messages.model-mp-orders-cannot-generate-confirmation'));
@@ -132,7 +132,7 @@ class MPOrder extends Model implements IOrder
     {
         $step = 1;
 
-        if ($this->approved()) {
+        if ($this->closed()) {
             $step++;
         }
 

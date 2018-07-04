@@ -77,7 +77,7 @@
             <tr>
                 <td>@lang('messages.current-state')</td>
                 <td>
-                    <span class="label label-{{ $mpOrder->status()['class'] }}">{{ $mpOrder->status()['text'] }}</span>
+                    <span title="{{ $mpOrder->mp_order_status }}" class="label label-{{ $mpOrder->status()['class'] }}">{{ $mpOrder->status()['text'] }}</span>
                 </td>
             </tr>
             <tr>
