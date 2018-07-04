@@ -40,7 +40,7 @@ class TokenOrderCreate extends Page
         return [
             '@token'     => '#token',
             '@use-token' => '#use-token',
-            '@confirm'   => 'div.container-fluid > div > div.col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main > form > button',
+            '@confirm'   => '#confirm',
         ];
     }
 }

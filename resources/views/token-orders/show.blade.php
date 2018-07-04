@@ -88,7 +88,7 @@
         </table>
 
         @if(!$order->confirmation)
-                <a class="btn btn-success btn-lg btn-block" href="{{ route('confirmations.store', $order) }}">@lang('messages.confirmation-create')</a>
+                <a id="confirm" class="btn btn-success btn-lg btn-block" href="{{ route('confirmations.store', $order) }}">@lang('messages.confirmation-create')</a>
         @endif
     </div>
 
