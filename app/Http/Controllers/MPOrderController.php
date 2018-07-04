@@ -120,88 +120,88 @@ class MPOrderController extends Controller
 		$order->mp_order_status = $collection_status;
 		$order->mp_payment_id = $collection_id;
 
-		$order->save();
+        $order->save();
 
-		return redirect()->route('orders.show', $order->baseOrder()->first());
-	}
+        return redirect()->route('orders.show', $order->baseOrder()->first());
+    }
 
-	public function notifications()
-	{
-		Log::info('Receiving MercadoPago notifications.', Input::all());
+    public function notifications()
+    {
+        Log::info('Receiving MercadoPago notifications.', Input::all());
 
-		$topic = Input::get('topic');
-		$id = Input::get('id');
+        $topic = Input::get('topic');
+        $id = Input::get('id');
 
-		switch ($topic) {
-			case 'merchant_order':
-				$this->merchantOrderNotification($id);
-				break;
-			case 'payment':
-				$this->paymentNotification($id);
-		}
+        switch ($topic) {
+            case 'merchant_order':
+                $this->merchantOrderNotification($id);
+                break;
+            case 'payment':
+                $this->paymentNotification($id);
+        }
 
-		return response()->json('201', 201);
-	}
+        return response()->json('201', 201);
+    }
 
-	private function merchantOrderNotification($orderId)
-	{
-		$merchantOrder = MP::get('/merchant_orders/' . $orderId);
+    private function merchantOrderNotification($orderId)
+    {
+        $merchantOrder = MP::get('/merchant_orders/'.$orderId);
 
-		if ($merchantOrder['status'] != 200) {
-			Log::error('Merchant Order API failed with status: ' . $merchantOrder['status']);
+        if ($merchantOrder['status'] != 200) {
+            Log::error('Merchant Order API failed with status: '.$merchantOrder['status']);
 
-			return 'false';
-		}
+            return 'false';
+        }
 
-		$preferenceId = $merchantOrder['response']['preference_id'];
+        $preferenceId = $merchantOrder['response']['preference_id'];
 
-		$mpOrder = MPOrder::where('mp_preference_id', $preferenceId)->get();
+        $mpOrder = MPOrder::where('mp_preference_id', $preferenceId)->get();
 
-		if ($mpOrder->count() > 1) {
-			Log::error('Could not update MPOrder since there are duplicate Orders with same Preference ID', [
-				'preference_id' => $preferenceId,
-				$mpOrder->pluck('id'),
-			]);
+        if ($mpOrder->count() > 1) {
+            Log::error('Could not update MPOrder since there are duplicate Orders with same Preference ID', [
+                'preference_id' => $preferenceId,
+                $mpOrder->pluck('id'),
+            ]);
 
-			return 'false';
-		}
+            return 'false';
+        }
 
-		$mpOrder = $mpOrder->first();
+        $mpOrder = $mpOrder->first();
 
-		$mpOrder->mp_order_id = $merchantOrder['response']['id'];
-		$mpOrder->save();
+        $mpOrder->mp_order_id = $merchantOrder['response']['id'];
+        $mpOrder->save();
 
-		$mpOrder->recheck();
+        $mpOrder->recheck();
 
-		return 'true';
-	}
+        return 'true';
+    }
 
-	private function paymentNotification($paymentId)
-	{
-		$payment = MP::get_payment($paymentId);
+    private function paymentNotification($paymentId)
+    {
+        $payment = MP::get_payment($paymentId);
 
-		if ($payment['status'] != 200) {
-			Log::error('Merchant Order API failed with status: ' . $payment['status']);
+        if ($payment['status'] != 200) {
+            Log::error('Merchant Order API failed with status: '.$payment['status']);
 
-			return 'false';
-		}
+            return 'false';
+        }
 
-		$orderId = $payment['response']['collection']['merchant_order_id'];
+        $orderId = $payment['response']['collection']['merchant_order_id'];
 
-		$mpOrder = MPOrder::where('mp_order_id', $orderId)->get();
+        $mpOrder = MPOrder::where('mp_order_id', $orderId)->get();
 
-		if ($mpOrder->count() > 1) {
-			Log::error('Could not update MPOrder since there are duplicate Orders with same Order ID', [
-				'mp_order_id' => $orderId,
-				$mpOrder->pluck('id'),
-			]);
+        if ($mpOrder->count() > 1) {
+            Log::error('Could not update MPOrder since there are duplicate Orders with same Order ID', [
+                'mp_order_id' => $orderId,
+                $mpOrder->pluck('id'),
+            ]);
 
-			return 'false';
-		}
-		$mpOrder = $mpOrder->first();
+            return 'false';
+        }
+        $mpOrder = $mpOrder->first();
 
-		$mpOrder->recheck();
+        $mpOrder->recheck();
 
-		return 'true';
-	}
+        return 'true';
+    }
 }
