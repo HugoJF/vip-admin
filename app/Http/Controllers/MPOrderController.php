@@ -118,7 +118,7 @@ class MPOrderController extends Controller
 
         $order->save();
 
-        return redirect()->route('orders.show', $order->baseOrder()->get()->first());
+        return redirect()->route('orders.show', $order->baseOrder()->first());
     }
 
     public function notifications()
@@ -198,6 +198,7 @@ class MPOrderController extends Controller
         $mpOrder = $mpOrder->first();
 
         $mpOrder->mp_payment_id = $payment['response']['collection']['id'];
+        $mpOrder->mp_payment_status = $payment['response']['collection']['status'];
         $mpOrder->save();
 
         $mpOrder->recheck();
