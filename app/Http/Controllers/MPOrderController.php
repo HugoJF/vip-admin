@@ -163,7 +163,7 @@ class MPOrderController extends Controller
 
 	private function merchantOrderNotification($orderId)
 	{
-		$merchantOrder = MP2::get('/merchant_orders/' . $orderId);
+		$merchantOrder = MP2::get('merchant_orders', $orderId);
 
 		if ($merchantOrder['status'] != 200) {
 			Log::error('Merchant Order API failed with status: ' . $merchantOrder['status']);
@@ -217,6 +217,10 @@ class MPOrderController extends Controller
 			return 'false';
 		}
 		$mpOrder = $mpOrder->first();
+
+		if (!$mpOrder) {
+			throw new \Exception('Could not find MercadoPago order after receiving a payment notification for it. This might be caused by incorrect notification tracking (merchant_order_id not correctly saved).');
+		}
 
 		$mpOrder->recheck();
 

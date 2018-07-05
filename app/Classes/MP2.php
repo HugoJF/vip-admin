@@ -13,7 +13,7 @@ use Livepixel\MercadoPago\Facades\MP;
 
 class MP2
 {
-	public static $saving = true;
+	public static $saving = false;
 	public static $mocking = false;
 	public static $responses = [];
 
