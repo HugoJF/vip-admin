@@ -233,7 +233,7 @@ return [
     'owner'                 => 'Dono',
     'system'                => 'Sistema',
     'expired'               => 'Expirado',
-    'name'                  => 'Home',
+    'name'                  => 'Nome',
     'terms'                 => 'Termos',
     'accepted'              => 'Aceitou',
     'not-accepted'          => 'Não aceitou',
