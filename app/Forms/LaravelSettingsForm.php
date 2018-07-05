@@ -85,14 +85,22 @@ class LaravelSettingsForm extends Form
                     'text' => __('messages.form-app-order-expiration-time-help'),
                 ],
             ])
-            ->add('cost-per-day', 'number', [
-                'label'      => __('messages.form-app-cost-per-day'),
-                'pre-addon'  => '$',
-                'post-addon' => trans_choice('messages.currency-dollar-cents', 2),
-                'help_block' => [
-                    'text' => __('messages.form-app-cost-per-day-help'),
-                ],
-            ])
+			->add('cost-per-day', 'number', [
+				'label'      => __('messages.form-app-cost-per-day'),
+				'pre-addon'  => '$',
+				'post-addon' => trans_choice('messages.currency-dollar-cents', 2),
+				'help_block' => [
+					'text' => __('messages.form-app-cost-per-day-help'),
+				],
+			])
+			->add('mp-cost-per-day', 'number', [
+				'label'      => __('messages.form-app-cost-per-day'),
+				'pre-addon'  => '$',
+				'post-addon' => trans_choice('messages.currency-dollar-cents', 2),
+				'help_block' => [
+					'text' => __('messages.form-app-cost-per-day-help'),
+				],
+			])
             ->add('global-home', 'summernote', [
                 'label' => __('messages.form-app-global-home'),
             ])

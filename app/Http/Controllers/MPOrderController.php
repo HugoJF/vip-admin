@@ -7,212 +7,218 @@ use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rules\In;
 use LivePixel\MercadoPago\Facades\MP;
 
 class MPOrderController extends Controller
 {
-    public function create()
-    {
-        return view('mp-orders.create');
-    }
+	public function create()
+	{
+		return view('mp-orders.create');
+	}
 
-    public function store()
-    {
-        $duration = Input::get('duration');
-        $valid = in_array(intval($duration), config('app.mp-periods'));
+	public function store()
+	{
+		$duration = Input::get('duration');
+		$valid = in_array(intval($duration), config('app.mp-periods'));
 
-        // Check if duration is valid
-        if (!$valid) {
-            flash()->error(__('messages.mp-order-duration-invalid'));
+		// Check if duration is valid
+		if (!$valid) {
+			flash()->error(__('messages.mp-order-duration-invalid'));
 
-            return redirect()->route('mp-orders.create');
-        }
+			return redirect()->route('mp-orders.create');
+		}
 
-        // Generate MercadoPago preference
-        $preference_data = [
-            'items'            => [
-                [
-                    'title'       => __('messages.mp-order-item-title', ['duration' => $duration]),
-                    'quantity'    => intval($duration),
-                    'currency_id' => 'BRL',
-                    'unit_price'  => config('app.mp-cost-per-day', 0.15),
-                ],
-            ],
-            'back_urls'        => [
-                'success' => route('mp-back-url'),
-                'pending' => route('mp-back-url'),
-                'failure' => route('mp-back-url'),
-            ],
-            'notification_url' => config('app.mp-notification-url-override', false)
-                ? config('app.mp-notification-url-override', false)
-                : route('mp-notifications'),
-        ];
+		$unit_price = round(intval(\Setting::get('mp-cost-per-day', config('app.mp-cost-per-day'))) / 30, 2);
 
-        $preference = MP::create_preference($preference_data);
+		// Generate MercadoPago preference
+		$preference_data = [
+			'items'            => [
+				[
+					'title'       => __('messages.mp-order-item-title', ['duration' => $duration]),
+					'quantity'    => intval($duration),
+					'currency_id' => 'BRL',
+					'unit_price'  => $unit_price,
+				],
+			],
+			'back_urls'        => [
+				'success' => route('mp-back-url'),
+				'pending' => route('mp-back-url'),
+				'failure' => route('mp-back-url'),
+			],
+			'notification_url' => config('app.mp-notification-url-override', false)
+				? config('app.mp-notification-url-override', false)
+				: route('mp-notifications'),
+		];
 
-        $mpOrder = MPOrder::make();
-        $order = Order::make();
+		$preference = MP::create_preference($preference_data);
 
-        // Fill MercadoPago order reference in case user needs it later
-        $mpOrder->mp_preference_id = $preference['response']['id'];
-        $mpOrder->amount = intval($duration) * config('app.mp-cost-per-day', 0.15) * 100;
+		$mpOrder = MPOrder::make();
+		$order = Order::make();
 
-        // Fill base order information
-        $order->public_id = 'mp'.substr(md5(microtime()), 0, \Setting::get('public-id-size', 15));
-        $order->duration = $duration;
-        $order->extra_tokens = floor($duration / \Setting::get('order-duration-per-extra-token', 30));
-        $order->user()->associate(Auth::user());
+		// Fill MercadoPago order reference in case user needs it later
+		$mpOrder->mp_preference_id = $preference['response']['id'];
+		$mpOrder->amount = intval($duration) * config('app.mp-cost-per-day', 0.15) * 100;
 
-        // Persist to database
-        $mpOrderSaved = $mpOrder->save();
-        $orderSaved = $order->save();
+		// Fill base order information
+		$order->public_id = 'mp' . substr(md5(microtime()), 0, \Setting::get('public-id-size', 15));
+		$order->duration = $duration;
+		$order->extra_tokens = floor($duration / \Setting::get('order-duration-per-extra-token', 30));
+		$order->user()->associate(Auth::user());
 
-        // Associate each order to another
-        $mpOrder->baseOrder()->save($order);
+		// Persist to database
+		$mpOrderSaved = $mpOrder->save();
+		$orderSaved = $order->save();
 
-        // Redirect to view Steam Offer if successful
-        if ($mpOrderSaved === true && $orderSaved === true) {
-            flash()->success(__('messages.controller-mp-order-creation-success'));
+		// Associate each order to another
+		$mpOrder->baseOrder()->save($order);
 
-            // return redirect()->route('orders.show', $order);
-            // Redirect user to mp-orders.show
-            return redirect($preference['response']['init_point']);
-        } else {
-            flash()->error(__('messages.controller-mp-order-creation-error'));
+		// Redirect to view Steam Offer if successful
+		if ($mpOrderSaved === true && $orderSaved === true) {
+			flash()->success(__('messages.controller-mp-order-creation-success'));
 
-            return redirect()->route('home');
-        }
-    }
+			// return redirect()->route('orders.show', $order);
+			// Redirect user to mp-orders.show
+			return redirect($preference['response']['init_point']);
+		} else {
+			flash()->error(__('messages.controller-mp-order-creation-error'));
 
-    public function show(Order $order)
-    {
-        $order->load(['orderable', 'user']);
+			return redirect()->route('home');
+		}
+	}
 
-        // $mpOrder = $order->orderable;
+	public function show(Order $order)
+	{
+		$order->load(['orderable', 'user']);
 
-        // $mpOrder->recheck();
+		// $mpOrder = $order->orderable;
 
-        return view('mp-orders.show', [
-            'order'   => $order,
-            'mpOrder' => $order->orderable,
-        ]);
-    }
+		// $mpOrder->recheck();
 
-    public function recheck(Order $order)
-    {
-        $mpOrder = $order->orderable;
+		return view('mp-orders.show', [
+			'order'   => $order,
+			'mpOrder' => $order->orderable,
+		]);
+	}
 
-        $mpOrder->recheck();
+	public function recheck(Order $order)
+	{
+		$mpOrder = $order->orderable;
 
-        flash()->success('Order rechecked!');
+		$mpOrder->recheck();
 
-        return redirect()->back();
-    }
+		flash()->success('Order rechecked!');
 
-    public function backUrl()
-    {
-        $collection_id = Input::get('collection_id');
-        $collection_status = Input::get('collection_status');
-        $preference_id = Input::get('preference_id');
-        $external_reference = Input::get('external_reference');
-        $payment_type = Input::get('payment_type');
-        $merchant_order_id = Input::get('merchant_order_id');
+		return redirect()->back();
+	}
 
-        $orders = MPOrder::where('mp_preference_id', $preference_id)->get();
+	public function backUrl()
+	{
+		$collection_id = Input::get('collection_id');
+		$collection_status = Input::get('collection_status');
+		$preference_id = Input::get('preference_id');
+		$external_reference = Input::get('external_reference');
+		$payment_type = Input::get('payment_type');
+		$merchant_order_id = Input::get('merchant_order_id');
 
-        if ($orders->count() > 1) {
-            throw new \Exception('Too many MercadoPago orders with same preference ID: '.$preference_id);
-        }
+		$orders = MPOrder::where('mp_preference_id', $preference_id)->get();
 
-        $order = $orders->first();
+		if ($orders->count() > 1) {
+			throw new \Exception('Too many MercadoPago orders with same preference ID: ' . $preference_id);
+		}
 
-        if (!$order->closed()) {
-            $order->mp_order_id = $merchant_order_id;
+		$order = $orders->first();
 
-            $order->recheck();
-        }
+		if ($order && !$order->closed()) {
+			$order->mp_order_id = $merchant_order_id;
 
-        return redirect()->route('orders.show', $order->baseOrder()->first());
-    }
+			$order->recheck();
+		}
+		if (!$order) {
+			flash()->error('Something went wrong on MercadoPago API. Contact administrators!');
 
-    public function notifications()
-    {
-        Log::info('Receiving MercadoPago notifications.', Input::all());
+			return redirect()->route('home');
+		} else {
+			return redirect()->route('orders.show', $order->baseOrder()->first());
+		}
+	}
 
-        $topic = Input::get('topic');
-        $id = Input::get('id');
+	public function notifications()
+	{
+		Log::info('Receiving MercadoPago notifications.', Input::all());
 
-        switch ($topic) {
-            case 'merchant_order':
-                $this->merchantOrderNotification($id);
-                break;
-            case 'payment':
-                $this->paymentNotification($id);
-        }
+		$topic = Input::get('topic');
+		$id = Input::get('id');
 
-        return response()->json('201', 201);
-    }
+		switch ($topic) {
+			case 'merchant_order':
+				$this->merchantOrderNotification($id);
+				break;
+			case 'payment':
+				$this->paymentNotification($id);
+		}
 
-    private function merchantOrderNotification($orderId)
-    {
-        $merchantOrder = MP::get('/merchant_orders/'.$orderId);
+		return response()->json('201', 201);
+	}
 
-        if ($merchantOrder['status'] != 200) {
-            Log::error('Merchant Order API failed with status: '.$merchantOrder['status']);
+	private function merchantOrderNotification($orderId)
+	{
+		$merchantOrder = MP::get('/merchant_orders/' . $orderId);
 
-            return 'false';
-        }
+		if ($merchantOrder['status'] != 200) {
+			Log::error('Merchant Order API failed with status: ' . $merchantOrder['status']);
 
-        $preferenceId = $merchantOrder['response']['preference_id'];
+			return 'false';
+		}
 
-        $mpOrder = MPOrder::where('mp_preference_id', $preferenceId)->get();
+		$preferenceId = $merchantOrder['response']['preference_id'];
 
-        if ($mpOrder->count() > 1) {
-            Log::error('Could not update MPOrder since there are duplicate Orders with same Preference ID', [
-                'preference_id' => $preferenceId,
-                $mpOrder->pluck('id'),
-            ]);
+		$mpOrder = MPOrder::where('mp_preference_id', $preferenceId)->get();
 
-            return 'false';
-        }
+		if ($mpOrder->count() > 1) {
+			Log::error('Could not update MPOrder since there are duplicate Orders with same Preference ID', [
+				'preference_id' => $preferenceId,
+				$mpOrder->pluck('id'),
+			]);
 
-        $mpOrder = $mpOrder->first();
+			return 'false';
+		}
 
-        $mpOrder->mp_order_id = $merchantOrder['response']['id'];
-        $mpOrder->save();
+		$mpOrder = $mpOrder->first();
 
-        $mpOrder->recheck();
+		$mpOrder->mp_order_id = $merchantOrder['response']['id'];
+		$mpOrder->save();
 
-        return 'true';
-    }
+		$mpOrder->recheck();
 
-    private function paymentNotification($paymentId)
-    {
-        $payment = MP::get_payment($paymentId);
+		return 'true';
+	}
 
-        if ($payment['status'] != 200) {
-            Log::error('Merchant Order API failed with status: '.$payment['status']);
+	private function paymentNotification($paymentId)
+	{
+		$payment = MP::get_payment($paymentId);
 
-            return 'false';
-        }
+		if ($payment['status'] != 200) {
+			Log::error('Merchant Order API failed with status: ' . $payment['status']);
 
-        $orderId = $payment['response']['collection']['merchant_order_id'];
+			return 'false';
+		}
 
-        $mpOrder = MPOrder::where('mp_order_id', $orderId)->get();
+		$orderId = $payment['response']['collection']['merchant_order_id'];
 
-        if ($mpOrder->count() > 1) {
-            Log::error('Could not update MPOrder since there are duplicate Orders with same Order ID', [
-                'mp_order_id' => $orderId,
-                $mpOrder->pluck('id'),
-            ]);
+		$mpOrder = MPOrder::where('mp_order_id', $orderId)->get();
 
-            return 'false';
-        }
-        $mpOrder = $mpOrder->first();
+		if ($mpOrder->count() > 1) {
+			Log::error('Could not update MPOrder since there are duplicate Orders with same Order ID', [
+				'mp_order_id' => $orderId,
+				$mpOrder->pluck('id'),
+			]);
 
-        $mpOrder->recheck();
+			return 'false';
+		}
+		$mpOrder = $mpOrder->first();
 
-        return 'true';
-    }
+		$mpOrder->recheck();
+
+		return 'true';
+	}
 }

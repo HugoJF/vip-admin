@@ -129,13 +129,13 @@
     
     <div class="row">
         @foreach(config('app.mp-periods') as $duration)
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-12 col-md-4">
                 <div class="thumbnail">
                     <div class="caption">
                         
                         <h2 style="text-align: center">{{ $duration }} dias</h2>
                         
-                        <h2 style="text-align: center"><strong>R$ {{ round($duration * config('app.mp-cost-per-day'), 2)}}</strong></h2>
+                        <h2 style="text-align: center"><strong>R$ {{ round($duration * (\Setting::get('mp-cost-per-day', config('app.mp-cost-per-day')) / 30), 1) }}</strong></h2>
                         <div class="funkyradio">
                             <div class="funkyradio-success">
                                 <input type="radio" name="duration" value="{{ $duration }}" id="checkbox-{{ $control }}"/>

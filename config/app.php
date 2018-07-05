@@ -264,7 +264,7 @@ return [
     'update_server'       => env('UPDATE_SERVER'),
 
     // MercadoPago
-    'mp-periods'          => [7, 14, 30, 60],
+    'mp-periods'          => [14, 30, 60],
 
     'mp-cost-per-day'              => 0.15,
     'mp-notification-url-override' => env('MP_NOTIFICATION_URL_OVERRIDE', false),
