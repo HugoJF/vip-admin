@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\MP2;
 use App\MPOrder;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
-use LivePixel\MercadoPago\Facades\MP;
+use Livepixel\MercadoPago\Facades\MP;
 
 class MPOrderController extends Controller
 {
@@ -28,7 +29,7 @@ class MPOrderController extends Controller
 			return redirect()->route('mp-orders.create');
 		}
 
-		$unit_price = round(intval(\Setting::get('mp-cost-per-day', config('app.mp-cost-per-day'))) / 30, 2);
+		$unit_price = static::getCostPerDay();
 
 		// Generate MercadoPago preference
 		$preference_data = [
@@ -50,7 +51,7 @@ class MPOrderController extends Controller
 				: route('mp-notifications'),
 		];
 
-		$preference = MP::create_preference($preference_data);
+		$preference = MP2::create_preference($preference_data);
 
 		$mpOrder = MPOrder::make();
 		$order = Order::make();
@@ -162,7 +163,7 @@ class MPOrderController extends Controller
 
 	private function merchantOrderNotification($orderId)
 	{
-		$merchantOrder = MP::get('/merchant_orders/' . $orderId);
+		$merchantOrder = MP2::get('/merchant_orders/' . $orderId);
 
 		if ($merchantOrder['status'] != 200) {
 			Log::error('Merchant Order API failed with status: ' . $merchantOrder['status']);
@@ -195,7 +196,7 @@ class MPOrderController extends Controller
 
 	private function paymentNotification($paymentId)
 	{
-		$payment = MP::get_payment($paymentId);
+		$payment = MP2::get_payment($paymentId);
 
 		if ($payment['status'] != 200) {
 			Log::error('Merchant Order API failed with status: ' . $payment['status']);
@@ -220,5 +221,27 @@ class MPOrderController extends Controller
 		$mpOrder->recheck();
 
 		return 'true';
+	}
+
+	public static function getPrice($duration)
+	{
+		return round($duration * static::getCostPerDay(), 1);
+	}
+
+	public static function getCostPerMonth()
+	{
+		$config = config('app.mp-cost-per-day') * 30;
+		$setting = \Setting::get('mp-cost-per-month');
+
+		if (!$setting) {
+			return $config;
+		} else {
+			return $setting;
+		}
+	}
+
+	public static function getCostPerDay()
+	{
+		return static::getCostPerMonth() / 30;
 	}
 }

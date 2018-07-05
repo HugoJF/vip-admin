@@ -135,7 +135,7 @@
                         
                         <h2 style="text-align: center">{{ $duration }} dias</h2>
                         
-                        <h2 style="text-align: center"><strong>R$ {{ round($duration * (\Setting::get('mp-cost-per-day', config('app.mp-cost-per-day')) / 30), 1) }}</strong></h2>
+                        <h2 style="text-align: center"><strong>R$ {{ \App\Http\Controllers\MPOrderController::getPrice($duration) }}</strong></h2>
                         <div class="funkyradio">
                             <div class="funkyradio-success">
                                 <input type="radio" name="duration" value="{{ $duration }}" id="checkbox-{{ $control }}"/>

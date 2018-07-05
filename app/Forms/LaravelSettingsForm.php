@@ -93,12 +93,12 @@ class LaravelSettingsForm extends Form
 					'text' => __('messages.form-app-cost-per-day-help'),
 				],
 			])
-			->add('mp-cost-per-day', 'number', [
-				'label'      => __('messages.form-app-cost-per-day'),
-				'pre-addon'  => '$',
-				'post-addon' => trans_choice('messages.currency-dollar-cents', 2),
+			->add('mp-cost-per-month', 'number', [
+				'label'      => __('messages.form-app-mpcost-per-month'),
+				'pre-addon'  => 'R$',
+				'post-addon' => trans_choice('messages.currency-real-cents', 2),
 				'help_block' => [
-					'text' => __('messages.form-app-cost-per-day-help'),
+					'text' => __('messages.form-app-cost-per-month-help'),
 				],
 			])
             ->add('global-home', 'summernote', [

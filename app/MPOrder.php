@@ -2,10 +2,10 @@
 
 namespace App;
 
+use App\Classes\MP2;
 use App\Interfaces\IOrder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use LivePixel\MercadoPago\Facades\MP;
 
 class MPOrder extends Model implements IOrder
 {
@@ -32,7 +32,7 @@ class MPOrder extends Model implements IOrder
     {
         if (!empty($this->mp_order_id)) {
             // Query merchant_orders information
-            $order = MP::get('/merchant_orders/'.$this->mp_order_id);
+            $order = MP2::get('merchant_orders', $this->mp_order_id);
 
             // Check if response was valid
             if (!array_key_exists('status', $order)) {
@@ -74,7 +74,7 @@ class MPOrder extends Model implements IOrder
     public function statusText($status)
     {
         switch ($status) {
-            case 'Closed':
+            case 'closed':
                 return 'Paid';
                 break;
             case'':
