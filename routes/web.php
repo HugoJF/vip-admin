@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'accepted']], function () {
     Route::group(['middleware' => ['admin']], function () {
         Route::get('orders/{order}/edit', 'OrdersController@edit')->name('orders.edit');
         Route::delete('orders/{order}', 'OrdersController@delete')->name('orders.delete');
+        Route::patch('orders/{order}/restore', 'OrdersController@restore')->name('orders.restore');
         Route::patch('orders/{order}', 'OrdersController@update')->name('orders.update');
     });
 

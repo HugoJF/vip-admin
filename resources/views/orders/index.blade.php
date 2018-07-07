@@ -54,6 +54,9 @@
                     @if($order->orderable->status()['text'] != 'Confirmed')
                         <a class="btn btn-xs btn-primary" href="{{ route('orders.edit', $order) }}">@lang('messages.edit')</a>
                     @endif
+                    @if($order->type('MercadoPago') && $isAdmin)
+                        <a class="btn btn-xs btn-primary" href="{{ route('mp-orders.recheck', $order) }}">Recheck</a>
+                    @endif
                     <a class="btn btn-xs btn-default" href="{{ route('orders.show', $order) }}">@lang('messages.order-details')</a>
                     @if($order->type('Steam') && !$order->orderable->tradeoffer_id && $isAdmin)
                         <a class="btn btn-xs btn-default" href="{{ route('steam-orders.send-tradeoffer-manual', $order) }}">@lang('messages.send-tradeoffer')</a>
@@ -61,6 +64,11 @@
                     @if($order->orderable->status()['text'] != 'Confirmed' && !$order->trashed())
                         {!! Form::open(['route' => ['orders.delete', $order], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
                         <button class="btn btn-xs btn-danger btn-form-fix" type="submit">@lang('messages.delete')</button>
+                        {!! Form::close() !!}
+                    @endif
+                    @if($order->orderable->status()['text'] != 'Confirmed' && $order->trashed())
+                        {!! Form::open(['route' => ['orders.restore', $order], 'method' => 'PATCH', 'style' => 'display: inline;']) !!}
+                        <button class="btn btn-xs btn-success btn-form-fix" type="submit">@lang('messages.restore')</button>
                         {!! Form::close() !!}
                     @endif
                 </td>

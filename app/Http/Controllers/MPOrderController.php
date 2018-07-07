@@ -58,7 +58,7 @@ class MPOrderController extends Controller
 
 		// Fill MercadoPago order reference in case user needs it later
 		$mpOrder->mp_preference_id = $preference['response']['id'];
-		$mpOrder->amount = intval($duration) * config('app.mp-cost-per-day', 0.15) * 100;
+		$mpOrder->amount = static::getCostPerMonth(intval($duration));
 
 		// Fill base order information
 		$order->public_id = 'mp' . substr(md5(microtime()), 0, \Setting::get('public-id-size', 15));

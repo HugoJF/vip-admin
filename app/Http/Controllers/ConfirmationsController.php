@@ -28,28 +28,9 @@ class ConfirmationsController extends Controller
         }
 
         // Check if order is validated and ready to generate a confirmation
-
         if (!$order->canGenerateConfirmation(true)) {
             return redirect()->route('orders.show', $order);
         }
-
-        /*if ($order->isSteamOffer()) {
-            // Check if steam order is accepted
-            $steamOrder = $order->orderable()->first();
-            if (!$steamOrder || !$steamOrder->accepted()) {
-                flash()->error('You must accept the trade offer before creating a confirmation!');
-
-                return redirect()->route('home');
-            }
-        } else {
-            $tokenOrder = $order->orderable()->first();
-
-            if (!$tokenOrder || !$tokenOrder->token()->exists()) {
-                flash()->error('Your order must have a valid token associated with to generate a confirmation!');
-
-                return redirect()->route('home');
-            }
-        }*/
 
         // Get last confirmation generated for the User
         $latestConfirmation = Auth::user()->confirmations()->notExpired()->orderBy('end_period', 'asc')->first();
@@ -64,7 +45,7 @@ class ConfirmationsController extends Controller
         // Start creating Confirmation entry
         $confirmation = Confirmation::make();
 
-        $confirmation->public_id = 'confirmation'.substr(md5(microtime()), 0, \Setting::get('public-id-size'));
+        $confirmation->public_id = 'co'.substr(md5(microtime()), 0, \Setting::get('public-id-size'));
         $confirmation->baseOrder()->associate($order);
         $confirmation->user()->associate(Auth::user());
         $confirmation->start_period = $basePeriod;
@@ -104,7 +85,7 @@ class ConfirmationsController extends Controller
 
         // Render table
         return view('confirmations.index', [
-            'confirmations' => $confirmations->get(),
+            'confirmations' => $confirmations->orderBy('created_at', 'DESC')->get(),
             'isAdmin'       => $user->isAdmin(),
             'highlight'     => $request->get('highlight'),
         ]);

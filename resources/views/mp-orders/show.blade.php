@@ -69,6 +69,12 @@
                 </td>
             </tr>
             <tr>
+                <td>Total Paid</td>
+                <td>
+                    <span class="label label-success">R$ {{ round($mpOrder->paid_amount / 100, 3) }}</span>
+                </td>
+            </tr>
+            <tr>
                 <td>@lang('messages.order-public-id')</td>
                 <td>
                     <span id="public-id" class="label label-success">{{ $order->public_id }}</span>
