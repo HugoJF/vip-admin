@@ -27,3 +27,17 @@ No special installation instructions are provided since this project is no longe
 - Sentry.IO (error tracking and reporting)
 - Laravel Dusk (extensive testing on critical parts of the code)
 - Travis CI (running tests when new code is pushed to GitHub)
+
+## Screenshots (from Admin account)
+
+### Steam items selection screen
+![Item selection](https://i.imgur.com/YmNNpre.png)
+
+### MercadoPago processing screen
+![MercadoPago](https://i.imgur.com/RpOHr0k.png)
+
+### Order list
+![Order list](https://i.imgur.com/8DOjhpa.png)
+
+### Confirmation list (VIP slots that were activated)
+![List of confirmations](https://i.imgur.com/VTcRAlJ.png)
