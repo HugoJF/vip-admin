@@ -41,7 +41,7 @@
                     </td>
                 @endif
                 <!-- Created At -->
-                <td>{{ $confirmation->created_at->diffToHumans() }}</td>
+                <td>{{ $confirmation->created_at->diffForHumans() }}</td>
                 
                 <!-- Ending Period -->
                 <td>{{ $confirmation->end_period }}</td>
