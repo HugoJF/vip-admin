@@ -14,7 +14,7 @@ class AddPaidAmountColumnToMpOrdersTable extends Migration
     public function up()
     {
 		Schema::table('mp_orders', function (Blueprint $table) {
-			$table->unsignedInteger('paid_amount');
+			$table->unsignedInteger('paid_amount')->default(0);
 			$table->dropColumn('mp_payment_id');
 		});
     }
