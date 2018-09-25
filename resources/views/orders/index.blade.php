@@ -21,6 +21,7 @@
             @endif
             <th>@lang('messages.duration')</th>
             <th>@lang('messages.extra-tokens')</th>
+            <th>@lang('messages.created-at')</th>
             <th>@lang('messages.state')</th>
             <th>@lang('messages.actions')</th>
         </tr>
@@ -45,6 +46,9 @@
                 
                 <!-- Extra tokens -->
                 <td>{{ $order->extra_tokens ?? '0' }} {{ strtolower(trans_choice('messages.token', $order->extra_tokens)) }}</td>
+                
+                <!-- Created At -->
+                <td>{{  $order->created_at->diffForHumans() }}</td>
                 
                 <!-- State -->
                 <td><span class="label label-{{ $order->status()['class'] }}">{{ $order->status()['text'] }}</span></td>

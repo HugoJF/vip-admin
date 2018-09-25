@@ -70,33 +70,33 @@ return [
             /*
              * The number of days for which all backups must be kept.
              */
-            'keepAllBackupsForDays' => 7,
+            'keepAllBackupsForDays' => 5,
 
             /*
              * The number of days for which all daily backups must be kept.
              */
-            'keepDailyBackupsForDays' => 16,
+            'keepDailyBackupsForDays' => 8,
 
             /*
              * The number of weeks for which all one weekly backup must be kept.
              */
-            'keepWeeklyBackupsForWeeks' => 8,
+            'keepWeeklyBackupsForWeeks' => 4,
 
             /*
              * The number of months for which one monthly backup must be kept.
              */
-            'keepMonthlyBackupsForMonths' => 4,
+            'keepMonthlyBackupsForMonths' => 2,
 
             /*
              * The number of years for which one yearly backup must be kept.
              */
-            'keepYearlyBackupsForYears' => 2,
+            'keepYearlyBackupsForYears' => 1,
 
             /*
              * After cleaning up backups, remove the oldest backup until
              * this number of megabytes has been reached.
              */
-            'deleteOldestBackupsWhenUsingMoreMegabytesThan' => 5000,
+            'deleteOldestBackupsWhenUsingMoreMegabytesThan' => 500,
         ],
     ],
 
@@ -110,7 +110,7 @@ return [
             'name'                                   => env('APP_URL'),
             'disks'                                  => ['local'],
             'newestBackupsShouldNotBeOlderThanDays'  => 1,
-            'storageUsedMayNotBeHigherThanMegabytes' => 5000,
+            'storageUsedMayNotBeHigherThanMegabytes' => 1000,
         ],
 
         /*
@@ -151,8 +151,8 @@ return [
          * Here you can specify how emails should be sent.
          */
         'mail' => [
-            'from' => 'your@email.com',
-            'to'   => 'your@email.com',
+            'from' => env('MAIL_FROM_ADDRESS'),
+            'to'   => env('ADMIN_EMAIL'),
         ],
 
         /*

@@ -234,18 +234,18 @@ class MPOrderController extends Controller
 
 	public static function getCostPerMonth()
 	{
-		$config = config('app.mp-cost-per-day') * 30;
-		$setting = \Setting::get('mp-cost-per-month');
-
-		if (!$setting) {
-			return $config;
-		} else {
-			return $setting;
-		}
+		return static::getCostPerDay() * 30;
 	}
 
 	public static function getCostPerDay()
 	{
-		return static::getCostPerMonth() / 30;
+		$config = config('app.mp-cost-per-day');
+		$setting = \Setting::get('mp-cost-per-month');
+
+		if ($setting) {
+			return $setting;
+		} else {
+			return $config;
+		}
 	}
 }

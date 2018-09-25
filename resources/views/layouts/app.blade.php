@@ -92,6 +92,66 @@
                 @else
                     <li><a><span class="label label-danger">@lang('messages.daemon-disconnected')</span></a></li>
                 @endif
+                <li role="presentation" class="dropdown visible-xs">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        VIP-Admin <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li><a href="http://steamcommunity.com/id/de_nerd" target="_blank">@lang('messages.help')</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown visible-xs">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        @lang('messages.buy-vip') <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ route('steam-orders.create') }}">@lang('messages.buy-vip-with-skins')</a></li>
+                        <li><a href="{{ route('token-orders.create') }}">@lang('messages.buy-vip-with-tokens')</a></li>
+                        <li><a href="{{ route('mp-orders.create') }}">@lang('messages.buy-vip-with-mp')</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown visible-xs">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        Daemon <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        @if(\App\Classes\Daemon::isOnline() && !\App\Classes\Daemon::isLoggedIn())
+                            <li><a href="{{ route('daemon-login') }}">Login</a></li>
+                        @endif
+                        <li><a href="{{ route('daemon-logs') }}">Logs</a></li>
+                        <li><a href="{{ route('daemon-stdout') }}">Stdout</a></li>
+                        <li><a href="{{ route('daemon-stderr') }}">Stderr</a></li>
+                        <li><a href="{{ route('daemon-kill') }}">Kill</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown visible-xs">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        @lang('messages.account') <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ route('orders.index') }}">@choice('messages.order', 2)</a></li>
+                        <li><a href="{{ route('confirmations.index') }}">@choice('messages.confirmation', 2)</a></li>
+                        <li><a href="{{ route('tokens.index') }}">@choice('messages.token', 2)</a></li>
+                        <li><a href="{{ route('users.settings') }}">@lang('messages.settings')</a></li>
+                    </ul>
+                </li>
+                @if(Auth::user()->isAdmin())
+                    <li role="presentation" class="dropdown visible-xs">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            @lang('messages.administrative') <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('tokens.create') }}">@choice('messages.generate-tokens', 2)</a></li>
+                            <li><a href="{{ route('admins-simple-preview') }}">admins_simple.ini</a></li>
+                            <li><a href="{{ route('users.index') }}">@choice('messages.user', 2)</a></li>
+                            <li><a href="{{ route('servers.index') }}">@lang('messages.server-list')</a></li>
+                            <li><a href="{{ route('laravel-logs') }}">Logs</a></li>
+                            <li><a href="{{ route('opskins-update-form') }}">@lang('messages.opskins-updater')</a></li>
+                            <li><a href="{{ route('laravel-settings-ui') }}">@lang('messages.applications-settings')</a></li>
+                        </ul>
+                    </li>
+                @endif
                 <li><a href="{{ route('users.settings') }}">@lang('messages.settings')</a></li>
                 
                 <li><a href="{{ route('logout') }}">@lang('messages.logout')</a></li>
@@ -258,7 +318,7 @@
                                     <span class="glyphicon glyphicon-th-list"></span>
                                     <a id="users" href="{{ route('users.index') }}">@choice('messages.user', 2)</a>
                                 </li>
-                                <li class="list-group-item">
+                                <li class="list-group-item {{ Route::is('servers.index') ? 'active' : '' }}">
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                     <a id="server-list" href="{{ route('servers.index') }}">@lang('messages.server-list')</a>
                                 </li>

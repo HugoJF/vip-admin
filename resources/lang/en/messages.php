@@ -293,6 +293,7 @@ return [
     'daemon-offline'        => 'Daemon is offline',
     'daemon-connected'      => 'Daemon is connect to Steam',
     'daemon-disconnected'   => 'Daemon is disconnected from Steam servers',
+	'buy-vip'    			=> 'Buy VIP',
     'buy-vip-with-skins'    => 'Buy VIP with Skins',
     'buy-vip-with-tokens'   => 'Buy VIP with Tokens',
     'buy-vip-with-mp'       => 'Buy VIP with MercadoPago',
@@ -305,6 +306,7 @@ return [
     'send-tradeoffer'       => 'Send TradeOffer',
     'open-tradeoffer'       => 'Open TradeOffer',
     'recheck'               => 'Recheck',
+	'created-at' 			=> 'Created at',
 
     'model-mp-orders-cannot-generate-confirmation' => 'This MercadoPago order is not able to generate confirmations.',
 

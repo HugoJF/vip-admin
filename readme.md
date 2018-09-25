@@ -1,51 +1,43 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# VIP-Admin - A generic CS:GO VIP processor
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+VIP-Admin is a PHP-based system to automate multiple tasks when dealing with VIP slots on multiple CS:GO servers. Some of the features that can be found currently implemented are:
+- Automatic server synchronization via FTP (`admins_simple.ini` file is updated automatically on every registered server).
+- Automatic Steam trading for VIP slots bought with Steam items.
+- MercadoPago payment processing for VIP slots bought with real money.
+- Token generation for VIP slot giveaway and manual processing (including expiration time, custom durations, etc).
+- Multi-server synchronization (you can have as many servers as you want being synchronized with the same list).
+- Email notifications (when a user creates an order, registers, etc).
+- Extra tokens for orders above a certain minimum period (long duration VIP slot owners can gift friends with extra tokens as a trial)
+- Communication with Steam is handled in the backend via a NodeJS script that can be completely isolated from the end user.
+- Complete English and Brazilian-Portuguese translations.
+- Easy to add new payment processors (priority #1 since the project started).
+- Steam authentication.
 
-## About Laravel
+## Why
+This system allowed me to focus on improving my game-servers instead of trying to raise funds (via VIP slots) to keep it online. It also allowed near instant and flawless payment processing for any user wanting to support my servers.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+## Installation
+No special installation instructions are provided since this project is no longer supported. A generic Laravel installation guide should be enough.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Used in this project
+- PHP with Laravel framework.
+- Node.JS with Express (daemon that communicates with Steam)
+- MercadoLivre API (that provides terrible documentation)
+- Steam Node.JS libraries (Steam itself has multiple problems when dealing with item Trade Offers)
+- Sentry.IO (error tracking and reporting)
+- Laravel Dusk (extensive testing on critical parts of the code)
+- Travis CI (running tests when new code is pushed to GitHub)
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+## Screenshots (from Admin account)
 
-## Learning Laravel
+### Steam items selection screen
+![Item selection](https://i.imgur.com/YmNNpre.png)
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+### MercadoPago processing screen
+![MercadoPago](https://i.imgur.com/RpOHr0k.png)
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+### Order list
+![Order list](https://i.imgur.com/8DOjhpa.png)
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
-
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+### Confirmation list (VIP slots that were activated)
+![List of confirmations](https://i.imgur.com/VTcRAlJ.png)

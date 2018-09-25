@@ -291,7 +291,8 @@ return [
     'daemon-offline'        => 'Daemon está offline',
     'daemon-connected'      => 'Daemon está connectado à Steam',
     'daemon-disconnected'   => 'Daemon está desconectado da Steam',
-    'buy-vip-with-skins'    => 'Comprar VIP com Skins',
+	'buy-vip'   			=> 'Comprar VIP',
+	'buy-vip-with-skins'    => 'Comprar VIP com Skins',
     'buy-vip-with-tokens'   => 'Comprar VIP com Token',
     'buy-vip-with-mp'       => 'Comprar VIP com MercadoPago',
     'order'                 => 'Pedido|Pedidos',
@@ -303,5 +304,6 @@ return [
     'send-tradeoffer'       => 'Enviar pedido de troca',
     'open-tradeoffer'       => 'Abrir pedido de troca',
     'recheck'               => 'Verificar',
+	'created-at' 			=> 'Criado em',
 
 ];

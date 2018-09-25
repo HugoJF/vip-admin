@@ -18,7 +18,7 @@
             @if($isAdmin)
                 <th>@lang('messages.username')</th>
             @endif
-            <th>@lang('messages.confirmation-starting-period')</th>
+            <th>@lang('messages.created-at')</th>
             <th>@lang('messages.confirmation-ending-period')</th>
             <th>@lang('messages.state')</th>
             <th>@lang('messages.actions')</th>
@@ -39,9 +39,9 @@
                         <a href="http://steamcommunity.com/profiles/{{ $confirmation->user->steamid }}">{{ $confirmation->user->username }}</a>
                         <a href="?highlight={{ $confirmation->user->steamid }}" title="@lang('messages.confirmation-highlight-from', ['user' => $confirmation->user->username])"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
-            @endif
-            <!-- Starting Period -->
-                <td>{{ $confirmation->start_period }}</td>
+                @endif
+                <!-- Created At -->
+                <td>{{ $confirmation->created_at->diffForHumans() }}</td>
                 
                 <!-- Ending Period -->
                 <td>{{ $confirmation->end_period }}</td>

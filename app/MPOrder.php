@@ -79,7 +79,7 @@ class MPOrder extends Model implements IOrder
 		if ($this->confirmed()) {
 			return 'Confirmed';
 		}
-		
+
 		switch ($status) {
 			case 'paid':
 				return 'Paid';
