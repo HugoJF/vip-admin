@@ -243,7 +243,7 @@ class MPOrderController extends Controller
 		$setting = \Setting::get('mp-cost-per-month');
 
 		if ($setting) {
-			return $setting;
+			return $setting / 30;
 		} else {
 			return $config;
 		}
