@@ -47,7 +47,7 @@ class CheckConfirmations extends Command
         $expiredConfirmations = [];
 
         foreach ($orders as $order) {
-            if (!$order->confirmation->isValid()) {
+            if ($order->confirmation && !$order->confirmation->isValid()) {
                 $this->info('Adding '.$order->confirmation->public_id.' to the expired confirmation list.');
                 $expiredConfirmations[] = $order->confirmation;
             }
