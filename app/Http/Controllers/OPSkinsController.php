@@ -28,11 +28,9 @@ class OPSkinsController extends Controller
 
         \Log::info('Setting new memory limit.');
 
-        \Log::info('Decoding information from query');
         $inventory = json_decode(file_get_contents($request->file('data')->getRealPath()));
-        \Log::info('Received information from CDN!');
 
-        if (!isset($inventory->response)) {
+        if (!isset($inventory->data) || !isset($inventory->status) || $inventory->status != 'success') {
             \Log::error('Invalid data passed to updater', ['output' => $inventory]);
 
             flash()->error(__('messages.controller-opskins-invalid-data'));
@@ -40,8 +38,8 @@ class OPSkinsController extends Controller
             return redirect()->back();
         }
 
-        $size = count((array) $inventory->response);
-        \Log::info('Received '.$size.' items from OPSkins.');
+        $size = count((array) $inventory->data);
+        \Log::info('Received '.$size.' items from BitSkins.');
 
         $index = 1;
         $oldPercent = 0;
@@ -53,39 +51,24 @@ class OPSkinsController extends Controller
 
         $added = 0;
 
-        foreach ($inventory->response as $key => $value) {
+        foreach ($inventory->data->items as $item) {
             $perCent = round($index++ / $size * 10);
             if ($perCent != $oldPercent) {
                 // $this->info('Sending [' . $index++ . '/' . $size . '] items to database.');
                 \Log::info('Sent '.($perCent * 10).'% items to database.');
                 $oldPercent = $perCent;
             }
-            $name = $key;
-            $meanSum = 0;
-            $sumCount = 0;
+			if(!isset($item->recent_sales_info)) continue;
 
-            foreach ($value as $k => $v) {
-                $maxDate = Carbon::createFromFormat('Y-m-d', $k);
+			$name = $item->market_hash_name;
+            $price = $item->recent_sales_info->average_price * 100;
+            $count = $item->total_items;
 
-                if ($maxDate->diffInDays($now) > 7) {
-                    continue;
-                }
-
-                $std_dev_rel = $v->std_dev / $v->normalized_mean;
-
-                if ($std_dev_rel > 3) {
-                    continue;
-                }
-
-                $sumCount++;
-                $meanSum += $v->normalized_mean;
-            }
-
-            if ($sumCount >= 7 && ($meanSum / $sumCount) > 10) {
+            if ($count > 10 && $price > 10) {
                 try {
                     OPSkinsCache::create([
                         'name'  => $name,
-                        'price' => $meanSum / $sumCount,
+                        'price' => $price,
                     ]);
                     $added++;
                 } catch (\Exception $e) {
