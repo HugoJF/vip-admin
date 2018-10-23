@@ -52,7 +52,7 @@ class TokenPolicy
      */
     public function update(User $user, Token $token)
     {
-        return $token->user->id === $user->id;
+        return $user->isAdmin();
     }
 
     /**
