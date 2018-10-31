@@ -95,10 +95,10 @@ Route::group(['middleware' => ['auth', 'accepted']], function () {
     });
     Route::post('tokens/extra', 'TokenController@storeExtra')->name('tokens.storeExtra')->middleware('can:create,App\Token');
     Route::get('tokens/{token}', 'TokenController@show')->name('tokens.show')->middleware('can:view,token');
-    Route::get('tokens/{token}/edit', 'TokenController@edit')->name('tokens.edit')->middleware('can:edit,token');
+    Route::get('tokens/{token}/edit', 'TokenController@edit')->name('tokens.edit')->middleware('can:update,token');
     Route::patch('tokens/{token}/restore', 'TokenController@restore')->name('tokens.restore')->middleware('can:delete,token');
     Route::delete('tokens/{token}', 'TokenController@delete')->name('tokens.delete')->middleware('can:delete,token');
-    Route::patch('tokens/{token}', 'TokenController@update')->name('tokens.update')->middleware('can:edit,token');
+    Route::patch('tokens/{token}', 'TokenController@update')->name('tokens.update')->middleware('can:update,token');
     Route::post('tokens', 'TokenController@store')->name('tokens.store')->middleware('can:create,App\Token');
     Route::get('tokens', 'TokenController@index')->name('tokens.index');
 });

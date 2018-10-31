@@ -124,8 +124,28 @@ $control = 1;
 @endphp
 
 @section('content')
-    <h1>@lang('messages.steam-order-select-items')</h1>
 
+    <div class="jumbotron">
+        <h1>Não sabe como funciona?</h1>
+        <p>
+            Nós desenvolvemos o VIP-Admin para que sua utilização seja <strong>a mais simples possível</strong>, mas é normal se sentir perdido ou confuso durante o proceso.
+        </p>
+        <p>
+            Caso sinta necessidade ou tenha alguma, <strong>temos um guia que detalha todas as etapas do processo de compra com Skins</strong>.
+        </p>
+        <p>
+            Se isso ainda não for o suficiente ou você tiver alguma dúvida ou problema, <strong>entre em contato conosco em nosso Discord ou comigo (de_nerd) pela Steam</strong>.
+        </p>
+    
+        <p>
+            <a class="btn btn-primary btn-lg" href="https://denerdtv.com/como-comprar-vip-com-itens/" role="button">Acessar guia de compra</a>
+            <a class="btn btn-default btn-lg" href="https://denerdtv.com/discord" role="button">Discord</a>
+            <a class="btn btn-default btn-lg" href="https://steamcommunity.com/id/de_nerd" role="button">Steam</a>
+        </p>
+    </div>
+
+    <h1>@lang('messages.steam-order-select-items')</h1>
+    
     {!! Form::open(['route' => 'steam-orders.store', 'method' => 'POST']) !!}
         <div class="row">
             @foreach($inventory as $key=>$item)
