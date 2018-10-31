@@ -123,7 +123,25 @@
     $control = 1;
 @endphp
 
-@section('content')
+@section('content')<div class="jumbotron">
+    <h1>Não sabe como funciona?</h1>
+    <p>
+        Nós desenvolvemos o VIP-Admin para que sua utilização seja <strong>a mais simples possível</strong>, mas é normal se sentir perdido ou confuso durante o proceso.
+    </p>
+    <p>
+        Nós não temos um guia para compras pelo MercadoPago <strong>por causa da simplicidade do processo de pagamento</strong> e falta de necessidade para o mesmo.
+    </p>
+    <p>
+        <strong>LEMBRETE</strong>: Em todos os casos de compra, <strong>é necessário ativar o seu VIP</strong> (gerar a confirmação do pedido). <a href="/orders">A página para gerar confirmação se encontra nos detalhes de qualquer pedido marcado como pago</a>.
+    </p>
+    <p>
+        Se isso ainda não for o suficiente ou você tiver alguma dúvida ou problema, <strong>entre em contato conosco em nosso Discord ou comigo (de_nerd) pela Steam</strong>.
+    </p>
+    <p>
+        <a class="btn btn-default btn-lg" href="https://denerdtv.com/discord" role="button">Discord</a>
+        <a class="btn btn-default btn-lg" href="https://steamcommunity.com/id/de_nerd" role="button">Steam</a>
+    </p>
+</div>
     <h1>@lang('messages.mp-orders-create')</h1>
     {!! Form::open(['route' => 'mp-orders.store', 'method' => 'POST']) !!}
     
