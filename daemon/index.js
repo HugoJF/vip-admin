@@ -55,7 +55,7 @@ process.on('uncaughtException', function (err) {
 var lastLoginAttempt = 0;
 var logged = false;
 
-var client = new SteamUser();
+var client = new SteamUser({enablePicsCache: true});
 var community = new SteamCommunity();
 var manager = new TradeOfferManager({
     'steam': client,
