@@ -65,8 +65,9 @@ var manager = new TradeOfferManager({
 });
 
 var cdn = new csgoCDN(client, {
-    directory: '/home/runcloud/webapps/vip-admin/daemon/logs/data',
-    logLevel: 'debug'
+    directory: './../daemon/data',
+    logLevel: 'debug',
+    updateInterval: 0
 });
 
 if (fs.existsSync(__dirname + '/polldata.json')) {
@@ -104,6 +105,9 @@ client.on('error', function (err) {
 client.on('disconnected', function (eresult, msg) {
     console.log('Disconnect from Steam: ' + msg + ' -- EResult[' + eresult + ']');
     logged = false;
+});
+client.on('debug', function (eresult, msg) {
+    console.log('DEBUG: ' + eresult + ': ' + msg);
 });
 
 client.on('webSession', function (sessionID, cookies) {
