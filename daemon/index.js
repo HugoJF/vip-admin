@@ -64,7 +64,10 @@ var manager = new TradeOfferManager({
     'language': 'en'
 });
 
-var cdn = new csgoCDN(client, {logLevel: 'debug'});
+var cdn = new csgoCDN(client, {
+    directory: '/home/runcloud/webapps/vip-admin/daemon/logs/data',
+    logLevel: 'debug'
+});
 
 if (fs.existsSync(__dirname + '/polldata.json')) {
     manager.pollData = JSON.parse(fs.readFileSync(__dirname + '/polldata.json'));
