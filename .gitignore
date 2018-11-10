@@ -12,7 +12,6 @@ Homestead.json
 Homestead.yaml
 node-steamuser/*
 node-steam-tradeoffer-manager/*
-daemon/package-lock.json
 npm-debug.log
 yarn-error.log
 .env
