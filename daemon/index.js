@@ -65,7 +65,7 @@ var manager = new TradeOfferManager({
 });
 
 var cdn = new csgoCDN(client, {
-    directory: 'daemon/data',
+    directory: __dirname + '/data',
     logLevel: 'debug',
     updateInterval: 0
 });
