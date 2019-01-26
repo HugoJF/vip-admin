@@ -12,11 +12,11 @@
         </tr>
         <tr>
             <td>@lang('messages.duration')</td>
-            <td><span class="label label-success">{{ $token->duration }} @lang('messages.time.days', $token->duration)</span></td>
+            <td><span class="label label-success">{{ $token->duration }} @choice('messages.time.days', $token->duration)</span></td>
         </tr>
         <tr>
             <td>@lang('messages.expiration')</td>
-            <td><span class="label label-success">{{ $token->expiration }} @lang('messages.time.hours', $token->expiration)</span></td>
+            <td><span class="label label-success">{{ $token->expiration }} @choice('messages.time.hours', $token->expiration)</span></td>
         </tr>
         <tr>
             <td>@lang('messages.expiration-date')</td>
