@@ -21,7 +21,7 @@ class CheckTradeLinkIsSet
         if (!$user->tradelink || $user->tradelink == '') {
             flash()->error(__('messages.middleware-tradelink-missing'));
 
-            return redirect('/settings');
+            return redirect()->route('users.settings');
         }
 
         return $next($request);
