@@ -35,8 +35,8 @@ return [
 	'email-user-created-link'      => 'Users list',
 	'email-user-created-postlink'  => 'Click the link to see the details in VIP-Admin',
 
-	'form-confirmation-starting-period-help' => 'When the confirmation starts to be valid.',
-	'form-confirmation-ending-period-help'   => 'When the confirmation stops to be valid.',
+	'form-confirmation-starting-period-help' => 'When the activation starts to be valid.',
+	'form-confirmation-ending-period-help'   => 'When the activation stops to be valid.',
 	'form-app-public-id-size'                => 'Public ID Size',
 	'form-app-public-id-size-help'           => 'How many characters Public IDs should have.',
 	'form-app-extra-tokens-expiration'       => 'Extra token expiration',
@@ -84,15 +84,15 @@ return [
 
 	'controller-auth-banned' => 'You are banned from using VIP-Admin permanently!',
 
-	'controller-confirmation-already-exists'   => 'We already have a confirmation for this order is our database!',
-	'controller-confirmation-creation-success' => 'Confirmation created with success!',
-	'controller-confirmation-creation-error'   => 'Error saving confirmation to database!',
-	'controller-confirmation-update-success'   => 'Confirmation :id was updated',
-	'controller-confirmation-update-error'     => 'Could not update confirmation :id!',
-	'controller-confirmation-delete-success'   => 'Confirmation :id deleted successfully!',
-	'controller-confirmation-delete-error'     => 'Error while trying to delete confirmation :id from database!',
-	'controller-confirmation-restore-success'  => 'Confirmation :id restored successfully!',
-	'controller-confirmation-restore-error'    => 'Error while trying to restore confirmation :id from database!',
+	'controller-confirmation-already-exists'   => 'We already have a activation for this order is our database!',
+	'controller-confirmation-creation-success' => 'Activation created with success!',
+	'controller-confirmation-creation-error'   => 'Error saving activation to database!',
+	'controller-confirmation-update-success'   => 'Activation :id was updated',
+	'controller-confirmation-update-error'     => 'Could not update activation :id!',
+	'controller-confirmation-delete-success'   => 'Activation :id deleted successfully!',
+	'controller-confirmation-delete-error'     => 'Error while trying to delete activation :id from database!',
+	'controller-confirmation-restore-success'  => 'Activation :id restored successfully!',
+	'controller-confirmation-restore-error'    => 'Error while trying to restore activation :id from database!',
 
 	'controller-opskins-invalid-data'   => 'Invalid data passed to updater!',
 	'controller-opskins-update-success' => 'OPSkins cache was refreshed with success. Added a total of :amount items to the database',
@@ -155,24 +155,24 @@ return [
 	'middleware-tradelink-missing'  => 'You must give us your trade link to continue!',
 	'middleware-not-allowed-to-see' => 'You are not allowed to see this page: :url',
 
-	'model-server-uploaded-updating-error' => 'Error marking confirmation as uploaded to server!.',
+	'model-server-uploaded-updating-error' => 'Error marking activation as uploaded to server!.',
 	'model-server-sync-error'              => 'Error syncing server: :message',
 
-	'model-steam-orders-cannot-generate-confirmation' => 'Your order must have a valid token associated with to generate a confirmation!',
+	'model-steam-orders-cannot-generate-confirmation' => 'Your order must have a valid token associated with to generate an activation!',
 
-	'model-token-orders-cannot-generate-confirmation' => 'Your order must have a valid token associated with to generate a confirmation!',
+	'model-token-orders-cannot-generate-confirmation' => 'Your order must have a valid token associated with to generate an activation!',
 
 	'time.days'    => 'day|days',
 	'time.hours'   => 'hour|hours',
 	'time.minutes' => 'minute|minutes',
 
-	'confirmation-form'            => 'Confirmation form',
-	'confirmation-show-trashed'    => 'Show trashed confirmations',
-	'confirmation-public-id '      => 'Confirmation Public ID',
+	'confirmation-form'            => 'Activation form',
+	'confirmation-show-trashed'    => 'Show trashed activations',
+	'confirmation-public-id '      => 'Activation Public ID',
 	'confirmation-starting-period' => 'Starting period',
 	'confirmation-ending-period'   => 'Ending period',
-	'confirmation-highlight-from'  => 'Highlight confirmations from :user',
-	'confirmation-create'          => 'Create confirmation',
+	'confirmation-highlight-from'  => 'Highlight activations from :user',
+	'confirmation-create'          => 'Activate',
 
 	'token-show-trashed' => 'Show trashed tokens',
 
@@ -201,7 +201,7 @@ return [
 	'steam-order-step-1'           => 'Select your items to trade',
 	'steam-order-step-2'           => 'Send the trade offer',
 	'steam-order-step-3'           => 'Accept the trade offer',
-	'steam-order-step-4'           => 'Generate the confirmation',
+	'steam-order-step-4'           => 'Activate',
 	'steam-order-step-5'           => 'Server files uploaded',
 
 	'characters'            => 'character|characters',
@@ -251,7 +251,7 @@ return [
 	'token-order'        => 'Token Order',
 	'token-order-step-1' => 'Create Token Order',
 	'token-order-step-2' => 'Submit a valid token',
-	'token-order-step-3' => 'Generate the confirmation',
+	'token-order-step-3' => 'Activate',
 	'token-order-step-4' => 'Server files uploaded',
 
 	'token-form'                   => 'Token form',
@@ -267,7 +267,7 @@ return [
 
 	'daemon-login'        => 'Daemon login',
 	'order-count'         => 'Order count',
-	'confirmation-count'  => 'Confirmation count',
+	'confirmation-count'  => 'Activation count',
 	'opskins-update-data' => 'Update OPSkins data',
 
 	'already-used'          => 'Already used',
@@ -299,7 +299,7 @@ return [
 	'buy-vip-with-tokens'   => 'Buy VIP with Tokens',
 	'buy-vip-with-mp'       => 'Buy VIP with MercadoPago',
 	'order'                 => 'Order|Orders',
-	'confirmation'          => 'Confirmation|Confirmations',
+	'confirmation'          => 'Activation|Activations',
 	'generate-tokens'       => 'Generate token|Generate tokens',
 	'server-list'           => 'Server list',
 	'opskins-updater'       => 'OPSkins Updater',
@@ -309,7 +309,7 @@ return [
 	'recheck'               => 'Recheck',
 	'created-at'            => 'Created at',
 
-	'model-mp-orders-cannot-generate-confirmation' => 'This MercadoPago order is not able to generate confirmations.',
+	'model-mp-orders-cannot-generate-confirmation' => 'This MercadoPago order is not able to generate activations.',
 
 	'mp-orders-create'          => 'MercadoPago Order Form',
 	'mp-order-create-submit'    => 'Create MercadoPago Order',
@@ -322,7 +322,7 @@ return [
 
 	'mp-order-step-1' => 'Create payment request',
 	'mp-order-step-2' => 'Pay the request',
-	'mp-order-step-3' => 'Generate the confirmation',
+	'mp-order-step-3' => 'Activate',
 	'mp-order-step-4' => 'Server synchronization',
 
 	'mp_preference_id' => 'MercadoPago Preference ID',

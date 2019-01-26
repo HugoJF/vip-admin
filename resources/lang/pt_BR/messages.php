@@ -294,7 +294,7 @@ return [
 	'daemon-disconnected'   => 'Daemon está desconectado da Steam',
 	'buy-vip'               => 'Comprar VIP',
 	'buy-vip-with-skins'    => 'Comprar VIP com Skins',
-	'buy-vip-with-tokens'   => 'Comprar VIP com Token',
+	'buy-vip-with-tokens'   => 'Ativar VIP com tokens',
 	'buy-vip-with-mp'       => 'Comprar VIP com MercadoPago',
 	'order'                 => 'Pedido|Pedidos',
 	'confirmation'          => 'Ativação|Ativações',
