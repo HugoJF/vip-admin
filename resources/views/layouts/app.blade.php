@@ -368,8 +368,6 @@
 <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/js/moment.min.js') }}"></script>
 <script src="{{ asset('/js/bootstrap-datetimepicker.min.js') }}"></script>
-<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-<script src="{{ asset('/js/vendor/holder.min.js') }}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="{{ asset('/js/ie10-viewport-bug-workaround.js') }}"></script>
 <script src="{{ asset('/js/summernote.js') }}"></script>

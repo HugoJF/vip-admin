@@ -55,6 +55,7 @@
                 
                 <!-- Actions -->
                 <td style="white-space: nowrap;">
+                    
                     @if($order->orderable->status()['text'] != 'Confirmed')
                         <a class="btn btn-xs btn-primary" href="{{ route('orders.edit', $order) }}">@lang('messages.edit')</a>
                     @endif
@@ -76,10 +77,8 @@
                         {!! Form::close() !!}
                     @endif
                 </td>
-            
             </tr>
         @endforeach
-        
         </tbody>
     </table>
 @endsection
