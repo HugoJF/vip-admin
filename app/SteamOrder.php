@@ -8,206 +8,198 @@ use Illuminate\Database\Eloquent\Model;
 
 class SteamOrder extends Model implements IOrder
 {
-    protected $table = 'steam-orders';
+	protected $table = 'steam-orders';
 
-    protected $dates = ['tradeoffer_sent'];
+	protected $dates = ['tradeoffer_sent'];
 
-    protected $fillable = ['tradeoffer_id', 'tradeoffer_state'];
+	protected $fillable = ['tradeoffer_id', 'tradeoffer_state'];
 
-    public function baseOrder()
-    {
-        return $this->morphOne('App\Order', 'orderable')->withTrashed();
-    }
+	public function baseOrder()
+	{
+		return $this->morphOne('App\Order', 'orderable')->withTrashed();
+	}
 
-    public function getRouteKeyName()
-    {
-        return 'public_id';
-    }
+	public function getRouteKeyName()
+	{
+		return 'public_id';
+	}
 
-    public function type($type)
-    {
-        $types = ['App\SteamOrder', 'SteamOrder', 'Steam'];
+	public function type($type)
+	{
+		$types = ['App\SteamOrder', 'SteamOrder', 'Steam'];
 
-        return in_array($type, $types);
-    }
+		return in_array($type, $types);
+	}
 
-    public function recheck()
-    {
-        $id = $this->attributes['tradeoffer_id'];
+	public function recheck()
+	{
+		$id = $this->attributes['tradeoffer_id'];
 
-        $this->touch();
+		$this->touch();
 
-        $this->save();
+		$this->save();
 
-        $offer = Daemon::getTradeOffer($id);
+		$offer = Daemon::getTradeOffer($id);
 
-        if ($offer === false || !property_exists($offer, 'state')) {
-            return false;
-        }
+		if ($offer === false || !property_exists($offer, 'state')) {
+			return false;
+		}
 
-        $this->attributes['tradeoffer_state'] = $offer->state;
+		$this->attributes['tradeoffer_state'] = $offer->state;
 
-        $this->save();
+		$this->save();
 
-        return $offer;
-    }
+		return $offer;
+	}
 
-    public function canGenerateConfirmation($flashError = false)
-    {
-        $should = $this->accepted();
+	public function canGenerateConfirmation($flashError = false)
+	{
+		$should = $this->paid();
 
-        if (!$should && $flashError) {
-            flash()->error(__('messages.model-steam-orders-cannot-generate-confirmation'));
-        }
+		if (!$should && $flashError) {
+			flash()->error(__('messages.model-steam-orders-cannot-generate-confirmation'));
+		}
 
-        return $should;
-    }
+		return $should;
+	}
 
-    public function step()
-    {
-        $step = 1;
+	public function paid()
+	{
+		return $this->accepted();
+	}
 
-        if ($this->tradeoffer_id) {
-            $step++;
-        } else {
-            return $step;
-        }
+	public function step()
+	{
+		$step = 1;
 
-        if ($this->tradeoffer_state == 3) {
-            $step++;
-        } else {
-            return $step;
-        }
+		if ($this->tradeoffer_id) {
+			$step++;
+		} else {
+			return $step;
+		}
 
-        if ($this->baseOrder && $this->baseOrder->confirmation()->first()) {
-            $step++;
-        } else {
-            return $step;
-        }
+		if ($this->tradeoffer_state == 3) {
+			$step++;
+		} else {
+			return $step;
+		}
 
-        if ($this->baseOrder->server_uploaded) {
-            $step++;
-        } else {
-            return $step;
-        }
+		if ($this->baseOrder && $this->baseOrder->confirmation()->first()) {
+			$step++;
+		} else {
+			return $step;
+		}
 
-        return $step;
-    }
+		if ($this->baseOrder->server_uploaded) {
+			$step++;
+		} else {
+			return $step;
+		}
 
-    public function status()
-    {
-        $state = $this->tradeoffer_state;
-        $confirmed = isset($this->baseOrder->confirmation);
+		return $step;
+	}
 
-        return [
-            'text'  => $this->stateText($state, $confirmed),
-            'class' => $this->stateClass($state, $confirmed),
-        ];
-    }
+	public function status()
+	{
+		$state = $this->tradeoffer_state;
 
-    public function cancel()
-    {
-        Daemon::cancelTradeOffer($this->tradeoffer_id);
-        $this->refresh();
-        $this->save();
-    }
+		if (isset($this->baseOrder->confirmation)) {
+			$state = 'confirmed';
+		}
 
-    private function accepted()
-    {
-        return $this->tradeoffer_state === 3;
-    }
+		return [
+			'status' => $state,
+			'text'   => $this->stateText($state),
+			'class'  => $this->stateClass($state),
+		];
+	}
 
-    private function active()
-    {
-        return $this->tradeoffer_state === 2;
-    }
+	public function cancel()
+	{
+		Daemon::cancelTradeOffer($this->tradeoffer_id);
+		$this->refresh();
+		$this->save();
+	}
 
-    private function disabled()
-    {
-        return !$this->accepted() && !$this->active();
-    }
+	private function accepted()
+	{
+		return $this->tradeoffer_state === 3;
+	}
 
-    private function notSent()
-    {
-        return $this->tradeoffer_id == null;
-    }
+	private function active()
+	{
+		return $this->tradeoffer_state === 2;
+	}
 
-    private function stateText($state, $confirmed)
-    {
-        if ($confirmed) {
-            return 'Confirmed';
-        } elseif ($state) {
-            switch ($state) {
-                case 1:
-                    return 'Invalid';
-                    break;
-                case 2:
-                    return 'Active';
-                    break;
-                case 3:
-                    return 'Accepted';
-                    break;
-                case 4:
-                    return 'Countered';
-                    break;
-                case 5:
-                    return 'Expired';
-                    break;
-                case 6:
-                    return 'Canceled';
-                    break;
-                case 7:
-                    return 'Declined';
-                    break;
-                case 8:
-                    return 'InvalidItems';
-                    break;
-                case 9:
-                    return 'CreatedNeedsConfirmation';
-                    break;
-                case 10:
-                    return 'CanceledBySecondFactor';
-                    break;
-                case 11:
-                    return 'InEscrow';
-                    break;
-                default:
-                    return 'Unknown';
-                    break;
-            }
-        } else {
-            return 'TradeOfferNotSent';
-        }
-    }
+	private function disabled()
+	{
+		return !$this->accepted() && !$this->active();
+	}
 
-    private function stateClass($state, $confirmed)
-    {
-        if ($confirmed) {
-            return 'success';
-        } elseif ($state) {
-            switch ($state) {
-                case 2:
-                    return 'primary'; // return 'Active';
-                    break;
-                case 3:
-                    return 'success'; // return 'Accepted';
-                    break;
+	private function notSent()
+	{
+		return $this->tradeoffer_id == null;
+	}
 
-                case 1:  // return 'Invalid';
-                case 4:  // return 'Countered';
-                case 5:  // return 'Expired';
-                case 6:  // return 'Canceled';
-                case 7:  // return 'Declined';
-                case 8:  // return 'InvalidItems';
-                case 9:  // return 'CreatedNeedsConfirmation';
-                case 10: // return 'CanceledBySecondFactor';
-                case 11: // return 'InEscrow';
-                default: // return 'Unknown';
-                    return 'danger';
-                    break;
-            }
-        } else {
-            return 'warning';
-        }
-    }
+	public function confirmed()
+	{
+		return $this->status()['status'] == 'confirmed';
+	}
+
+	private function stateText($state)
+	{
+		switch ($state) {
+			case 'confirmed':
+				return 'Confirmed';
+			case 1:
+				return 'Invalid';
+			case 2:
+				return 'Active';
+			case 3:
+				return 'Accepted';
+			case 4:
+				return 'Countered';
+			case 5:
+				return 'Expired';
+			case 6:
+				return 'Canceled';
+			case 7:
+				return 'Declined';
+			case 8:
+				return 'InvalidItems';
+			case 9:
+				return 'CreatedNeedsConfirmation';
+			case 10:
+				return 'CanceledBySecondFactor';
+			case 11:
+				return 'InEscrow';
+			default:
+				return 'TradeOfferNotSent';
+		}
+	}
+
+	private function stateClass($state)
+	{
+		switch ($state) {
+			case 'confirmed':
+				return 'success';
+			case 2:
+				return 'primary'; // return 'Active';
+			case 3:
+				return 'success'; // return 'Accepted';
+			case 1:  // return 'Invalid';
+			case 4:  // return 'Countered';
+			case 5:  // return 'Expired';
+			case 6:  // return 'Canceled';
+			case 7:  // return 'Declined';
+			case 8:  // return 'InvalidItems';
+			case 9:  // return 'CreatedNeedsConfirmation';
+			case 10: // return 'CanceledBySecondFactor';
+			case 11: // return 'InEscrow';
+				return 'danger';
+			default: // return 'Unknown';
+				return 'warning';
+		}
+	}
+
 }

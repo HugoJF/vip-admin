@@ -68,32 +68,31 @@ class MPOrder extends Model implements IOrder
 			$status = 'paid';
 		}
 
+		if ($this->confirmed()) {
+			$status = 'confirmed';
+		}
+
 		return [
-			'text'  => $this->statusText($status),
-			'class' => $this->statusClass($status),
+			'status' => $status,
+			'text'   => $this->statusText($status),
+			'class'  => $this->statusClass($status),
 		];
 	}
 
 	public function statusText($status)
 	{
-		if ($this->confirmed()) {
-			return 'Confirmed';
-		}
-
 		switch ($status) {
+			case 'confirmed':
+				return 'Confirmed';
 			case 'paid':
 				return 'Paid';
-				break;
 			case 'closed':
-				return 'Closed';
-				break;
-			case'':
+				return 'Pending';
+			case '':
 			case 'pending':
 				return 'Waiting payment';
-				break;
 			case 'opened':
-				return 'Opened for payment';
-				break;
+				return 'Open';
 			default:
 				return $status;
 				break;
@@ -102,23 +101,18 @@ class MPOrder extends Model implements IOrder
 
 	public function statusClass($status)
 	{
-		if ($this->confirmed()) {
-			return 'success';
-		}
-
 		switch ($status) {
-			case 'paid':
+			case 'confirmed':
 				return 'success';
-				break;
+			case 'paid':
+				return 'info';
 			case 'closed':
 			case '':
 			case 'pending':
 			case 'opened':
 				return 'warning';
-				break;
 			default:
 				return 'danger';
-				break;
 		}
 	}
 
