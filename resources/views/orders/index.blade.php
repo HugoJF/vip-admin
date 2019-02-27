@@ -41,7 +41,7 @@
                     <td>{{ $order->orderable_type }}</td>
             @endif
             
-            <!-- Duration -->
+            <!-- Durations -->
                 <td>{{ $order->duration }} {{ strtolower(trans_choice('messages.time.days', $order->duration)) }}</td>
                 
                 <!-- Extra tokens -->
