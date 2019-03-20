@@ -155,8 +155,6 @@ function createConnection(ip, port, rcon_password) {
     console.log('Creating connection');
     let connection = new rcon(ip, port, rcon_password);
 
-
-
     (function (ip, port, rcon_password) {
         connection.on('auth', function () {
             console.log("RCON connected!");

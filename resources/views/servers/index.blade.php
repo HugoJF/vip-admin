@@ -2,8 +2,16 @@
 
 @section('content')
     <h1>Current servers</h1>
-    <p><a href="{{ route('servers.create') }}" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Add new server</a></p>
-
+    <p>
+        <a href="{{ route('servers.create') }}" id="generate" type="submit" name="generate" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Add new server</a>
+    </p>
+    
+    {!! Form::open(['route' => ['servers.sync-all'], 'method' => 'POST', 'style' => 'display: inline;']) !!}
+    <p>
+        <button class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> @lang('messages.sync-all')</button>
+    </p>
+    {!! Form::close() !!}
+    
     <table id="datatables" class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -36,7 +44,7 @@
                 <td style="white-space: nowrap;">
                     <a href="{{ route('servers.edit', $server) }}" class="btn btn-xs btn-primary">@lang('messages.edit')</a>
                     {!! Form::open(['route' => ['servers.delete', $server], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
-                        <button class="btn btn-xs btn-danger">@lang('messages.delete')</button>
+                    <button class="btn btn-xs btn-danger">@lang('messages.delete')</button>
                     {!! Form::close() !!}
                     {!! Form::open(['route' => ['servers.sync', $server], 'method' => 'POST', 'style' => 'display: inline;']) !!}
                     <button class="btn btn-xs btn-success">@lang('messages.sync')</button>
@@ -44,19 +52,19 @@
                 </td>
             </tr>
         @endforeach
-
+        
         </tbody>
     </table>
 @endsection
 
 @push('scripts')
-<script>
+    <script>
 
-    $(document).ready(function(){
-        $('#datatables').DataTable({
-            "iDisplayLength": 50
+        $(document).ready(function () {
+            $('#datatables').DataTable({
+                "iDisplayLength": 50
+            });
         });
-    });
-
-</script>
+    
+    </script>
 @endpush

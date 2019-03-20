@@ -109,6 +109,7 @@ Route::group(['middleware' => ['auth', 'accepted']], function () {
 Route::group(['middleware' => ['auth', 'accepted', 'admin']], function () {
     Route::get('servers/{server}/edit', 'ServersController@edit')->name('servers.edit')->middleware('can:edit,server');
     Route::post('servers/{server}/sync', 'ServersController@sync')->name('servers.sync');
+    Route::post('servers/sync-all', 'ServersController@syncAll')->name('servers.sync-all');
     Route::get('servers/create', 'ServersController@create')->name('servers.create')->middleware('can:create,App\Server');
     Route::get('servers', 'ServersController@index')->name('servers.index');
     Route::post('servers', 'ServersController@store')->name('servers.store')->middleware('can:create,App\Server');
