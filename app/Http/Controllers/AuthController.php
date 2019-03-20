@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Daemon;
 use App\User;
 use Auth;
 use Illuminate\Support\Facades\Session;
@@ -102,9 +103,15 @@ class AuthController extends Controller
 		]);
 
 		$user->steamid = $info->steamID64;
+		$user->steamid3 = $this->getSteamId2($info->steamID64);
 
 		$user->save();
 
 		return $user;
+	}
+
+	protected function getSteamId2($steamId64)
+	{
+		return Daemon::getSteam2ID($steamId64);
 	}
 }
