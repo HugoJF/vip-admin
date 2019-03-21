@@ -103,7 +103,7 @@ class AuthController extends Controller
 		]);
 
 		$user->steamid = $info->steamID64;
-		$user->steamid3 = $this->getSteamId2($info->steamID64);
+		$user->steamid2 = $this->getSteamId2($info->steamID64);
 
 		$user->save();
 
