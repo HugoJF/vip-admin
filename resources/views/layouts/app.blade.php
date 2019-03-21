@@ -18,7 +18,7 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', {{ config('app.ga-code') }});
+        gtag('config', '{{ config('app.ga-code') }}');
     </script>
     
     <!-- Bootstrap core CSS -->
