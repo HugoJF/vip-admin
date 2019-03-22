@@ -24,17 +24,17 @@ class Order extends Model implements IOrder
         return $this->belongsTo('App\User');
     }
 
-	public function confirmation()
-	{
-		return $this->hasOne('App\Confirmation');
-	}
+    public function confirmation()
+    {
+        return $this->hasOne('App\Confirmation');
+    }
 
-	public function getRouteKeyName()
+    public function getRouteKeyName()
     {
         return 'public_id';
     }
 
-	public function status($status = null)
+    public function status($status = null)
     {
         if ($status === null) {
             return $this->orderable->status();
