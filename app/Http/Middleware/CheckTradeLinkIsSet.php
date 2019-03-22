@@ -18,6 +18,7 @@ class CheckTradeLinkIsSet
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
+
         if (!$user->tradelink || $user->tradelink == '') {
             flash()->error(__('messages.middleware-tradelink-missing'));
 

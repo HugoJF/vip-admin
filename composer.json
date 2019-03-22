@@ -21,6 +21,7 @@
         "livepixel/mercado-pago": "dev-master",
         "rap2hpoutre/laravel-log-viewer": "^0.11.0",
         "sentry/sentry-laravel": "^0.8.0",
+        "srmklive/paypal": "~1.0",
         "spatie/laravel-backup": "^3.0.0"
     },
     "require-dev": {

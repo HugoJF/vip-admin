@@ -309,4 +309,7 @@ return [
 	'sync-all'                 => 'Sincronizar todos',
 	'synchronized-all-servers' => 'Todos os servidores foram sincronizados!',
 
+	'pp-orders-create'       => 'Formulário de pedido pelo PayPal',
+	'buy-vip-with-pp'        => 'Comprar VIP com PayPal',
+	'pp-order-create-submit' => 'Criar pedido com PayPal',
 ];
