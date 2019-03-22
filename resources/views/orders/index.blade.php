@@ -62,6 +62,9 @@
                     @if($order->type('MercadoPago') && $isAdmin)
                         <a class="btn btn-xs btn-primary" href="{{ route('mp-orders.recheck', $order) }}">Recheck</a>
                     @endif
+                    @if($order->type('PayPal') && $isAdmin)
+                        <a class="btn btn-xs btn-primary" href="{{ route('pp-orders.recheck', $order) }}">Recheck</a>
+                    @endif
                     <a class="btn btn-xs btn-default" href="{{ route('orders.show', $order) }}">@lang('messages.order-details')</a>
                     @if($order->type('Steam') && !$order->orderable->tradeoffer_id && $isAdmin)
                         <a class="btn btn-xs btn-default" href="{{ route('steam-orders.send-tradeoffer-manual', $order) }}">@lang('messages.send-tradeoffer')</a>

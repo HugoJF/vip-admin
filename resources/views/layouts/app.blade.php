@@ -109,6 +109,7 @@
                         <li><a href="{{ route('steam-orders.create') }}">@lang('messages.buy-vip-with-skins')</a></li>
                         <li><a href="{{ route('token-orders.create') }}">@lang('messages.buy-vip-with-tokens')</a></li>
                         <li><a href="{{ route('mp-orders.create') }}">@lang('messages.buy-vip-with-mp')</a></li>
+                        <li><a href="{{ route('pp-orders.create') }}">@lang('messages.buy-vip-with-pp')</a></li>
                     </ul>
                 </li>
                 <li role="presentation" class="dropdown visible-xs">
@@ -215,6 +216,11 @@
                             <li class="list-group-item {{ Route::is('mp-orders.create') ? 'active' : '' }}">
                                 <span class="glyphicon glyphicon-credit-card"></span>
                                 <a id="buy-with-mp" href="{{ route('mp-orders.create') }}">@lang('messages.buy-vip-with-mp')</a>
+                            </li>
+                            
+                            <li class="list-group-item {{ Route::is('pp-orders.create') ? 'active' : '' }}">
+                                <span class="glyphicon glyphicon-credit-card"></span>
+                                <a id="buy-with-mp" href="{{ route('pp-orders.create') }}">@lang('messages.buy-vip-with-pp')</a>
                             </li>
                         </ul>
                     </div>
