@@ -43,7 +43,7 @@ class EmailDuskScreenshots extends Command
 
         $files = File::allFiles($directory);
         if (count($files) > 0) {
-            \Mail::to('hugo_jeller@hotmail.com')->send(new DuskScreenshotMail($files));
+            \Mail::to(config('app.admin-email'))->send(new DuskScreenshotMail($files));
         }
     }
 }

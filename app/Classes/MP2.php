@@ -2,6 +2,7 @@
 
 namespace App\Classes;
 
+
 use Livepixel\MercadoPago\Facades\MP;
 
 class MP2
@@ -42,7 +43,7 @@ class MP2
 			return static::mock('create_preference');
 		}
 
-		return static::saveResponse('create_preference', MP::create_preference($preference));
+		return static::saveResponse('create_preference', \MP::create_preference($preference));
 	}
 
 	public static function get_payment($paymentId)
@@ -51,7 +52,7 @@ class MP2
 			return static::mock('get_payment');
 		}
 
-		return static::saveResponse('get_payment', MP::get_payment($paymentId));
+		return static::saveResponse('get_payment', \MP::get_payment($paymentId));
 	}
 
 	public static function get($type, $url)
@@ -60,7 +61,7 @@ class MP2
 			return static::mock('get' . $type);
 		}
 
-		return static::saveResponse('get' . '/' . $type . '/' . $url, MP::get('/' . $type . '/' . $url));
+		return static::saveResponse('get' . '/' . $type . '/' . $url, \MP::get('/' . $type . '/' . $url));
 	}
 
 	public static function mock($name)

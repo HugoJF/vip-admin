@@ -140,9 +140,9 @@ return [
 		 * Telegram requires the installation of the irazasyed/telegram-bot-sdk package.
 		 */
 		'events'   => [
-			'whenBackupWasSuccessful'     => ['log'],
-			'whenCleanupWasSuccessful'    => ['log'],
-			'whenHealthyBackupWasFound'   => ['log'],
+			'whenBackupWasSuccessful'     => ['log', 'mail'],
+			'whenCleanupWasSuccessful'    => ['log', 'mail'],
+			'whenHealthyBackupWasFound'   => ['log', 'mail'],
 			'whenBackupHasFailed'         => ['log', 'mail'],
 			'whenCleanupHasFailed'        => ['log', 'mail'],
 			'whenUnhealthyBackupWasFound' => ['log', 'mail'],
