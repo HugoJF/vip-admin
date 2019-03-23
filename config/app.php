@@ -270,6 +270,7 @@ return [
 	'mp-cost-per-day'              => 0.15,
 	'mp-notification-url-override' => env('MP_NOTIFICATION_URL_OVERRIDE', false),
 
-	'ga-code' => env('GA_CODE'),
+	'admin-email' => env('ADMIN_EMAIL'),
+	'ga-code'     => env('GA_CODE'),
 
 ];
