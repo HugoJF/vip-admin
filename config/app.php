@@ -188,7 +188,7 @@ return [
 		Imtigger\LaravelSettingsUI\LaravelSettingsUIServiceProvider::class,
 		Spatie\Backup\BackupServiceProvider::class,
 		LivePixel\MercadoPago\Providers\MercadoPagoServiceProvider::class,
-
+		Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 	],
 
 	/*
@@ -246,6 +246,7 @@ return [
 		'Setting'     => anlutro\LaravelSettings\Facade::class,
 		'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class,
 		'MP'          => LivePixel\MercadoPago\Facades\MP::class,
+		'PayPal'      => Srmklive\PayPal\Facades\PayPal::class,
 	],
 
 	'public_id_size'     => 25,
@@ -269,6 +270,7 @@ return [
 	'mp-cost-per-day'              => 0.15,
 	'mp-notification-url-override' => env('MP_NOTIFICATION_URL_OVERRIDE', false),
 
-	'ga-code' => env('GA_CODE'),
+	'admin-email' => env('ADMIN_EMAIL'),
+	'ga-code'     => env('GA_CODE'),
 
 ];

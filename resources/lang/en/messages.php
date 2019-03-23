@@ -319,6 +319,10 @@ return [
 	'mp-order-duration-invalid' => 'Duration is not valid for MercadoPago orders.',
 	'mp-order-item-title'       => 'VIP on my CS:GO server for :duration days.',
 
+	'pp-orders-create'       => 'PayPal Order Form',
+	'buy-vip-with-pp'        => 'Buy VIP with PayPal',
+	'pp-order-create-submit' => 'Create PayPal Order',
+
 	'controller-mp-order-creation-success' => 'Order created successfully!',
 	'controller-mp-order-creation-error'   => 'Error saving order details to database!',
 

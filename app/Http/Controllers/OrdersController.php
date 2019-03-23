@@ -116,6 +116,8 @@ class OrdersController extends Controller
 			return redirect()->route('token-orders.show', $order);
 		} elseif ($order->type('MercadoPago')) {
 			return redirect()->route('mp-orders.show', $order);
+		} else if ($order->type('PayPal')) {
+			return redirect()->route('pp-orders.show', $order);
 		} else {
 			throw new Exception('Could not figure out the correct type of this order!');
 		}
