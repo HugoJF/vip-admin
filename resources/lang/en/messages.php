@@ -120,7 +120,7 @@ return [
 	'controller-steam-order-tradeoffer-exists'          => 'There is already a trade offer live for this order!',
 	'controller-steam-order-tradeoffer-message'         => 'Order #:id for :duration days.',
 	'controller-steam-order-tradeoffer-message-admin'   => ' This TradeOffer was sent manually by an Admin!',
-	'controller-steam-order-admin-will-sent'            => 'We could not sent the Trade Offer for your Order because the system did not get a response from Steam Servers. <br><strong>An Admin will re-send it manually (via VIP-Admin) in the next 24 hours</strong>, be sure to check your pending Trade Offers and remember to <strong>verify the Order ID in the Trade Offer message!</strong><br>If you save your email in the <strong><a href=":settings">Settings</a></strong> page, <strong>we can send an email once the Trade Offer is manually sent!</strong>',
+	'controller-steam-order-admin-will-sent'            => 'We could not sent the Trade Offer for your Order because the system did not get a valid response from Steam Servers. <br><strong>This is normally caused by Steam Guard limitations</strong>, please check if your account is allowed to sent Trade Offers.<strong> In order to check this, please send a trade offer to one of your friends, any error messages will be shown to you once a trade is started!</strong>',
 	'controller-steam-order-tradeoffer-error'           => 'Error trying to send a Steam Trade Offer.',
 	'controller-steam-order-tradeoffer-details-success' => 'Trade offer sent! Please notice you have :time minutes to accept it before this order expires!',
 	'controller-steam-order-tradeoffer-details-error'   => 'Could update your Order with Trade Offer details! <strong>If you received a Trade Offer DO NOT ACCEPT IT</strong> as we have no ID to track it!',
@@ -260,9 +260,9 @@ return [
 	'token-custom-expiration-help' => 'How many hours the token will be valid',
 
 	'user-settings'                => 'User settings',
-	'user-settings-name-help'      => 'If you want us to use your real name put it here. This is only used for display on the dashboard and emails :)',
-	'user-settings-tradelink-help' => 'This is the link we will use to send trade offers. You can find your URL <a target="_blank" href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url">clicking here.</a>',
-	'user-settings-email-help'     => 'We will use this email to send notifications about everything related to your account and VIP-Admin. <strong>(recommended)</strong>',
+	'user-settings-name-help'      => 'If you want us to use your real name put it here. This is only used for display on the dashboard and emails :) <strong>(optional)</strong>',
+	'user-settings-tradelink-help' => 'This is the link we will use to send trade offers. You can find your URL <a target="_blank" href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url">clicking here.</a> <strong>(only required while buying with CS:GO Items)</strong>',
+	'user-settings-email-help'     => 'We will use this email to send notifications about everything related to your account and VIP-Admin. <strong>(recommended but optional)</strong>',
 	'user-settings-lang-help'      => 'What language do you want the system to use',
 
 	'daemon-login'        => 'Daemon login',

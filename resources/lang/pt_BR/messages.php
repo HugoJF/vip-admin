@@ -120,7 +120,7 @@ return [
 	'controller-steam-order-tradeoffer-exists'          => 'Você já tem um pedido de troca pendente para esse pedido!',
 	'controller-steam-order-tradeoffer-message'         => 'Pedido com ID #:id para VIP de :duration dias.',
 	'controller-steam-order-tradeoffer-message-admin'   => ' Esse pedido de troca foi enviado por um Admin!',
-	'controller-steam-order-admin-will-sent'            => 'Não foi possível enviar um pedido de troca para este pedido pois não tivemos uma resposta dos servidores da Steam. <br><strong>Um Admin poderá enviar o pedido manualmente (pelo VIP-Admin) nas próximas 24 horas</strong>, lembre-se de olhar seus pedidos de trocas e <strong>VERIFICAR a identificação do pedido na mensagem do pedido de troca!</strong><br>Se você tem seu email salvo na página de <strong><a href=":settings">Configurações</a></strong>, <strong>poderemos enviar uma notificação assim que enviarmos o pedido de troca!</strong>',
+	'controller-steam-order-admin-will-sent'            => 'Não foi possível enviar um pedido de troca para este pedido pois não obtivemos uma resposta válida dos servidores da Steam. <br><strong>Isso geralmente é causado por problemas com o Steam Guard</strong>, por favor verifique se sua conta está liberada para realizar trocas. <strong>Para isso tente enviar uma Trade Offer para algum de seus amigos, qualquer erro será mostrado assim que você tentar iniciar uma troca!</strong>',
 	'controller-steam-order-tradeoffer-error'           => 'Erro ao enviar pedido de troca!',
 	'controller-steam-order-tradeoffer-details-success' => 'Pedido de troca ENVIADO! Note que você tem :time minutos para aceitar antes que o pedido expire!',
 	'controller-steam-order-tradeoffer-details-error'   => 'Não foi possível salvar detalhes do pedido de troca no sistema! <strong>Se você recebeu algum pedido de troca NÃO ACEITE</strong> já que não teremos como saber se você a aceitou!',
@@ -258,9 +258,9 @@ return [
 	'token-custom-expiration-help' => 'Por quantas horas o Token ficará válido',
 
 	'user-settings'                => 'Configurações do Usuário',
-	'user-settings-name-help'      => 'Se você quiser que a gente utilize seu nome real, digite ele aqui. Apenas será usado na dashboard e para emails :)',
-	'user-settings-tradelink-help' => 'Esse é o link que utilizamos para enviar os pedidos de troca. Você pode achar sua URL <a target="_blank" href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url">clicando aqui.</a>',
-	'user-settings-email-help'     => 'Utilizaremos esse email para enviar notificações de todos acontecimentos dentro da sua conta no VIP-Admin. <strong>(recomendado)</strong>',
+	'user-settings-name-help'      => 'Se você quiser que a gente utilize seu nome real, digite ele aqui. Apenas será usado na dashboard e para emails :) <strong>(opcional)</strong>',
+	'user-settings-tradelink-help' => 'Esse é o link que utilizamos para enviar os pedidos de troca. Você pode achar sua URL <a target="_blank" href="https://steamcommunity.com/id/me/tradeoffers/privacy#trade_offer_access_url">clicando aqui.</a> <strong>(obrigatório apenas na compra com itens de CS:GO)</strong>',
+	'user-settings-email-help'     => 'Utilizaremos esse email para enviar notificações de todos acontecimentos dentro da sua conta no VIP-Admin. <strong>(recomendado mas opcional)</strong>',
 	'user-settings-lang-help'      => 'Qual idioma você deseja que o sistema utilize',
 
 	'daemon-login'        => 'Login do Daemon',
