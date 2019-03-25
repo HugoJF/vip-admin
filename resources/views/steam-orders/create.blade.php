@@ -186,6 +186,22 @@ $control = 1;
                     @endif
                 @endif
             @endforeach
+            <div class="clearfix"></div>
+                <div class="jumbotron" style="padding-top: 24px; padding-bottom: 24px">
+                    <h1>Não está achando algum item?</h1>
+                    <p>
+                        Caso algum item do seu inventário não esteja listado nessa página, <strong>é possível que o item tenha sido ignorado pelos nossos filtros</strong>, ou que esteja bloqueado para trocas.
+                    </p>
+                    <p>
+                        <strong>Utilizamos vários critérios para filtrar itens difíceis de vender</strong>, com valor baixo ou alto demais ou até mesmo com valor muito volátil.
+                    </p>
+                    <p>
+                        Existe também a possibilidade de que <strong>seu item ainda esteja bloqueado para trocas</strong>, ou caso nenhum item estiver visível, seu inventário pode estar privado.
+                    </p>
+                    <p style="text-align: center">
+                        <u><strong>Não aceitaremos nenhum item que não bata com nossos critérios e não abriremos exceções.</strong></u>
+                    </p>
+                </div>
         </div>
         <button id="submit-items" type="submit" class="btn btn-success btn-lg btn-block">@lang('messages.steam-order-submit-items')</button>
     {!! Form::close() !!}
