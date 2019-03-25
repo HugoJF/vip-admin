@@ -155,7 +155,7 @@ Route::group(['middleware' => ['accepted', 'auth']], function () {
 	Route::get('pp-orders/success', 'PayPalController@success')->name('pp-orders.success')->middleware('can:create,App\Order');
 	Route::get('pp-orders/recheck/{order}', 'PayPalController@recheck')->name('pp-orders.recheck')->middleware('can:create,App\Order'); // todo: check middleware
 	Route::get('pp-orders/checkout-details/{pp_token}', 'PayPalController@checkoutDetails')->name('pp-orders.checkout-details'); // todo: check middleware
-	Route::get('pp-orders/{order}', 'PayPalController@show')->name('pp-orders.show')->middleware('can:view,App\Order');
+	Route::get('pp-orders/{order}', 'PayPalController@show')->name('pp-orders.show')->middleware('can:view,order');
 	Route::get('pp-orders/cancel/{order}', 'PayPalController@cancel')->name('pp-orders.cancel')->middleware('can:create,App\Order');
 });
 
