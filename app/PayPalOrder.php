@@ -89,22 +89,24 @@ class PayPalOrder extends Model implements IOrder
 		}
 
 		// Check if order has Billing Agreement Status field
-		if (!array_key_exists('BILLINGAGREEMENTACCEPTEDSTATUS', $response)) {
-			flash()->error('Billing agreement status is missing.');
-
-			return;
-		}
+		//		if (!array_key_exists('BILLINGAGREEMENTACCEPTEDSTATUS', $response)) {
+		//			flash()->error('Billing agreement status is missing.');
+		//
+		//			return;
+		//		}
 
 		// Check if user has accepted Billing Agreement
-		if ($response['BILLINGAGREEMENTACCEPTEDSTATUS'] != 1) {
-			flash()->error('Payer has not accepted billing agreement.');
-
-			return;
-		}
+		//		if ($response['BILLINGAGREEMENTACCEPTEDSTATUS'] != 1) {
+		//			flash()->error('Payer has not accepted billing agreement.');
+		//
+		//			return;
+		//		}
 
 		// If there is no transaction, and this code is reached, execute transaction
 		if (!array_key_exists('TRANSACTIONID', $response)) {
-			$provider->doExpressCheckoutPayment(PayPalController::getCheckoutCart($this->baseOrder), $this->token, $response['PAYERID']);
+			$response = $provider->doExpressCheckoutPayment(PayPalController::getCheckoutCart($this->baseOrder), $this->token, $response['PAYERID']);
+
+			\Log::info('DoExpressCheckoutPayment response', ['response' => $response]);
 
 			$response = $provider->getExpressCheckoutDetails($this->token);
 		}
