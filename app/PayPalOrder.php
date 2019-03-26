@@ -111,6 +111,12 @@ class PayPalOrder extends Model implements IOrder
 			$response = $provider->getExpressCheckoutDetails($this->token);
 		}
 
+		if (!array_key_exists('TRANSACTIONID', $response)) {
+			flash()->error('There are no transaction IDs associated with this order.');
+
+			return;
+		}
+
 		// Update order transaction
 		$this->transaction_id = $response['TRANSACTIONID'];
 
