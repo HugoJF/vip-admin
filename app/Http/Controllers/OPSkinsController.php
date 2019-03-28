@@ -30,7 +30,7 @@ class OPSkinsController extends Controller
 
         $inventory = json_decode(file_get_contents($request->file('data')->getRealPath()));
 
-        if (!isset($inventory->prices) || !isset($inventory->status) || $inventory->status != 'success') {
+        if (!isset($inventory->data) || !isset($inventory->status) || $inventory->status != 'success') {
             \Log::error('Invalid data passed to updater', ['output' => $inventory]);
 
             flash()->error(__('messages.controller-opskins-invalid-data'));
@@ -38,7 +38,7 @@ class OPSkinsController extends Controller
             return redirect()->back();
         }
 
-        $size = count((array) $inventory->prices);
+        $size = count((array) $inventory->data);
         \Log::info('Received '.$size.' items from BitSkins.');
 
         $index = 1;
@@ -51,7 +51,7 @@ class OPSkinsController extends Controller
 
         $added = 0;
 
-        foreach ($inventory->prices as $item) {
+        foreach ($inventory->data->items as $item) {
             $perCent = round($index++ / $size * 10);
             if ($perCent != $oldPercent) {
                 // $this->info('Sending [' . $index++ . '/' . $size . '] items to database.');
