@@ -51,7 +51,7 @@ class OPSkinsController extends Controller
 
         $added = 0;
 
-        foreach ($inventory->prices->items as $item) {
+        foreach ($inventory->prices as $item) {
             $perCent = round($index++ / $size * 10);
             if ($perCent != $oldPercent) {
                 // $this->info('Sending [' . $index++ . '/' . $size . '] items to database.');
