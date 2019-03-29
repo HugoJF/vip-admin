@@ -147,7 +147,7 @@
     
     <div class="row">
         @foreach(config('app.mp-periods') as $duration)
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-6">
                 <div class="thumbnail">
                     <div class="caption">
                         
