@@ -21,15 +21,6 @@
         gtag('config', '{{ config('app.ga-code') }}');
     </script>
     
-    <!-- Google AdSense -->
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6718885889256659",
-            enable_page_level_ads: true
-        });
-    </script>
-    
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
     
