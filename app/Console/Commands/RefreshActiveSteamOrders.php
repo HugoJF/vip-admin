@@ -39,15 +39,13 @@ class RefreshActiveSteamOrders extends Command
     public function handle()
     {
         $this->info('Querying database for ACTIVE Steam Orders');
-        $activeSteamOffer = SteamOrder::with('baseOrder')->where([
-            'tradeoffer_state' => 2,
-        ])->get();
+        $activeSteamOffer = SteamOrder::with('baseOrder')->whereIn('tradeoffer_state', [2, 11])->get();
 
         foreach ($activeSteamOffer as $item) {
             $item->recheck();
             $this->info("Refreshing order # {$item->baseOrder->public_id} with new state: [{$item->tradeoffer_state}] {$item->status()['text']} {{$item->tradeoffer_sent->diffInMinutes()}}");
 
-            if ($item->tradeoffer_sent->diffInMinutes() > \Setting::get('expiration-time-min', 30)) {
+            if ($item->tradeoffer_state === 2 && $item->tradeoffer_sent->diffInMinutes() > \Setting::get('expiration-time-min', 30)) {
                 $item->cancel();
                 $this->warn('Cancelling order #'.$item->baseOrder->public_id.' as it expired!');
             }
