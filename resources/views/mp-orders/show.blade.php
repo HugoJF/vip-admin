@@ -103,14 +103,6 @@
                 </td>
             </tr>
             <tr>
-                <td>@lang('messages.mp_payment_id')</td>
-                <td>
-                    <a href="{{ route('mp-orders.debug.payment', $mpOrder->mp_payment_id) }}">
-                        <span class="label label-success">{{ $mpOrder->mp_payment_id ?? "N/A" }}</span>
-                    </a>
-                </td>
-            </tr>
-            <tr>
                 <td>@lang('messages.last-update')</td>
                 <td>
                     <span class="label label-success">{{ $mpOrder->updated_at->diffForHumans() }}</span>

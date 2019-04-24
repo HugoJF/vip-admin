@@ -28,7 +28,7 @@
         </thead>
         <tbody>
         @foreach($orders as $key=>$order)
-            <tr {{ isset($highlight) && $order->user->steamid == $highlight ? 'class=info' : ($order->trashed() ? 'class=danger' : '') }}>
+            <tr class="{{ $order->paid() && !$order->confirmed() ? 'info' : '' }} {{ isset($highlight) && $order->user->steamid == $highlight ? 'info' : ($order->trashed() ? 'danger' : '') }}">
                 <!-- Order Public ID -->
                 <td data-order="{{ $key }}"><a href="{{ route('orders.show', $order) }}"><code>#{{ $order->public_id }}</code></a></td>
                 
@@ -38,7 +38,7 @@
                         <a href="http://steamcommunity.com/profiles/{{ $order->user->steamid }}">{{ $order->user->username }}</a>
                         <a href="?highlight={{ $order->user->steamid }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
-                    <td>{{ $order->orderable_type }}</td>
+                    <td>{{ preg_replace('/App\\\\/', '',  $order->orderable_type) }}</td>
             @endif
             
             <!-- Durations -->
@@ -55,26 +55,41 @@
                 
                 <!-- Actions -->
                 <td style="white-space: nowrap;">
-                    
-                    @if($order->orderable->status()['text'] != 'Confirmed')
+                    <!-- Activate order  -->
+                    @if(!$order->orderable->confirmed() && $order->orderable->paid())
+                        <a class="btn btn-xs btn-success" href="{{ route('confirmations.store', $order) }}">@lang('messages.confirmation-create')</a>
+                    @endif
+                
+                <!-- Edit  -->
+                    @if(!$order->orderable->confirmed())
                         <a class="btn btn-xs btn-primary" href="{{ route('orders.edit', $order) }}">@lang('messages.edit')</a>
                     @endif
+                
+                <!-- Recheck -->
                     @if($order->type('MercadoPago') && $isAdmin)
                         <a class="btn btn-xs btn-primary" href="{{ route('mp-orders.recheck', $order) }}">Recheck</a>
                     @endif
                     @if($order->type('PayPal') && $isAdmin)
                         <a class="btn btn-xs btn-primary" href="{{ route('pp-orders.recheck', $order) }}">Recheck</a>
                     @endif
+                
+                <!-- Details -->
                     <a class="btn btn-xs btn-default" href="{{ route('orders.show', $order) }}">@lang('messages.order-details')</a>
+                    
+                    <!-- Send TradeOffer -->
                     @if($order->type('Steam') && !$order->orderable->tradeoffer_id && $isAdmin)
                         <a class="btn btn-xs btn-default" href="{{ route('steam-orders.send-tradeoffer-manual', $order) }}">@lang('messages.send-tradeoffer')</a>
                     @endif
-                    @if($order->orderable->status()['text'] != 'Confirmed' && !$order->trashed())
+                
+                <!-- Delete -->
+                    @if($order->orderable->confirmed() && !$order->trashed())
                         {!! Form::open(['route' => ['orders.delete', $order], 'method' => 'DELETE', 'style' => 'display: inline;']) !!}
                         <button class="btn btn-xs btn-danger btn-form-fix" type="submit">@lang('messages.delete')</button>
                         {!! Form::close() !!}
                     @endif
-                    @if($order->orderable->status()['text'] != 'Confirmed' && $order->trashed())
+                
+                <!-- Restore -->
+                    @if($order->orderable->confirmed() && $order->trashed())
                         {!! Form::open(['route' => ['orders.restore', $order], 'method' => 'PATCH', 'style' => 'display: inline;']) !!}
                         <button class="btn btn-xs btn-success btn-form-fix" type="submit">@lang('messages.restore')</button>
                         {!! Form::close() !!}

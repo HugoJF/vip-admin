@@ -42,6 +42,20 @@ interface IOrder
      */
     public function type($type);
 
+	/**
+	 * Check if Order is confirmed
+	 *
+	 * @return boolean
+	 */
+    public function confirmed();
+
+	/**
+	 * Check if order is paid
+	 *
+	 * @return boolean
+	 */
+    public function paid();
+
     /**
      * Checks if Order is in a state that allows confirmation generation.
      *
