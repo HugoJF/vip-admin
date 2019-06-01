@@ -6,7 +6,6 @@ var app = express();
 var rcon = require('rcon');
 var bodyParser = require("body-parser");
 var dotenv = require('dotenv').config({path: __dirname + '/.env'});
-var csgoCDN = require('csgo-cdn');
 
 var SteamUser = require('steam-user');
 var TradeOfferManager = require('steam-tradeoffer-manager');
@@ -62,12 +61,6 @@ var manager = new TradeOfferManager({
     'community': community,
     'domain': 'localhost',
     'language': 'en'
-});
-
-var cdn = new csgoCDN(client, {
-    directory: __dirname + '/data',
-    logLevel: 'debug',
-    updateInterval: 0
 });
 
 if (fs.existsSync(__dirname + '/polldata.json')) {
@@ -312,18 +305,6 @@ app.get('/steam2', (req, res) => {
     var steamObject = new SteamID(steamid);
 
     res.send(response(steamObject.getSteam2RenderedID()));
-});
-
-app.get('/getItemNameURL', (req, res) => {
-    log('/getItemNameURL routed');
-    var item = req.query.item;
-    var phase = req.query.phase;
-
-    if (phase) {
-        res.send(response(cdn.getItemNameURL(item, phase)));
-    } else {
-        res.send(response(cdn.getItemNameURL(item)));
-    }
 });
 
 app.get('/getTradeOffer', (req, res) => {
