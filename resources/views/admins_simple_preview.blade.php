@@ -67,6 +67,9 @@
 
 "STEAM_0:0:66095696"		"50:a" // Analise de Variancia | Chroma Case 3 Key + 2 chaves
 "STEAM_0:1:68445875"    "50:a" // zvook
+"STEAM_1:0:208825948"		"50:ab" // Teuvin
+"STEAM_1:0:89572214"		"50:ab" // Jeje
+"STEAM_1:0:175466347"		"50:ab" // Sadan
 
 @foreach($list as $item)
 "{{ $item['id'] }}"		"50:a" // #{{ $item['confirmation']->public_id }} - {{ $item['confirmation']->baseOrder->user->username }}

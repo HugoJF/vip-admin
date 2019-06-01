@@ -54,6 +54,9 @@
 "STEAM_0:0:42974714"		"50:a" // Ximus				    | Forevis
 "STEAM_0:1:197194388"		"50:a" // Caio				    |
 "STEAM_0:0:66095696"		"50:a" // Analise de Variancia  | Heavy Supporter
+"STEAM_1:0:208825948"		"50:ab" // Teuvin
+"STEAM_1:0:89572214"		"50:ab" // Jeje
+"STEAM_1:0:175466347"		"50:ab" // Sadan
 
 // PROS
 "STEAM_1:0:17418242"		"50:a" // tatazin
