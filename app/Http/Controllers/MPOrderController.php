@@ -29,11 +29,12 @@ class MPOrderController extends Controller
 			return redirect()->route('mp-orders.create');
 		}
 
+		$publicId = 'mp' . substr(md5(microtime()), 0, \Setting::get('public-id-size', 15));
 		$unit_price = static::getCostPerDay();
 
 		// Generate MercadoPago preference
 		$preference_data = [
-			'items'            => [
+			'items'              => [
 				[
 					'title'       => __('messages.mp-order-item-title', ['duration' => $duration]),
 					'quantity'    => intval($duration),
@@ -41,12 +42,13 @@ class MPOrderController extends Controller
 					'unit_price'  => $unit_price,
 				],
 			],
-			'back_urls'        => [
+			'external_reference' => $publicId,
+			'back_urls'          => [
 				'success' => route('mp-back-url'),
 				'pending' => route('mp-back-url'),
 				'failure' => route('mp-back-url'),
 			],
-			'notification_url' => config('app.mp-notification-url-override', false)
+			'notification_url'   => config('app.mp-notification-url-override', false)
 				? config('app.mp-notification-url-override', false)
 				: route('mp-notifications'),
 		];
@@ -61,7 +63,7 @@ class MPOrderController extends Controller
 		$mpOrder->amount = static::getCostPerMonth(intval($duration));
 
 		// Fill base order information
-		$order->public_id = 'mp' . substr(md5(microtime()), 0, \Setting::get('public-id-size', 15));
+		$order->public_id = $publicId;
 		$order->duration = $duration;
 		$order->extra_tokens = floor($duration / \Setting::get('order-duration-per-extra-token', 30));
 		$order->user()->associate(Auth::user());
@@ -156,6 +158,7 @@ class MPOrderController extends Controller
 				break;
 			case 'payment':
 				$this->paymentNotification($id);
+				break;
 		}
 
 		return response()->json('201', 201);
@@ -205,17 +208,29 @@ class MPOrderController extends Controller
 		}
 
 		$orderId = $payment['response']['collection']['merchant_order_id'];
+		$externalReference = $payment['response']['collection']['external_reference'];
 
-		$mpOrder = MPOrder::where('mp_order_id', $orderId)->get();
+		if (!$orderId) {
+			// TODO: figure out how to use external reference to update this
+			\Log::error("Payment $paymentId has a null merchant_order_id");
+			$mpOrder = MPOrder::where('public_id', $externalReference)->get();
+			if ($mpOrder->count() === 0)
+				throw new \Exception("Failed to find order by external reference $externalReference");
+		} else {
+			$mpOrder = MPOrder::where('mp_order_id', $orderId)->get();
+			if ($mpOrder->count() === 0)
+				throw new \Exception("Failed to find order by order ID $orderId");
+		}
 
 		if ($mpOrder->count() > 1) {
 			Log::error('Could not update MPOrder since there are duplicate Orders with same Order ID', [
-				'mp_order_id' => $orderId,
-				$mpOrder->pluck('id'),
+				'mp_order_id'         => $orderId,
+				'duplicate_order_ids' => $mpOrder->pluck('id'),
 			]);
 
 			return 'false';
 		}
+
 		$mpOrder = $mpOrder->first();
 
 		if (!$mpOrder) {

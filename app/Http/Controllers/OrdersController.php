@@ -28,7 +28,14 @@ class OrdersController extends Controller
 			$orders = Auth::user()->orders();
 		}
 
-		$orders->with('orderable', 'user', 'orderable.baseOrder.confirmation');
+		$orders->with(
+			[
+				'orderable',
+				'orderable.baseOrder.confirmation',
+				'user' => function ($query) {
+					$query->withTrashed();
+				},
+			]);
 
 		return view('orders.index', [
 			'orders'    => $orders->orderBy('created_at', 'DESC')->get(),
@@ -112,9 +119,9 @@ class OrdersController extends Controller
 
 		if ($order->type('Steam')) {
 			return redirect()->route('steam-orders.show', $order);
-		} elseif ($order->type('Token')) {
+		} else if ($order->type('Token')) {
 			return redirect()->route('token-orders.show', $order);
-		} elseif ($order->type('MercadoPago')) {
+		} else if ($order->type('MercadoPago')) {
 			return redirect()->route('mp-orders.show', $order);
 		} else if ($order->type('PayPal')) {
 			return redirect()->route('pp-orders.show', $order);

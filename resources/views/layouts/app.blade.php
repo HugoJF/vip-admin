@@ -30,6 +30,7 @@
     <!-- Custom styles for this template -->
     <link href="{{ asset('/css/dashboard.css') }}" rel="stylesheet">
     
+    <!-- Custom CSS -->
     <link href="{{ asset('/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
