@@ -48,9 +48,17 @@ class MPOrder extends Model implements IOrder
 				$this->mp_preference_id = $order['response']['preference_id'];
 			}
 
-			$this->paid_amount = $order['response']['paid_amount'] * 100;
+			$this->paid_amount = collect($order['response']['payments'])->reduce(function ($acc, $payment) {
+				if ($payment['status'] === 'approved') {
+					return $acc + $payment * 100;
+				} else {
+					return $acc;
+				}
+			}, 0);
 
 			$this->mp_order_status = $order['response']['status'];
+			if ($this->mp_order_status === 'paid' && !$this->paid())
+				$this->mp_order_status = 'closed';
 
 			$this->touch();
 
