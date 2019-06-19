@@ -50,7 +50,7 @@ class MPOrder extends Model implements IOrder
 
 			$this->paid_amount = collect($order['response']['payments'])->reduce(function ($acc, $payment) {
 				if ($payment['status'] === 'approved') {
-					return $acc + $payment * 100;
+					return $acc + $payment['transaction_amount'] * 100;
 				} else {
 					return $acc;
 				}
