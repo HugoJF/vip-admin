@@ -10,176 +10,173 @@ use Srmklive\PayPal\Services\ExpressCheckout;
 
 class PayPalController extends Controller
 {
-	/**
-	 * @var ExpressCheckout
-	 */
-	protected $provider;
+    /**
+     * @var ExpressCheckout
+     */
+    protected $provider;
 
-	public function __construct()
-	{
-		$this->provider = new ExpressCheckout();
-	}
+    public function __construct()
+    {
+        $this->provider = new ExpressCheckout();
+    }
 
-	public function create()
-	{
-		return view('pp-orders.create');
-	}
+    public function create()
+    {
+        return view('pp-orders.create');
+    }
 
-	public function store(Request $request)
-	{
-		$duration = $request->input('duration');
-		$valid = in_array(intval($duration), config('app.mp-periods'));
+    public function store(Request $request)
+    {
+        $duration = $request->input('duration');
+        $valid = in_array(intval($duration), config('app.mp-periods'));
 
-		// Check if duration is valid
-		if (!$valid) {
-			flash()->error(__('messages.mp-order-duration-invalid'));
+        // Check if duration is valid
+        if (!$valid) {
+            flash()->error(__('messages.mp-order-duration-invalid'));
 
-			return redirect()->route('pp-orders.create');
-		}
+            return redirect()->route('pp-orders.create');
+        }
 
-		// Create order database entries
-		$order = new Order();
-		$ppOrder = new PayPalOrder();
+        // Create order database entries
+        $order = new Order();
+        $ppOrder = new PayPalOrder();
 
-		// Fill base order information
-		$order->public_id = 'pp' . substr(md5(microtime()), 0, \Setting::get('public-id-size', 15));
-		$order->duration = $duration;
-		$order->extra_tokens = floor($duration / \Setting::get('order-duration-per-extra-token', 30));
-		$order->user()->associate(Auth::user());
+        // Fill base order information
+        $order->public_id = 'pp'.substr(md5(microtime()), 0, \Setting::get('public-id-size', 15));
+        $order->duration = $duration;
+        $order->extra_tokens = floor($duration / \Setting::get('order-duration-per-extra-token', 30));
+        $order->user()->associate(Auth::user());
 
-		// Persist to database
-		$ppOrder->save();
-		$orderSaved = $order->save();
+        // Persist to database
+        $ppOrder->save();
+        $orderSaved = $order->save();
 
-		// Associate PayPal details with base order
-		$ppOrder->baseOrder()->save($order);
+        // Associate PayPal details with base order
+        $ppOrder->baseOrder()->save($order);
 
-		// Process checkout cart
-		$cart = self::getCheckoutCart($order);
+        // Process checkout cart
+        $cart = self::getCheckoutCart($order);
 
-		// Request PayPal checkout token
-		$response = $this->provider->setExpressCheckout($cart);
+        // Request PayPal checkout token
+        $response = $this->provider->setExpressCheckout($cart);
 
-		// Store token and base Order
-		$ppOrder->token = $response['TOKEN'];
-		$ppOrderSaved = $ppOrder->save();
+        // Store token and base Order
+        $ppOrder->token = $response['TOKEN'];
+        $ppOrderSaved = $ppOrder->save();
 
-		// Redirect to view Steam Offer if successful
-		if ($ppOrderSaved && $orderSaved) {
-			flash()->success(__('messages.controller-mp-order-creation-success'));
+        // Redirect to view Steam Offer if successful
+        if ($ppOrderSaved && $orderSaved) {
+            flash()->success(__('messages.controller-mp-order-creation-success'));
 
-			// Redirect user to PayPal
-			return redirect($response['paypal_link']);
-		} else {
-			flash()->error(__('messages.controller-mp-order-creation-error'));
+            // Redirect user to PayPal
+            return redirect($response['paypal_link']);
+        } else {
+            flash()->error(__('messages.controller-mp-order-creation-error'));
 
-			return redirect()->route('home');
-		}
-	}
+            return redirect()->route('home');
+        }
+    }
 
-	public function show(Order $order)
-	{
-		$order->load(['orderable', 'user']);
+    public function show(Order $order)
+    {
+        $order->load(['orderable', 'user']);
 
-		return view('pp-orders.show', [
-			'order'   => $order,
-			'ppOrder' => $order->orderable,
-		]);
-	}
+        return view('pp-orders.show', [
+            'order'   => $order,
+            'ppOrder' => $order->orderable,
+        ]);
+    }
 
-	public function checkoutDetails($token)
-	{
-		return $this->provider->getExpressCheckoutDetails($token);
-	}
+    public function checkoutDetails($token)
+    {
+        return $this->provider->getExpressCheckoutDetails($token);
+    }
 
-	public function recheck(Order $order)
-	{
-		$ppOrder = $order->orderable;
+    public function recheck(Order $order)
+    {
+        $ppOrder = $order->orderable;
 
-		$ppOrder->recheck();
+        $ppOrder->recheck();
 
-		flash()->success('Order rechecked!');
+        flash()->success('Order rechecked!');
 
-		return redirect()->back();
-	}
+        return redirect()->back();
+    }
 
-	public function success(Request $request)
-	{
-		$token = $request->get('token');
+    public function success(Request $request)
+    {
+        $token = $request->get('token');
 
-		// Check database for orders
-		$ppOrder = PayPalOrder::where('token', $token)->first();
+        // Check database for orders
+        $ppOrder = PayPalOrder::where('token', $token)->first();
 
-		$order = $ppOrder->baseOrder;
+        $order = $ppOrder->baseOrder;
 
-		// Check if an order exists
-		if (!$ppOrder) {
-			flash()->error('Could not find order details!');
+        // Check if an order exists
+        if (!$ppOrder) {
+            flash()->error('Could not find order details!');
 
-			return redirect()->route('home');
-		}
+            return redirect()->route('home');
+        }
 
-		$ppOrder->recheck();
+        $ppOrder->recheck();
 
-		if ($ppOrder->paid()) {
-			flash()->success("Order $order->public_id has been paid successfully!");
-		} else {
-			flash()->error("Error processing PayPal payment for Order $order->public_id!");
-		}
+        if ($ppOrder->paid()) {
+            flash()->success("Order $order->public_id has been paid successfully!");
+        } else {
+            flash()->error("Error processing PayPal payment for Order $order->public_id!");
+        }
 
-		return redirect()->route('orders.show', $order);
-	}
+        return redirect()->route('orders.show', $order);
+    }
 
-	public function cancel()
-	{
+    public function cancel()
+    {
+    }
 
-	}
+    public function ipn()
+    {
+    }
 
-	public function ipn()
-	{
+    public static function getCheckoutCart(Order $order)
+    {
+        $data = [];
 
-	}
+        $order_id = $order->public_id;
 
-	public static function getCheckoutCart(Order $order)
-	{
-		$data = [];
+        $data['items'] = [
+            [
+                'name'  => 'Dia de VIP nos servidores de_nerdTV',
+                'price' => self::getCostPerDay(),
+                'qty'   => $order->duration,
+            ],
+        ];
 
-		$order_id = $order->public_id;
+        $data['return_url'] = route('pp-orders.success');
 
-		$data['items'] = [
-			[
-				'name'  => 'Dia de VIP nos servidores de_nerdTV',
-				'price' => self::getCostPerDay(),
-				'qty'   => $order->duration,
-			],
-		];
+        $data['invoice_id'] = config('paypal.invoice_prefix').'_'.$order_id;
+        $data['invoice_description'] = "Pedido #$order_id";
+        $data['cancel_url'] = route('pp-orders.cancel', $order);
 
-		$data['return_url'] = route('pp-orders.success');
+        $total = 0;
+        foreach ($data['items'] as $item) {
+            $total += $item['price'] * $item['qty'];
+        }
 
-		$data['invoice_id'] = config('paypal.invoice_prefix') . '_' . $order_id;
-		$data['invoice_description'] = "Pedido #$order_id";
-		$data['cancel_url'] = route('pp-orders.cancel', $order);
+        $data['total'] = round($total, 2);
 
-		$total = 0;
-		foreach ($data['items'] as $item) {
-			$total += $item['price'] * $item['qty'];
-		}
+        return $data;
+    }
 
-		$data['total'] = round($total, 2);
+    private static function getCostPerDay()
+    {
+        $config = config('app.mp-cost-per-day');
+        $setting = \Setting::get('mp-cost-per-month');
 
-		return $data;
-	}
-
-
-	private static function getCostPerDay()
-	{
-		$config = config('app.mp-cost-per-day');
-		$setting = \Setting::get('mp-cost-per-month');
-
-		if ($setting) {
-			return round($setting / 30, 2);
-		} else {
-			return round($config, 2);
-		}
-	}
+        if ($setting) {
+            return round($setting / 30, 2);
+        } else {
+            return round($config, 2);
+        }
+    }
 }
