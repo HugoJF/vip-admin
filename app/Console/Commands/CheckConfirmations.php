@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Confirmation;
 use App\Events\ConfirmationExpired;
 use App\Order;
 use Illuminate\Console\Command;
