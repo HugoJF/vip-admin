@@ -1,5 +1,7 @@
 # VIP-Admin - A generic CS:GO VIP processor
 
+# `THIS PROJECT IS NOT SUPPORTED ANYMORE - PLEASE DONT'T CONTACT ME ASKING FOR HELP OR UPDATES`
+
 VIP-Admin is a PHP-based system to automate multiple tasks when dealing with VIP slots on multiple CS:GO servers. Some of the features that can be found currently implemented are:
 - Automatic server synchronization via FTP (`admins_simple.ini` file is updated automatically on every registered server).
 - Automatic Steam trading for VIP slots bought with Steam items.
