@@ -12,7 +12,9 @@ use Illuminate\Queue\SerializesModels;
 
 class TokenCreated implements IMailableEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $token;
 
