@@ -6,7 +6,6 @@ use App\Classes\Daemon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-use Ixudra\Curl\Facades\Curl;
 
 class DaemonController extends Controller
 {

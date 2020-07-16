@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Events\OrderCreated;
 use App\Interfaces\IMailableEvent;
 use App\Mail\AdminMessageMail;
 use Illuminate\Support\Facades\App;
@@ -20,13 +19,13 @@ class NotifyAdmins
         //
     }
 
-	/**
-	 * Handle the event.
-	 *
-	 * @param IMailableEvent $event
-	 *
-	 * @return void
-	 */
+    /**
+     * Handle the event.
+     *
+     * @param IMailableEvent $event
+     *
+     * @return void
+     */
     public function handle(IMailableEvent $event)
     {
         if ($event->user() && App::environment('production')) {

@@ -4,7 +4,6 @@ namespace Tests\Browser;
 
 use App\User;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Pages\Settings;
 use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
