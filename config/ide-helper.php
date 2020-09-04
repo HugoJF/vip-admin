@@ -172,7 +172,7 @@ return [
     |
     */
    'type_overrides' => [
-        'integer' => 'int',
-        'boolean' => 'bool',
+       'integer' => 'int',
+       'boolean' => 'bool',
    ],
 ];
