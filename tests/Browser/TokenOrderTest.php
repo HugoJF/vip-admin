@@ -80,7 +80,7 @@ class TokenOrderTest extends DuskTestCase
         $token = factory(Token::class)->create([
         ]);
 
-        $this->browse(function (Browser $browser) use ($adminUser, $order) {
+        $this->browse(function (Browser $browser) use ($adminUser) {
             $browser->loginAs($adminUser)
                     ->visit(new \Tests\Browser\Pages\TokensIndex())
                     ->click('@generate-extra-tokens')
