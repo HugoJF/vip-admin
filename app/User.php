@@ -7,7 +7,8 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable, \Illuminate\Database\Eloquent\SoftDeletes;
+    use Notifiable;
+    use \Illuminate\Database\Eloquent\SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

@@ -58,9 +58,11 @@ class OPSkinsController extends Controller
                 \Log::info('Sent '.($perCent * 10).'% items to database.');
                 $oldPercent = $perCent;
             }
-			if(!isset($item->recent_sales_info)) continue;
+            if (!isset($item->recent_sales_info)) {
+                continue;
+            }
 
-			$name = $item->market_hash_name;
+            $name = $item->market_hash_name;
             $price = $item->recent_sales_info->average_price * 100;
             $count = $item->total_items;
 

@@ -12,7 +12,9 @@ use Illuminate\Queue\SerializesModels;
 
 class UserCreated implements IMailableEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $user;
 

@@ -10,85 +10,85 @@ use Illuminate\Support\Facades\View;
 
 class Server extends Model
 {
-	protected $dates = ['updated_at', 'created_at', 'synced_at'];
+    protected $dates = ['updated_at', 'created_at', 'synced_at'];
 
-	protected $fillable = [
-		'name',
-		'ip',
-		'port',
-		'password',
-		'ftp_host',
-		'ftp_user',
-		'ftp_password',
-		'ftp_root',
-	];
+    protected $fillable = [
+        'name',
+        'ip',
+        'port',
+        'password',
+        'ftp_host',
+        'ftp_user',
+        'ftp_password',
+        'ftp_root',
+    ];
 
-	public function sync()
-	{
-		\Log::info('Syncing server');
+    public function sync()
+    {
+        \Log::info('Syncing server');
 
-		try {
-			Daemon::consoleLog('Generating_new_admins_simple');
+        try {
+            Daemon::consoleLog('Generating_new_admins_simple');
 
-			$confirmations = Confirmation::valid()->with('baseOrder.user', 'baseOrder')->get();
+            $confirmations = Confirmation::valid()->with('baseOrder.user', 'baseOrder')->get();
 
-			$steamid = [];
+            $steamid = [];
 
-			foreach ($confirmations as $confirmation) {
-				$user = $confirmation->baseOrder->user;
+            foreach ($confirmations as $confirmation) {
+                $user = $confirmation->baseOrder->user;
 
-				if (!$user->steamid2) {
-					$user->steamid2 = Daemon::getSteam2ID($user->steamid);
+                if (!$user->steamid2) {
+                    $user->steamid2 = Daemon::getSteam2ID($user->steamid);
 
-					$user->save();
-				}
+                    $user->save();
+                }
 
-				$steamid[] = [
-					'id'           => $user->steamid2,
-					'confirmation' => $confirmation,
-				];
+                $steamid[] = [
+                    'id'           => $user->steamid2,
+                    'confirmation' => $confirmation,
+                ];
 
-				$confirmation->baseOrder->server_uploaded = true;
-				$saved = $confirmation->baseOrder->save();
-				if (!$saved) {
-					flash()->error('Error saving confirmation details.');
+                $confirmation->baseOrder->server_uploaded = true;
+                $saved = $confirmation->baseOrder->save();
+                if (!$saved) {
+                    flash()->error('Error saving confirmation details.');
 
-					return redirect()->route('home');
-				}
-			}
+                    return redirect()->route('home');
+                }
+            }
 
-			Daemon::consoleLog('Rendering view');
-			$view = View::make('admins_simple', [
-				'list' => $steamid,
-				'html' => false,
-			]);
+            Daemon::consoleLog('Rendering view');
+            $view = View::make('admins_simple', [
+                'list' => $steamid,
+                'html' => false,
+            ]);
 
-			if (config('app.update_server') == 'true') {
-				Daemon::consoleLog('FTP saving admins_simple.');
-				Storage::createFtpDriver([
-					'host'     => $this->ftp_host,
-					'username' => $this->ftp_user,
-					'password' => $this->ftp_password,
-					'root'     => $this->ftp_root,
-				])->put('admins_simple.ini', $view);
+            if (config('app.update_server') == 'true') {
+                Daemon::consoleLog('FTP saving admins_simple.');
+                Storage::createFtpDriver([
+                    'host'     => $this->ftp_host,
+                    'username' => $this->ftp_user,
+                    'password' => $this->ftp_password,
+                    'root'     => $this->ftp_root,
+                ])->put('admins_simple.ini', $view);
 
-				Daemon::consoleLog('Sending RCON update');
-				Daemon::updateSourceMod($this);
-			}
-		} catch (\Exception $e) {
-			flash()->error('Error syncing server: ' . $e->getMessage());
+                Daemon::consoleLog('Sending RCON update');
+                Daemon::updateSourceMod($this);
+            }
+        } catch (\Exception $e) {
+            flash()->error('Error syncing server: '.$e->getMessage());
 
-			\Log::info('Error syncing');
+            \Log::info('Error syncing');
 
-			return redirect()->route('home');
-		}
+            return redirect()->route('home');
+        }
 
-		Daemon::consoleLog('Finished');
-		\Log::info('Done syncing');
+        Daemon::consoleLog('Finished');
+        \Log::info('Done syncing');
 
-		$this->synced_at = Carbon::now();
-		$this->save();
+        $this->synced_at = Carbon::now();
+        $this->save();
 
-		return true;
-	}
+        return true;
+    }
 }
